@@ -104,60 +104,63 @@ namespace MiniUI
 			TiXmlElement *pWidgetElement = pSkin->GetWidgetElement( pChild->ValueStr() );
 			LuaVirtualMachine *pVM = LuaVirtualMachine::Instance( );
 
-			// Could not find this widget
-			if ( !pWidgetElement )
-			{
-				printf ( "Screen::LoadWidget - Error: Can't find widget %s\n",
-						 pChild->ValueStr().c_str() );
-				return NULL;
-			}
-
 			Widget *pWidget;
-			try
-			{
+			
+			if ( type (globals(*pVM)[ pChild->ValueStr() ]) == LUA_TNIL )
+				pWidget = new Widget ( );
+			else
 				pWidget = call_function<Widget*>(*pVM, pChild->ValueStr().c_str())[ adopt(result) ];
-			}
-			catch ( luabind::error )
-			{
-				pWidget = call_function<Widget*>(*pVM, "Widget")[ adopt(result) ];
-			}
 
 			pWidget->SetName ( pChild->ValueStr() );
 
 			Renderable *pRenderable = HostIntegration::Renderer->CreateRenderable ( );
 			pWidget->SetRenderable ( pRenderable );
 
-			// Load the image attached to this widget
-			if ( pWidgetElement->Attribute ("src") )
-				pRenderable->image = TextureManager::Instance()->LoadImage
-					( pWidgetElement->Attribute ( "src" ) );
+			// Skinned widget
+			if ( pWidgetElement )
+			{
+				// Load the image attached to this widget
+				if ( pWidgetElement->Attribute ("src") )
+					pRenderable->image = TextureManager::Instance()->LoadImage
+							( pWidgetElement->Attribute ( "src" ) );
 
-			// Set the center position
-			if ( pWidgetElement->Attribute ("width") )
-				pRenderable->centerPosition.x =
-						( i_xpath_int ( pChild, pWidgetElement->Attribute ("width") ) / 2 );
+				// Set the center position
+				if ( pWidgetElement->Attribute ("width") )
+					pRenderable->centerPosition.x =
+							( i_xpath_int ( pChild, pWidgetElement->Attribute ("width") ) / 2 );
 
-			if ( pWidgetElement->Attribute ("height") )
-				pRenderable->centerPosition.y =
-					( i_xpath_int ( pChild, pWidgetElement->Attribute ("height") ) / 2 );
+				if ( pWidgetElement->Attribute ("height") )
+					pRenderable->centerPosition.y =
+							( i_xpath_int ( pChild, pWidgetElement->Attribute ("height") ) / 2 );
+				
+				// Load the angle
+				double angle = 0.f;
+				if ( pWidgetElement->Attribute ("angle") )
+					o_xpath_double ( pChild, pWidgetElement->Attribute ("angle"), angle );
+			
+				pRenderable->angle = angle;
+				
+			}
 
-			// Load the angle
-			double angle = 0.f;
-			if ( pWidgetElement->Attribute ("angle") )
-				o_xpath_double ( pChild, pWidgetElement->Attribute ("angle"), angle );
-
-			pRenderable->angle = angle;
-
+			pRenderable->position.x = 0;
+			pRenderable->position.y = 0;
+			
 			// Load the position
 			o_xpath_int ( pChild, "@x", pRenderable->position.x );
 			o_xpath_int ( pChild, "@y", pRenderable->position.y );
-
-			LoadLayout ( pRenderable, pChild, pWidgetElement );
-			LoadChildren ( pWidget, pChild, pWidgetElement, pSkin, depth );
-			LoadEventAreas ( pWidget, pChild, pWidgetElement );
+			
+			if ( pWidgetElement )
+			{
+				LoadLayout ( pRenderable, pChild, pWidgetElement );
+				LoadChildren ( pWidget, pChild, pWidgetElement, pSkin, depth );
+				LoadEventAreas ( pWidget, pChild, pWidgetElement );
+			}		
+			
+			pWidget->OnLoad ( pWidgetElement, pChild );
+						
+	
 			pRenderable->OnChanged();
 
-			pWidget->OnLoad ( pWidgetElement, pChild );
 			return pWidget;
 		}
 

@@ -13,7 +13,8 @@
 #define MINIUI_UISYSTEMFONT_H
 
 #include <string>
-
+#include <map>
+#include <boost/shared_ptr.hpp>
 #include "../Host/IArchive.h"
 #include "../Graphics/ImageResource.h"
 #include "../Graphics/Renderable.h"
@@ -33,13 +34,22 @@ namespace MiniUI
 			Font ( );
 			~Font ( );
 
-			bool LoadFont ( TinyXPath::TiXmlElement* pElement, Host::IArchive *pArchive );
-
+			static bool LoadFont ( TinyXPath::TiXmlElement* pElement, Host::IArchive *pArchive );
+			static Font* GetFont ( std::string name );
+			
+			bool LoadFont ( std::string name, Host::IArchive *pArchive );
+			
+			void SetName ( std::string name ) { _name = name; }
 			std::string Name ( ) { return _name; }
 
 			Graphics::GraphicalRect GetCharacter ( char c ) { return _characters[c]; }
 			Graphics::ImageResource* GetImageResource ( ) { return _pImage; }
 
+			void SetImageResource ( Graphics::ImageResource* pImage );
+			
+			typedef std::map<std::string, boost::shared_ptr<Font> > FontListType;
+			static FontListType FontList;
+			
 		private:
 
 			Graphics::ImageResource* LoadImage ( std::string path, Host::IArchive* pArchive );

@@ -41,6 +41,7 @@ namespace MiniUI
 			TinyXPath::TiXmlElement* GetWidgetElement ( std::string id );
 
 		private:
+			void LoadFonts ( Host::IArchive *pArchive );
 			TinyXPath::TiXmlDocument _skinDocument;
 		};
 

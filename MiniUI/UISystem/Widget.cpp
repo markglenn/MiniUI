@@ -31,6 +31,8 @@
 #include "../LuaSystem/LuaVirtualMachine.h"
 #include <luabind/adopt_policy.hpp>
 
+#include "TextArea.h"
+
 #include <Lua/lua.h>
 #include <luabind/luabind.hpp>
 
@@ -156,6 +158,13 @@ namespace MiniUI
 				class_<GraphicalRect>("GraphicalRect")
 				.def_readonly("id", &GraphicalRect::id)
 				.def_readwrite("isVisible", &GraphicalRect::isVisible)
+			];
+			
+			module(*pVM)
+			[
+				class_<TextArea, Widget>("TextArea")
+				.def(constructor<>(), adopt(result))
+
 			];
 		}
 

@@ -223,6 +223,49 @@
 				</areas>
 			</events>
 		</widget>
+		
+		<widget id="Background" src="Common/img/background.png" width="@width" height="@height">
+			<layout>
+				<section id="main">
+					<source x="0" y="0" width="176" height="220" />
+					<destination x="0" y="0" width="@width" height="@height" />
+				</section>
+			</layout>
+		</widget>
+		
+		<widget id="Highlight2Row" src="Common/img/hl_2rows.png" width="@width" height="62">
+			<layout>
+				<section id="left">
+					<source x="0" y="0" width="17" height="62" />
+					<destination x="0" y="0" width="17" height="62" />
+				</section>
+				<section id="center">
+					<source x="17" y="0" width="1" height="62" />
+					<destination x="17" y="0" width="@width - 34" height="62" />
+				</section>
+				<section id="right">
+					<source x="18" y="0" width="17" height="62" />
+					<destination x="@width - 17" y="0" width="17" height="62" />
+				</section>
+			</layout>
+		</widget>
+		
+		<widget id="Highlight" src="Common/img/hl_popup.png" width="@width" height="34">
+			<layout>
+				<section id="left">
+					<source x="0" y="0" width="13" height="34" />
+					<destination x="0" y="0" width="13" height="34" />
+				</section>
+				<section id="center">
+					<source x="13" y="0" width="1" height="34" />
+					<destination x="13" y="0" width="@width - 26" height="34" />
+				</section>
+				<section id="right">
+					<source x="14" y="0" width="13" height="34" />
+					<destination x="@width - 13" y="0" width="13" height="34" />
+				</section>
+			</layout>
+		</widget>
 	</widgets>
 	<fonts>
 		<font id="MyFont" src="fonts/FreeSans BoldOblique.bff" />

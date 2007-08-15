@@ -390,3 +390,4 @@ MiniUI/UISystem/EventArea.h
 build/ui/scripts/VerticalLayout.lua
 build/ui/scripts/HorizontalLayout.lua
 build/ui/scripts/Layout.lua
+build/test.xml

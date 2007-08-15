@@ -22,6 +22,7 @@
 #include <string>
 
 #include "../TinyXPath/xpath_static.h"
+#include "Font.h"
 
 using namespace std;
 using namespace MiniUI::TinyXPath;
@@ -67,6 +68,7 @@ namespace MiniUI
 
 			_skinDocument.Parse ( xmlData.c_str() );
 
+			LoadFonts ( pArchive );
 			delete pStream;
 			return true;
 		}
@@ -78,6 +80,26 @@ namespace MiniUI
 			std::string widgetPath = "/skin/widgets/widget[@id='" + id + "']";
 			return (TiXmlElement *)XNp_xpath_node ( _skinDocument.FirstChildElement(),
 					widgetPath.c_str() );
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void Skin::LoadFonts ( IArchive *pArchive )
+		///////////////////////////////////////////////////////////////////////
+		{
+			// Find the fonts used in this skin
+			xpath_processor xpath ( _skinDocument.FirstChildElement(), 
+					"/skin/fonts/font" );
+
+			// Loop through all the sections
+			int numFonts = xpath.u_compute_xpath_node_set ( );
+			for ( int i = 0; i < numFonts; i++ )
+			{
+				TiXmlElement* pFontElement = 
+						(TiXmlElement*)xpath.XNp_get_xpath_node ( i );
+				
+				Font::LoadFont ( pFontElement, pArchive );
+			}
+
 		}
 	}
 

@@ -26,7 +26,8 @@ namespace MiniUI
 
 	namespace UISystem
 	{
-
+		Font::FontListType Font::FontList;
+		
 		///////////////////////////////////////////////////////////////////////
 		Font::Font ( ) :
 				_pImage ( 0 )
@@ -49,15 +50,35 @@ namespace MiniUI
 			if ( pElement == NULL )
 				return false;
 
-			_name 			= pElement->Attribute("id");
-			_sourceImage 	= pElement->Attribute("src");
+			boost::shared_ptr<Font> pFont( new Font ( ) );
+			
+			pFont->SetName ( pElement->Attribute("id") );
+			pFont->LoadImage ( pElement->Attribute("src"), pArchive );
 
-			_pImage = LoadImage ( _sourceImage, pArchive );
-			ConvertToCharacters ( );
-
+			FontList[pFont->Name()] = pFont;
 			return true;
 		}
 
+		///////////////////////////////////////////////////////////////////////
+		Font* Font::GetFont ( std::string name ) 
+		///////////////////////////////////////////////////////////////////////
+		{
+			FontListType::iterator i = FontList.find(name);
+			
+			if ( i == FontList.end() )
+				return NULL;
+			
+			return boost::get_pointer<Font> ( i->second );
+		}
+
+		///////////////////////////////////////////////////////////////////////
+		void Font::SetImageResource ( ImageResource* pImage )
+		///////////////////////////////////////////////////////////////////////
+		{
+			_pImage = pImage;
+			ConvertToCharacters ( );
+		}
+		
 		///////////////////////////////////////////////////////////////////////
 		ImageResource* Font::LoadImage ( string path, IArchive* pArchive )
 		///////////////////////////////////////////////////////////////////////
@@ -98,7 +119,7 @@ namespace MiniUI
 
 			delete pStream;
 
-			return pImage;
+			SetImageResource ( pImage );
 		}
 
 		///////////////////////////////////////////////////////////////////////

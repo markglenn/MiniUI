@@ -103,7 +103,7 @@ namespace OpenGLRenderer
 		{
 			glPushMatrix ( );
 			OpenGLRenderable* pRenderable = (OpenGLRenderable *)((*i)->GetRenderable ( ));
-
+			
 			glTranslatef ( pRenderable->centerPosition.x, pRenderable->centerPosition.y, 0 );
 			glRotatef ( pRenderable->angle, 0.f, 0.f, 1.f );
 			glTranslatef ( -pRenderable->centerPosition.x, -pRenderable->centerPosition.y, 0 );

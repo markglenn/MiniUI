@@ -27,6 +27,7 @@ function HorizontalLayout:OnLayout( )
 		widget.y = 0;
 		widget.x = pos;
 
+		print ( widget.x .. " " .. widget.y );
 		pos = pos + widget.width + self.padding;
 	end
 end

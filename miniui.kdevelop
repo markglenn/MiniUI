@@ -13,6 +13,7 @@
     <secondaryLanguages/>
     <projectname>miniui</projectname>
     <defaultencoding></defaultencoding>
+    <versioncontrol>kdevsubversion</versioncontrol>
   </general>
   <kdevcustomproject>
     <run>

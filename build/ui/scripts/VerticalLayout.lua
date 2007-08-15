@@ -12,8 +12,6 @@ end
 function VerticalLayout:OnLoad(skinElement, widgetElement)
 -------------------------------------------------------------------
 	self.padding = xpath.ToNumber ( widgetElement, "@padding");
-	print (self.padding);
-
 end
 
 -------------------------------------------------------------------

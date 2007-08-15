@@ -59,9 +59,12 @@ namespace OpenGLRenderer
 		glEnable(GL_BLEND);
 
 		// Edit the texture object's image data using the information SDL_Surface gives us
-		if ( pSurface->format->BitsPerPixel == 24 )
+		if ( pSurface->format->BitsPerPixel == 24 && pSurface->format->Rshift == 16 )
 			glTexImage2D( GL_TEXTURE_2D, 0, 3, pSurface->w, pSurface->h, 0,
 				  GL_BGR, GL_UNSIGNED_BYTE, pSurface->pixels );
+		else if ( pSurface->format->BitsPerPixel == 24 && pSurface->format->Rshift == 0 )
+			glTexImage2D( GL_TEXTURE_2D, 0, 3, pSurface->w, pSurface->h, 0,
+				  GL_RGB, GL_UNSIGNED_BYTE, pSurface->pixels );		
 		else if ( pSurface->format->BitsPerPixel == 32 )
 			glTexImage2D( GL_TEXTURE_2D, 0, 4, pSurface->w, pSurface->h, 0,
 				  GL_RGBA, GL_UNSIGNED_BYTE, pSurface->pixels );
