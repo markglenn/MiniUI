@@ -11,17 +11,19 @@
 //
 
 #include "Screen.h"
-#include "Widget.h"
+#include <MiniUI/Widgets/Widget.h>
 #include "Skin.h"
 
 #include "../TinyXPath/xpath_static.h"
 
-#include "../Host/HostIntegration.h"
-#include "../Host/IRenderer.h"
-#include "../Graphics/TextureManager.h"
-#include "../Types/Vector2D.h"
-#include "../Types/Integer.h"
-#include "../LuaSystem/LuaVirtualMachine.h"
+#include <MiniUI/Host/HostIntegration.h>
+#include <MiniUI/Host/IRenderer.h>
+#include <MiniUI/Graphics/TextureManager.h>
+#include <MiniUI/Types/Vector2D.h>
+#include <MiniUI/Types/Integer.h>
+#include <MiniUI/LuaSystem/LuaVirtualMachine.h>
+#include <MiniUI/Widgets/WidgetFactory.h>
+
 #include <luabind/luabind.hpp>
 #include <luabind/adopt_policy.hpp>
 
@@ -30,6 +32,7 @@ using namespace MiniUI::Graphics;
 using namespace MiniUI::Host;
 using namespace MiniUI::Types;
 using namespace MiniUI::LuaSystem;
+using namespace MiniUI::Widgets;
 
 using namespace luabind;
 
@@ -102,17 +105,12 @@ namespace MiniUI
 		{
 			// Find the widget
 			TiXmlElement *pWidgetElement = pSkin->GetWidgetElement( pChild->ValueStr() );
-			LuaVirtualMachine *pVM = LuaVirtualMachine::Instance( );
-
-			Widget *pWidget;
+			WidgetFactory widgetFactory;
 			
-			if ( type (globals(*pVM)[ pChild->ValueStr() ]) == LUA_TNIL )
-				pWidget = new Widget ( );
-			else
-				pWidget = call_function<Widget*>(*pVM, pChild->ValueStr().c_str())[ adopt(result) ];
-
+			Widget *pWidget = widgetFactory.Create ( pChild->ValueStr() );
 			pWidget->SetName ( pChild->ValueStr() );
 
+			printf ( "Widget created: %s\n", pChild->ValueStr().c_str() );
 			Renderable *pRenderable = HostIntegration::Renderer->CreateRenderable ( );
 			pWidget->SetRenderable ( pRenderable );
 
@@ -158,7 +156,6 @@ namespace MiniUI
 			
 			pWidget->OnLoad ( pWidgetElement, pChild );
 						
-	
 			pRenderable->OnChanged();
 
 			return pWidget;
@@ -308,13 +305,13 @@ namespace MiniUI
 				TiXmlElement* pEventArea = (TiXmlElement*)xpath.XNp_get_xpath_node ( i );
 
 				EventArea *pArea = NULL;
-				try
-				{
-					std::string areaName = pWidget->Name() + "_" + pEventArea->Attribute ( "id" );
+				
+				std::string areaName = pWidget->Name() + "_" + pEventArea->Attribute ( "id" );
+				if ( type (globals(*pVM)[ areaName.c_str() ]) != LUA_TNIL )
 					pArea = call_function<EventArea*>(*pVM, areaName.c_str() )[ adopt(result) ];
-				}
-				catch ( luabind::error ) { continue; }
-
+				else
+					continue;
+							
 				// Set the event area
 				pArea->area.x = i_xpath_int ( pChild, pEventArea->Attribute ("x") );
 				pArea->area.y = i_xpath_int ( pChild, pEventArea->Attribute ("y") );

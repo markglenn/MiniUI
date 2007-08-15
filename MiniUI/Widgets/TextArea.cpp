@@ -1,20 +1,23 @@
 #include "TextArea.h"
 #include <MiniUI/Host/IRenderer.h>
 #include <MiniUI/Types/Integer.h>
+#include <MiniUI/TinyXPath/xpath_static.h>
 
 using namespace std;
 using namespace MiniUI::Graphics;
 using namespace MiniUI::TinyXPath;
 using namespace MiniUI::Types;
+using namespace MiniUI::UISystem;
 
 namespace MiniUI
 {
-	namespace UISystem
+	namespace Widgets
 	{
 		///////////////////////////////////////////////////////////////////////
 		TextArea::TextArea ( )
 		///////////////////////////////////////////////////////////////////////
 		{
+			printf ("Created\n");
 		}
 
 		///////////////////////////////////////////////////////////////////////
@@ -27,9 +30,9 @@ namespace MiniUI
 		bool TextArea::BuildText ( string text, Font* pFont, bool wordWrap, int width )
 		///////////////////////////////////////////////////////////////////////
 		{
-			
-			this->GetRenderable()->image = pFont->GetImageResource();
-			this->GetRenderable()->clear();
+			Renderable* pRenderable = this->GetRenderable();
+			pRenderable->image = pFont->GetImageResource();
+			pRenderable->clear();
 			
 			if ( !wordWrap )
 			{
@@ -59,11 +62,10 @@ namespace MiniUI
 			Font *pFont = Font::GetFont( pLayout->Attribute ( "font" ) );
 			std::string text = pLayout->Attribute ( "text" );
 			
+			o_xpath_int ( pLayout, "@x", this->GetRenderable()->position.x );
+			o_xpath_int ( pLayout, "@y", this->GetRenderable()->position.y );
+			
 			BuildText ( text, pFont );
-			
-			this->GetRenderable()->position.x = Integer::ParseInt ( pLayout->Attribute ("x") );
-			this->GetRenderable()->position.y = Integer::ParseInt ( pLayout->Attribute ("y") );
-			
 		}
 	}
 

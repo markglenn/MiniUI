@@ -8,10 +8,10 @@
 
 namespace MiniUI
 {
-	namespace UISystem
+	namespace Widgets
 	{
 		class Widget;
-
+		
 		class EventArea
 		{
 		public:

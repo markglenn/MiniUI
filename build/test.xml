@@ -1,13 +1,7 @@
 <interface>
-	<screen id="mainScreen">
+<!--	
+	<screen id="mainScreen1">
 		<xpWindow x="10" y="10" width="600" height="400">
-			<HorizontalLayout padding="5" height="30">
-				<Button width="100" />
-				<Button width="100" />
-				<Button width="100" />
-				<Button width="100" />
-				<Button width="100" />
-			</HorizontalLayout>
 			<VerticalLayout padding="5">
 				<HorizontalLayout padding="5" height="30">
 					<Button width="100" />
@@ -82,11 +76,22 @@
 			</VerticalLayout>
 		</xpWindow>
 	</screen>
-
-	<screen id="mainScreen1">
+-->
+	
+	<screen id="mainScreen">
 		<Background width="640" height="480"/>
-		<Highlight x="20" y="20" width="200"/>
-		<TextArea font="MyFont" text="Hello World" x="30" y="30" />
+		<SelectableList width="200" height="150">
+			<Items spacing="30">
+				<TextArea font="MyFont" text="Selectable Item 1"/>
+				<TextArea font="MyFont" text="Selectable Item 2"/>
+				<TextArea font="MyFont" text="Selectable Item 3"/>
+				<TextArea font="MyFont" text="Selectable Item 4"/>
+				<TextArea font="MyFont" text="Selectable Item 5"/>				
+			</Items>
+			<HighlightBar>
+				<Highlight x="0" y="0" width="200"/>
+			</HighlightBar>
+		</SelectableList>
 	</screen>
-
+	
 </interface>

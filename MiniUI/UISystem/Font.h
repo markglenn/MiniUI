@@ -50,6 +50,8 @@ namespace MiniUI
 			typedef std::map<std::string, boost::shared_ptr<Font> > FontListType;
 			static FontListType FontList;
 			
+			int GetHeight ( ) { return _header.cellY; }
+			
 		private:
 
 			Graphics::ImageResource* LoadImage ( std::string path, Host::IArchive* pArchive );

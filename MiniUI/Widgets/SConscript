@@ -1,0 +1,7 @@
+Import('env')
+
+sources = [ 'WidgetFactory.cpp', 'Widget.cpp', 'TextArea.cpp', 'EventArea.cpp' ]
+
+obj = env.Object ( sources )
+
+Return ('obj')

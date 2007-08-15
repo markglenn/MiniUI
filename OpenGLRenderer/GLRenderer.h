@@ -26,8 +26,8 @@ namespace OpenGLRenderer
 			{ return new OpenGLRenderable (); }
 
 	private:
-		void UpdateWidgetList ( MiniUI::UISystem::WidgetList *pList, MiniUI::Input::Mouse *pMouse );
-		void UpdateChildArea ( MiniUI::UISystem::WidgetChildArea* pChildArea, MiniUI::Input::Mouse *pMouse );
+		void UpdateWidgetList ( MiniUI::Widgets::WidgetList *pList, MiniUI::Input::Mouse *pMouse );
+		void UpdateChildArea ( MiniUI::Widgets::WidgetChildArea* pChildArea, MiniUI::Input::Mouse *pMouse );
 
 		SDL_Surface	*_pDisplaySurface;
 		ResourceLoader _resourceLoader;

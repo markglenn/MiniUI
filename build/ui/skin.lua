@@ -1,62 +1,66 @@
 require ('ui/scripts/xpWindow');
 require ('ui/scripts/VerticalLayout');
 require ('ui/scripts/HorizontalLayout');
+require ('ui/scripts/Button');
 
-class "Button" (Widget)
+class "SelectableList" (Widget)
 
 -------------------------------------------------------------------
-function Button:__init()
+function SelectableList:__init()
 -------------------------------------------------------------------
 	super();
 end
 
 -------------------------------------------------------------------
-function Button:OnLoad(skinElement, widgetElement)
+function SelectableList:OnLoad(skinElement, widgetElement)
 -------------------------------------------------------------------
-	self.nohover = {
-			self:GetGraphicalRect("left"),
-			self:GetGraphicalRect("center"),
-			self:GetGraphicalRect("right") };
-	self.hover = {
-			self:GetGraphicalRect("left-hover"),
-			self:GetGraphicalRect("center-hover"),
-			self:GetGraphicalRect("right-hover") };
+	self.spacing = xpath.ToNumber ( widgetElement, "//Items/@spacing");
 end
 
-class "Button_hotspot" (EventArea);
+		
+-------------------------------------------------------------------
+function SelectableList:OnLayout( )
+-------------------------------------------------------------------
+	self.childCount = self:GetChildWidgetCount (1);
+	local pos = 0;
+
+	-- Go through all the children and position them
+	for i = 0,self.childCount - 1 do
+		local widget = self:GetChildWidget(1, i);
+
+		widget.x = 0;
+		widget.y = pos;
+
+		pos = pos + self.spacing;
+	end
+end
+	
+
+class "SelectableList_hotspot" (EventArea);
 
 -------------------------------------------------------------------
-function Button_hotspot:__init ( )
+function SelectableList_hotspot:__init ( )
 -------------------------------------------------------------------
 	super ();
 end
-
+				
 -------------------------------------------------------------------
-function Button_hotspot:OnMouseOver ( )
+function SelectableList_hotspot:OnMouseHover ( x, y )
 -------------------------------------------------------------------
-	for i=1,#self.widget.hover do
-		self.widget.hover[i].isVisible = true;
+	local split = math.floor(y / self.widget.spacing);
+	
+	if ( split >= self.widget.childCount ) then
+		return;
 	end
-
-	for i=1,#self.widget.nohover do
-		self.widget.nohover[i].isVisible = false;
-	end
-
-	self.widget:UpdateRenderable ( );
+		
+	local widget = self.widget:GetChildWidget(0, 0);
+	
+	widget.y = split * 30;
 end
 
 -------------------------------------------------------------------
-function Button_hotspot:OnMouseOut ( )
+function SelectableList_hotspot:OnMouseOut ( )
 -------------------------------------------------------------------
-	for i=1,#self.widget.nohover do
-		self.widget.nohover[i].isVisible = true;
-	end
 
-	for i=1,#self.widget.hover do
-		self.widget.hover[i].isVisible = false;
-	end
-
-	self.widget:UpdateRenderable ( );
 end
-
 print "Loaded";

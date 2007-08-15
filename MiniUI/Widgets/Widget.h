@@ -31,7 +31,7 @@
 
 namespace MiniUI
 {
-	namespace UISystem
+	namespace Widgets
 	{
 		class Widget;
 
@@ -103,7 +103,7 @@ namespace MiniUI
 		private:
 			Graphics::Renderable 	*_pRenderable;
 			WidgetChildren			_widgetChildren;
-			EventAreaList			_eventAreas;
+			EventAreaList	_eventAreas;
 			std::string				_name;
 		};
 
@@ -112,7 +112,7 @@ namespace MiniUI
 		public:
 			Widget_wrapper()
 				: Widget()
-			{}
+			{ }
 
 			virtual void Update( int timestep )
 			{

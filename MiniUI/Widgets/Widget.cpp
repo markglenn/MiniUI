@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include "WidgetFactory.h"
+
 #include "../Types/Integer.h"
 #include "../Types/Float.h"
 #include "../TinyXPath/xpath_static.h"
@@ -46,9 +48,16 @@ using namespace luabind;
 
 namespace MiniUI
 {
-	namespace UISystem
+	namespace Widgets
 	{
-
+		// Register functions
+		///////////////////////////////////////////////////////////////////////
+		Widget* CreateTextArea ( )
+		///////////////////////////////////////////////////////////////////////
+		{
+			return new TextArea ( );	
+		}
+		
 		///////////////////////////////////////////////////////////////////////
 		Widget::Widget ( )
 		///////////////////////////////////////////////////////////////////////
@@ -134,10 +143,12 @@ namespace MiniUI
 		void Widget::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
 		///////////////////////////////////////////////////////////////////////
 		{
+			WidgetFactory factory;
+			
 			module(*pVM)
 			[
 				class_<Widget, Widget_wrapper>("Widget")
-				.def(constructor<>(), adopt(result))
+				.def(constructor<>())
 				.def("Update", &Widget::Update, &Widget_wrapper::default_Update)
 				.def("OnLoad", &Widget::OnLoad, &Widget_wrapper::default_OnLoad)
 				.def("OnLayout", &Widget::OnLayout, &Widget_wrapper::default_OnLayout)
@@ -160,12 +171,7 @@ namespace MiniUI
 				.def_readwrite("isVisible", &GraphicalRect::isVisible)
 			];
 			
-			module(*pVM)
-			[
-				class_<TextArea, Widget>("TextArea")
-				.def(constructor<>(), adopt(result))
-
-			];
+			factory.Register ( "TextArea", CreateTextArea );
 		}
 
 	}

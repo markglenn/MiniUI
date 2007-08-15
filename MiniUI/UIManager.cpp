@@ -31,6 +31,7 @@
 using namespace MiniUI::Host;
 using namespace MiniUI::TinyXPath;
 using namespace MiniUI::UISystem;
+using namespace MiniUI::Widgets;
 using namespace luabind;
 using namespace std;
 

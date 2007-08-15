@@ -391,3 +391,13 @@ build/ui/scripts/VerticalLayout.lua
 build/ui/scripts/HorizontalLayout.lua
 build/ui/scripts/Layout.lua
 build/test.xml
+MiniUI/Widgets/SConscript
+MiniUI/Widgets/WidgetFactory.cpp
+MiniUI/Widgets/WidgetFactory.h
+MiniUI/Widgets/Widget.cpp
+MiniUI/Widgets/Widget.h
+MiniUI/Widgets/TextArea.cpp
+MiniUI/Widgets/TextArea.h
+MiniUI/Widgets/EventArea.cpp
+MiniUI/Widgets/EventArea.h
+build/ui/scripts/Button.lua

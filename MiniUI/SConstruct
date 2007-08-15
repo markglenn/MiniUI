@@ -1,6 +1,6 @@
 sources = [ 'UIManager.cpp' ]
 subdirs = [ 'EventSystem', 'Host', 'TinyXPath', 'Types',
-			'LuaSystem', 'UISystem', 'Graphics' ]
+			'LuaSystem', 'UISystem', 'Graphics', 'Widgets' ]
 
 Import('env')
 env['CPPPATH'] = [ '#.', '#Lua', '#include', '/usr/include/SDL' ]

@@ -266,6 +266,19 @@
 				</section>
 			</layout>
 		</widget>
+		
+		<widget id="SelectableList" width="@width" height="@height">
+			<children>
+				<area id="Items" select="//HighlightBar/*"/>
+				<area id="Items" select="//Items/*"/>
+			</children>
+			<events>
+				<areas>
+					<area id="hotspot" x="0" y="0" width="@width" height="@height" />
+				</areas>
+			</events>
+		</widget>
+		
 	</widgets>
 	<fonts>
 		<font id="MyFont" src="fonts/FreeSans BoldOblique.bff" />

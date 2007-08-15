@@ -5,7 +5,7 @@
 #include "../Types/Vector2D.h"
 #include <luabind/luabind.hpp>
 #include <luabind/adopt_policy.hpp>
-#include "../UISystem/Widget.h"
+#include <MiniUI/Widgets/Widget.h>
 
 #include <MiniUI/TinyXPath/tinyxml.h>
 #include <MiniUI/TinyXPath/xpath_static.h>
@@ -13,7 +13,7 @@
 
 using MiniUI::Host::IArchive;
 using MiniUI::Host::IResource;
-using namespace MiniUI::UISystem;
+using namespace MiniUI::Widgets;
 using namespace MiniUI::Types;
 using namespace MiniUI::TinyXPath;
 using namespace luabind;

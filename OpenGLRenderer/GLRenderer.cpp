@@ -11,6 +11,7 @@ using namespace MiniUI;
 using namespace MiniUI::Graphics;
 using namespace MiniUI::Types;
 using namespace MiniUI::UISystem;
+using namespace MiniUI::Widgets;
 using namespace MiniUI::Input;
 
 namespace OpenGLRenderer
@@ -29,7 +30,6 @@ namespace OpenGLRenderer
 	{
 		SDL_FreeSurface ( _pDisplaySurface );
 		SDL_Quit ( );
-		printf ("Done\n");
 	}
 
 	///////////////////////////////////////////////////////////////////////////

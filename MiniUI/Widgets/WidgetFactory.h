@@ -18,56 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _MINIUI_UIMANAGER_H_
-#define _MINIUI_UIMANAGER_H_
-
-#include "LuaSystem/LuaVirtualMachine.h"
-#include "Host/IArchive.h"
-#include "Host/IMemory.h"
-#include "Host/IResourceLoader.h"
-#include "Input/Mouse.h"
-
-#include "UISystem/Skin.h"
-#include "UISystem/Screen.h"
-
-#include "Graphics/TextureManager.h"
+#ifndef _MINIUI_WIDGETS_WIGETFACTORY_H_
+#define _MINIUI_WIDGETS_WIGETFACTORY_H_
 
 #include <map>
-#include <string>
+#include <MiniUI/Widgets/Widget.h>
 
 namespace MiniUI
 {
-	class UIManager
+	namespace Widgets
 	{
-	public:
-		UIManager ( );
-		virtual ~UIManager ( );
-
-		bool LoadUIArchive ( Host::IArchive *pArchive );
-		bool LoadScreens ( std::string rootXML, Host::IArchive *pArchive );
-
-		bool Initialize (  );
-
-		bool Update ( unsigned int timestep, Input::Mouse* pMouse );
-
-		void SetCurrentScreen ( std::string name ) { _pCurrentScreen = _screens[name]; }
-		UISystem::Screen* GetCurrentScreen ( ) { return _pCurrentScreen; }
-
-
-	private:
-		typedef std::map<std::string, UISystem::Screen*> ScreenMap;
-		bool InitializeScripts ( );
-
-		void UpdateWidget ( Widgets::WidgetList* pWidgetList, int timestep, Input::Mouse* pMouse );
-
-		LuaSystem::LuaVirtualMachine 	_luaVM;
-		UISystem::Skin					_skin;
-		UISystem::Screen*				_pCurrentScreen;
-
-		ScreenMap 						_screens;
-		Graphics::TextureManager		_textureManager;
-	};
-
+		typedef Widgets::Widget* (*BaseCreateFn)();
+		
+		class WidgetFactory
+		{
+		public:
+			WidgetFactory ( );
+			virtual ~WidgetFactory ( );
+			
+			Widgets::Widget* Create ( std::string id );
+			void Register ( std::string id, BaseCreateFn function );
+			
+		private:
+			typedef std::map<std::string, BaseCreateFn> RegistryMap;
+			static RegistryMap _registry;
+		};
+		
+	}
 }
 
-#endif // _MINIUI_UIMANAGER_H_
+
+#endif // _MINIUI_WIDGETS_WIGETFACTORY_H_

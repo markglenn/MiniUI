@@ -16,6 +16,10 @@ namespace OpenGLRenderer
 		_drawDisplayList = glGenLists ( 1 )	;
 		image = 0;
 		opacity = 1.0f;
+		
+		scale.x = 1.0;
+		scale.y = 1.0;
+		angle = 0.0f;
 	}
 
 	///////////////////////////////////////////////////////////////////////////

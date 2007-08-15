@@ -16,7 +16,7 @@
 
 #include "../TinyXPath/tinyxml.h"
 #include "../Graphics/Renderable.h"
-#include "Widget.h"
+#include <MiniUI/Widgets/Widget.h>
 
 namespace MiniUI
 {
@@ -34,27 +34,27 @@ namespace MiniUI
 			bool BuildScreen ( Skin* pSkin );
 
 			std::string id ( ) { return _id; }
-			WidgetList* GetWidgetList ( ) { return &_widgetList; }
+			Widgets::WidgetList* GetWidgetList ( ) { return &_widgetList; }
 
 		protected:
-			Widget*	LoadWidget ( TinyXPath::TiXmlElement* pChild, Skin* pSkin, int depth = 0 );
+			Widgets::Widget*	LoadWidget ( TinyXPath::TiXmlElement* pChild, Skin* pSkin, int depth = 0 );
 
 			bool LoadLayout ( Graphics::Renderable* pRenderable,
 							  TinyXPath::TiXmlElement* pChild, TinyXPath::TiXmlElement* pWidget );
 
-			bool LoadChildren ( Widget* pWidget, TinyXPath::TiXmlElement* pChild,
+			bool LoadChildren ( Widgets::Widget* pWidget, TinyXPath::TiXmlElement* pChild,
 								TinyXPath::TiXmlElement* pWidgetEl, Skin* pSkin, int depth );
 
-			bool LoadEventAreas ( Widget* pWidget, TinyXPath::TiXmlElement* pChild,
+			bool LoadEventAreas ( Widgets::Widget* pWidget, TinyXPath::TiXmlElement* pChild,
 								  TinyXPath::TiXmlElement* pWidgetEl );
 
-			void OnLayout ( WidgetList *pWidgetList );
+			void OnLayout ( Widgets::WidgetList *pWidgetList );
 
 		private:
 
 			std::string _id;
 			TinyXPath::TiXmlElement*	_pElement;
-			WidgetList				 	_widgetList;
+			Widgets::WidgetList			_widgetList;
 		};
 
 	}

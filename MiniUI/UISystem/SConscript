@@ -1,7 +1,6 @@
 Import('env')
 
-sources = [ 'Skin.cpp', 'Widget.cpp', 'EventArea.cpp',
-	'Screen.cpp', 'Font.cpp', 'TextArea.cpp' ]
+sources = [ 'Skin.cpp', 'Screen.cpp', 'Font.cpp' ]
 
 obj = env.Object ( sources )
 

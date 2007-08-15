@@ -3,7 +3,7 @@
 using namespace MiniUI::Input;
 namespace MiniUI
 {
-	namespace UISystem
+	namespace Widgets
 	{
 		///////////////////////////////////////////////////////////
 		EventArea::EventArea ( )
