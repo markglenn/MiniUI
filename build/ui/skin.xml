@@ -1,0 +1,230 @@
+<!--
+<!DOCTYPE skin[
+<!ELEMENT skin (widgets+,fonts+)>
+<!ELEMENT widgets (widget+)>
+<!ELEMENT widget (layout,childArea,eventHandler+)>
+<!ELEMENT layout (section+)>
+<!ELEMENT section (source,destination)>
+<!ELEMENT eventHandler (event+)>
+<!ELEMENT event (parameter+)>
+<!ELEMENT fonts (font+)>
+
+<!ATTLIST widget id CDATA #REQUIRED>
+<!ATTLIST widget src CDATA #REQUIRED>
+<!ATTLIST widget width CDATA #REQUIRED>
+<!ATTLIST widget height CDATA #REQUIRED>
+
+<!ATTLIST section id CDATA #REQUIRED>
+
+<!ATTLIST source x CDATA #REQUIRED>
+<!ATTLIST source y CDATA #REQUIRED>
+<!ATTLIST source width CDATA #REQUIRED>
+<!ATTLIST source height CDATA #REQUIRED>
+
+<!ATTLIST destination x CDATA #REQUIRED>
+<!ATTLIST destination y CDATA #REQUIRED>
+<!ATTLIST destination width CDATA #REQUIRED>
+<!ATTLIST destination height CDATA #REQUIRED>
+
+<!ATTLIST childArea select CDATA #REQUIRED>
+<!ATTLIST childArea x CDATA #REQUIRED>
+<!ATTLIST childArea y CDATA #REQUIRED>
+<!ATTLIST childArea width CDATA #REQUIRED>
+<!ATTLIST childArea height CDATA #REQUIRED>
+
+<!ATTLIST area id CDATA #REQUIRED>
+<!ATTLIST area x CDATA #REQUIRED>
+<!ATTLIST area y CDATA #REQUIRED>
+<!ATTLIST area width CDATA #REQUIRED>
+<!ATTLIST area height CDATA #REQUIRED>
+
+<!ATTLIST eventHandler class CDATA #REQUIRED>
+
+<!ATTLIST event handler CDATA #REQUIRED>
+<!ATTLIST event type CDATA #REQUIRED>
+<!ATTLIST event eventArea CDATA #REQUIRED>
+<!ATTLIST event data CDATA #REQUIRED>
+
+<!ATTLIST parameter id CDATA #REQUIRED>
+
+<!ATTLIST font id CDATA #REQUIRED>
+<!ATTLIST font src CDATA #REQUIRED>
+]>
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<skin>
+	<widgets>
+		<widget id="xpWindow" src="images/minimal.bmp" width="@width" height="@height">
+			<layout>
+				<!-- Top -->
+				<section id="topLeftWindow">
+					<source x="0" y="0" width="25" height="30" />
+					<destination x="0" y="0" width="25" height="30" />
+				</section>
+				<section id="titleBar">
+					<source x="62" y="0" width="2" height="30" />
+					<destination x="25" y="0" width="@width - 101" height="30" />
+				</section>
+				<section id="buttons">
+					<source x="358" y="0" width="76" height="30" />
+					<destination x="@width - 76" y="0" width="76" height="30" />
+				</section>
+
+				<!-- Middle -->
+				<section id="leftSide">
+					<source x="0" y="30" width="5" height="5" />
+					<destination x="0" y="30" width="5" height="@height - 35" />
+				</section>
+				<section id="center">
+					<source x="5" y="30" width="5" height="5" />
+					<destination x="5" y="30" width="@width - 10" height="@height - 35" />
+				</section>
+				<section id="rightSide">
+					<source x="428" y="30" width="5" height="5" />
+					<destination x="@width - 5" y="30" width="5" height="@height - 35" />
+				</section>
+
+				<!-- Bottom -->
+				<section id="bottomLeft">
+					<source x="0" y="274" width="5" height="5" />
+					<destination x="0" y="@height - 5" width="5" height="5" />
+				</section>
+				<section id="bottomCenter">
+					<source x="5" y="274" width="5" height="5" />
+					<destination x="5" y="@height - 5" width="@width - 10" height="5" />
+				</section>
+				<section id="bottomRight">
+					<source x="428" y="274" width="5" height="5" />
+					<destination x="@width - 5" y="@height - 5" width="5" height="5" />
+				</section>
+			</layout>
+
+			<children>
+				<area select="./*" x="10" y="40" width="@width - 20" height="@height - 50">
+					<textArea text="Hello World" x="2" y="5" width="@width - 20" height="10" />
+				</area>
+			</children>
+
+			<events>
+				<areas>
+					<area id="hotspot" x="0" y="0" width="25" height="30" />
+					<area id="TitleBar" x="25" y="0" width="@width - 50" height="30" />
+				</areas>
+			</events>
+		</widget>
+
+		<widget id="VerticalLayout">
+			<children>
+				<area select="./*"/>
+			</children>
+		</widget>
+
+		<widget id="HorizontalLayout" height="@height">
+			<children>
+				<area select="./*"/>
+			</children>
+		</widget>
+
+		<widget id="testPattern" src="images/brt.png" width="416" height="240">
+			<!-- Layout -->
+			<layout>
+				<section id="topLeft">
+					<source x="0" y="0" width="208" height="120" />
+					<destination x="0" y="0" width="208" height="120" />
+				</section>
+				<section id="topRight">
+					<source x="208" y="0" width="208" height="120" />
+					<destination x="208" y="0" width="208" height="120" />
+				</section>
+				<section id="bottomLeft">
+					<source x="0" y="120" width="208" height="120" />
+					<destination x="0" y="120" width="208" height="120" />
+				</section>
+				<section id="bottomRight" visibility="hidden">
+					<source x="208" y="120" width="208" height="120" />
+					<destination x="208" y="120" width="208" height="120" />
+				</section>
+				<section id="bottomRight2" visibility="visible">
+					<source x="208" y="120" width="208" height="120" />
+					<destination x="208" y="120" width="208" height="120" />
+				</section>
+				<widget id="windowButtons" x="180" y="0" />
+			</layout>
+
+			<!-- Events -->
+			<events>
+				<areas>
+					<area id="bottomRightArea" x="100" y="100" width="100" height="100" />
+				</areas>
+				<eventHandler class="TestPattern">
+					<event handler="Highlight" type="OnMouseOver" eventArea="bottomRightArea" data="." />
+					<event handler="Unhighlight" type="OnMouseOver" eventArea="bottomRightArea" data="." />
+					<event handler="ClickHighlight" type="OnMouseDown" eventArea="bottomRightArea" data="." />
+					<event handler="ClickUnhighlight" type="OnMouseUp" eventArea="bottomRightArea" data="." />
+
+					<event handler="Resize" type="OnResize" data="." />
+				</eventHandler>
+			</events>
+
+			<!-- Where children are placed -->
+			<childArea select="./*" x="10" y="10" width="396" height="220" />
+		</widget>
+
+		<!-- Adjustable size logo -->
+		<widget id="adjustable-logo" src="images/miniUI.png" width="@width" height="(@width * 127) div 400">
+			<layout>
+				<section id="main">
+					<source x="0" y="0" width="400" height="127" />
+					<destination x="0" y="0" width="@width" height="(@width * 127) div 400" />
+				</section>
+			</layout>
+		</widget>
+
+		<!-- Adjustable black area  -->
+		<widget id="adjustable-black" src="images/black.png" width="1" height="1">
+			<layout>
+				<section id="main">
+					<source x="0" y="0" width="1" height="1" />
+					<destination x="0" y="0" width="@width" height="@height" />
+				</section>
+			</layout>
+		</widget>
+
+		<widget id="Button" src="images/3dbutton.png" width="@width" height="30">
+			<layout>
+				<section id="left">
+					<source x="0" y="0" width="12" height="30" />
+					<destination x="0" y="0" width="12" height="30" />
+				</section>
+				<section id="center">
+					<source x="12" y="0" width="76" height="30" />
+					<destination x="12" y="0" width="@width - 24" height="30" />
+				</section>
+				<section id="right">
+					<source x="88" y="0" width="12" height="30" />
+					<destination x="@width - 12" y="0" width="12" height="30" />
+				</section>
+				<section id="left-hover" visibility="hidden">
+					<source x="0" y="30" width="12" height="30" />
+					<destination x="0" y="0" width="12" height="30" />
+				</section>
+				<section id="center-hover" visibility="hidden">
+					<source x="12" y="30" width="76" height="30" />
+					<destination x="12" y="0" width="@width - 24" height="30" />
+				</section>
+				<section id="right-hover" visibility="hidden">
+					<source x="88" y="30" width="12" height="30" />
+					<destination x="@width - 12" y="0" width="12" height="30" />
+				</section>
+			</layout>
+			<events>
+				<areas>
+					<area id="hotspot" x="0" y="0" width="@width" height="30" />
+				</areas>
+			</events>
+		</widget>
+	</widgets>
+	<fonts>
+		<font id="MyFont" src="fonts/FreeSans BoldOblique.bff" />
+	</fonts>
+</skin>

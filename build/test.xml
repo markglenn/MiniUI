@@ -1,0 +1,79 @@
+<interface>
+
+	<screen id="mainScreen">
+		<xpWindow x="10" y="10" width="600" height="400">
+			<VerticalLayout padding="5">
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+				<HorizontalLayout padding="5" height="30">
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+					<Button width="100" />
+				</HorizontalLayout>
+			</VerticalLayout>
+		</xpWindow>
+	</screen>
+</interface>

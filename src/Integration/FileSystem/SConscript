@@ -1,0 +1,7 @@
+sources = [ 'FolderArchive.cpp' ]
+
+Import('env')
+
+objs = env.Object ( sources )
+
+Return ('objs')

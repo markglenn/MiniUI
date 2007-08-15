@@ -1,0 +1,12 @@
+sources = [ 'OpenGLRenderable.cpp', 'SDLImageResource.cpp', 'GLRenderer.cpp', 'ResourceLoader.cpp' ]
+#subdirs = [ 'EventSystem', 'Host', 'TinyXPath', 'Types',
+#			'LuaSystem', 'UISystem', 'Graphics' ]
+
+Import('env')
+
+objs = env.Object ( sources )
+
+#for subdir in subdirs:
+#	objs += SConscript ( '%s/SConscript' % subdir )
+
+env.Library ( '../lib/libOpenGLRenderer', objs )

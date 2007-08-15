@@ -1,0 +1,7 @@
+Import('env')
+
+sources = [ 'LuaVirtualMachine.cpp' ]
+
+objs = env.Object ( sources )
+
+Return ('objs')

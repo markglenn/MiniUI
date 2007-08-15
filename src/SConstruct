@@ -1,0 +1,16 @@
+
+Import('env')
+
+sources = [ "miniui.cpp", "Application.cpp" ]
+subdirs = [ 'Integration' ]
+
+env['LIBS'] = ['miniui', 'lua', 'SDL', 'OpenGLRenderer', 'SDL_image', 'dl', 'GL', 'GLU', 'luabind' ]
+env['LIBPATH'] = '../lib'
+env['CPPPATH'] = [ '#.', '#Lua', '#include', '/usr/include/SDL' ]
+
+objs = env.Object ( sources )
+
+for subdir in subdirs:
+	objs += SConscript ( '%s/SConscript' % subdir )
+
+env.Program( '../build/miniui', objs )

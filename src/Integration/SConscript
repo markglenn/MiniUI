@@ -1,0 +1,11 @@
+Import('env')
+
+sources = [ 'MemoryManager.cpp' ]
+subdirs = [ 'FileSystem' ]
+
+objs = env.Object ( sources )
+
+for subdir in subdirs:
+	objs += SConscript ( '%s/SConscript' % subdir )
+
+Return ('objs')

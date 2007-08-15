@@ -1,0 +1,7 @@
+Import('env')
+
+sources = [ 'Event.cpp' ]
+
+obj = env.Object ( sources )
+
+Return ('obj')

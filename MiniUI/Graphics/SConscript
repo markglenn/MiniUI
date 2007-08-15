@@ -1,0 +1,7 @@
+Import('env')
+
+sources = [ 'Renderable.cpp', 'TextureManager.cpp' ]
+
+obj = env.Object ( sources )
+
+Return ('obj')

@@ -1,0 +1,13 @@
+sources = [ 'UIManager.cpp' ]
+subdirs = [ 'EventSystem', 'Host', 'TinyXPath', 'Types',
+			'LuaSystem', 'UISystem', 'Graphics' ]
+
+Import('env')
+env['CPPPATH'] = [ '#.', '#Lua', '#include', '/usr/include/SDL' ]
+
+objs = env.Object ( sources )
+
+for subdir in subdirs:
+	objs += SConscript ( '%s/SConscript' % subdir )
+
+env.Library ( '../lib/libminiui', objs )

@@ -1,0 +1,16 @@
+###############################################################################
+# SCONS build script
+###############################################################################
+
+Import('env')
+
+# Types
+sources = [
+	"Boolean.cpp",
+	"Float.cpp",
+	"Integer64.cpp",
+	"Integer.cpp" ]
+
+objects = env.Object ( sources );
+
+Return ('objects');

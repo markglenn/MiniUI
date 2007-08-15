@@ -1,0 +1,7 @@
+Import('env')
+
+#sources = [  ]
+
+#obj = env.Object ( sources )
+obj = []
+Return ('obj')
