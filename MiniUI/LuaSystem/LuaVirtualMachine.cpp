@@ -42,7 +42,6 @@ namespace MiniUI
 			msg << " " << err;
 			lua_pushstring(L, msg.str().c_str());
 
-			printf ("Error found: %s\n", msg.str().c_str() );
 			return 1;
 		}
 
@@ -163,8 +162,8 @@ namespace MiniUI
 
 			module(m_pState, "xpath")
 			[
-				def ("ToElement", &xpath_element),
-				def ("ToString", &xpath_number),
+				def ("ToElement", &xpath_element, adopt(result)),
+				def ("ToString", &xpath_string),
 				def ("ToNumber", &xpath_number)
 			];
 

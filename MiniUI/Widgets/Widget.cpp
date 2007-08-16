@@ -62,6 +62,7 @@ namespace MiniUI
 		Widget::Widget ( )
 		///////////////////////////////////////////////////////////////////////
 		{
+			_pRenderable = NULL;
 		}
 
 		///////////////////////////////////////////////////////////////////////
@@ -71,6 +72,15 @@ namespace MiniUI
 			EventAreaList::iterator i;
 			for ( i = _eventAreas.begin(); i != _eventAreas.end(); i++ )
 				delete *i;
+			
+			WidgetChildren::iterator j;
+			for ( j = _widgetChildren.begin(); j != _widgetChildren.end(); j++ )
+			{
+				WidgetList::iterator k;
+				for ( k = (*j).children.begin(); k != (*j).children.end(); k++ )
+					delete *k;
+			}
+			
 		}
 
 		///////////////////////////////////////////////////////////////////////
@@ -152,6 +162,7 @@ namespace MiniUI
 				.def("Update", &Widget::Update, &Widget_wrapper::default_Update)
 				.def("OnLoad", &Widget::OnLoad, &Widget_wrapper::default_OnLoad)
 				.def("OnLayout", &Widget::OnLayout, &Widget_wrapper::default_OnLayout)
+				.def("OnEvent", &Widget::OnEvent, &Widget_wrapper::default_OnEvent)
 				.property("angle", &Widget::GetAngle, &Widget::SetAngle)
 				.property("x", &Widget::GetPositionX, &Widget::SetPositionX)
 				.property("y", &Widget::GetPositionY, &Widget::SetPositionY)

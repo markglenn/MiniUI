@@ -53,6 +53,7 @@ namespace MiniUI
 			RegistryMap::const_iterator regEntry = _registry.find ( id );
 			LuaVirtualMachine *pVM = LuaVirtualMachine::Instance( );
 			
+			//printf ("Creating widget: %s\n", id.c_str() );
 			if (regEntry != _registry.end()) 
 				return regEntry->second();
 			

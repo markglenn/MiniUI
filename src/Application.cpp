@@ -120,4 +120,6 @@ void Application::Run ( )
 		
 		ticks = currentTicks;
 	}
+	
+	SDL_Quit ( );
 }

@@ -1,5 +1,4 @@
 <interface>
-<!--	
 	<screen id="mainScreen1">
 		<xpWindow x="10" y="10" width="600" height="400">
 			<VerticalLayout padding="5">
@@ -76,22 +75,46 @@
 			</VerticalLayout>
 		</xpWindow>
 	</screen>
--->
+
 	
 	<screen id="mainScreen">
-		<Background width="640" height="480"/>
-		<SelectableList width="200" height="150">
-			<Items spacing="30">
-				<TextArea font="MyFont" text="Selectable Item 1"/>
-				<TextArea font="MyFont" text="Selectable Item 2"/>
-				<TextArea font="MyFont" text="Selectable Item 3"/>
-				<TextArea font="MyFont" text="Selectable Item 4"/>
-				<TextArea font="MyFont" text="Selectable Item 5"/>				
-			</Items>
-			<HighlightBar>
-				<Highlight x="0" y="0" width="200"/>
-			</HighlightBar>
-		</SelectableList>
+		
+		<Background width="640" height="480" />
+		<xpWindow x="10" y="10" width="300" height="200">
+			<adjustable-black width="300" height="200" opacity="0.25" />
+			<SelectableList width="200" height="150">
+		
+				<Items spacing="30">
+					<TextArea font="MyFont" text="Selectable Item 1"/>
+					<TextArea font="MyFont" text="Selectable Item 2"/>
+					<TextArea font="MyFont" text="Selectable Item 3"/>
+					<TextArea font="MyFont" text="Selectable Item 4"/>
+					<TextArea font="MyFont" text="Selectable Item 5"/>				
+				</Items>
+				<HighlightBar>
+					<Highlight x="0" y="0" width="190" />
+				</HighlightBar>
+			</SelectableList>
+			
+		</xpWindow>
+		
+		<xpWindow x="400" y="10" width="300" height="200">
+			<adjustable-black width="300" height="200" opacity="0.25" />
+			<SelectableList width="200" height="150">
+				
+				<Items spacing="30">
+					<TextArea font="MyFont" text="Selectable Item 1"/>
+					<TextArea font="MyFont" text="Selectable Item 2"/>
+					<TextArea font="MyFont" text="Selectable Item 3"/>
+					<TextArea font="MyFont" text="Selectable Item 4"/>
+					<TextArea font="MyFont" text="Selectable Item 5"/>				
+				</Items>
+				<HighlightBar>
+					<Highlight x="0" y="0" width="190" />
+				</HighlightBar>
+			</SelectableList>
+			
+		</xpWindow>
 	</screen>
 	
 </interface>

@@ -100,9 +100,7 @@
 			</layout>
 
 			<children>
-				<area select="./*" x="10" y="40" width="@width - 20" height="@height - 50">
-					<textArea text="Hello World" x="2" y="5" width="@width - 20" height="10" />
-				</area>
+				<area select="./*" x="10" y="40" width="@width - 20" height="@height - 50" />
 			</children>
 
 			<events>
@@ -269,8 +267,8 @@
 		
 		<widget id="SelectableList" width="@width" height="@height">
 			<children>
-				<area id="Items" select="//HighlightBar/*"/>
-				<area id="Items" select="//Items/*"/>
+				<area id="Items" select="//HighlightBar/*" />
+				<area id="Items" select="//Items/*" />
 			</children>
 			<events>
 				<areas>

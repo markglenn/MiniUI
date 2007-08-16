@@ -93,6 +93,8 @@ namespace MiniUI
 			virtual void OnLoad ( TinyXPath::TiXmlElement *pSkin, TinyXPath::TiXmlElement *pLayout ) {}
 			virtual void OnLayout ( ) { }
 
+			virtual void OnEvent ( std::string event ) {}
+			
 			int GetChildWidgetCount ( int area );
 			Widget* GetChildWidget ( int area, int widget );
 
@@ -103,7 +105,7 @@ namespace MiniUI
 		private:
 			Graphics::Renderable 	*_pRenderable;
 			WidgetChildren			_widgetChildren;
-			EventAreaList	_eventAreas;
+			EventAreaList			_eventAreas;
 			std::string				_name;
 		};
 
@@ -143,6 +145,17 @@ namespace MiniUI
 			{
 				return ptr->Widget::OnLayout ( );
 			}
+			
+			virtual void OnEvent ( std::string event )
+			{
+				call<void>( "OnEvent", event );
+			}
+			
+			static void default_OnEvent ( Widget* ptr, std::string event )
+			{
+				ptr->Widget::OnEvent ( event );
+			}
+
 		};
 	}
 }

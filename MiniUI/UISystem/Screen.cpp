@@ -110,7 +110,7 @@ namespace MiniUI
 			Widget *pWidget = widgetFactory.Create ( pChild->ValueStr() );
 			pWidget->SetName ( pChild->ValueStr() );
 
-			printf ( "Widget created: %s\n", pChild->ValueStr().c_str() );
+			//printf ("Widget loaded %s\n", pWidget->Name().c_str() );
 			Renderable *pRenderable = HostIntegration::Renderer->CreateRenderable ( );
 			pWidget->SetRenderable ( pRenderable );
 
@@ -313,10 +313,22 @@ namespace MiniUI
 					continue;
 							
 				// Set the event area
-				pArea->area.x = i_xpath_int ( pChild, pEventArea->Attribute ("x") );
-				pArea->area.y = i_xpath_int ( pChild, pEventArea->Attribute ("y") );
-				pArea->area.width = i_xpath_int ( pChild, pEventArea->Attribute ("width") );
-				pArea->area.height = i_xpath_int ( pChild, pEventArea->Attribute ("height") );
+				if ( pEventArea->Attribute("x") )
+					o_xpath_int ( pChild, pEventArea->Attribute ("x"), pArea->area.x );
+				else
+					printf ("(%s) Event area has no X value\n", pWidget->Name().c_str() );
+				if ( pEventArea->Attribute("y") )
+					o_xpath_int ( pChild, pEventArea->Attribute ("y"), pArea->area.y );
+				else
+					printf ("(%s) Event area has no Y value\n", pWidget->Name().c_str() );
+				if ( pEventArea->Attribute("width") )
+					o_xpath_int ( pChild, pEventArea->Attribute ("width"), pArea->area.width );
+				else
+					printf ("(%s) Event area has no Width value\n", pWidget->Name().c_str() );
+				if ( pEventArea->Attribute("height") )
+					o_xpath_int ( pChild, pEventArea->Attribute ("height"), pArea->area.height );
+				else
+					printf ("(%s) Event area has no Height value\n", pWidget->Name().c_str() );
 
 				pArea->id = pEventArea->Attribute ( "id" );
 
