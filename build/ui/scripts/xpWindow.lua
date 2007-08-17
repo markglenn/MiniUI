@@ -12,8 +12,7 @@ function xpWindow:Update(timestep)
 	-- Convert so we get 360 degrees in 1 second
 	if ( not self.rotate ) then return end;
 
-	self.opacity = 0.5;
-	self.angle = self.angle + 360.0 * timestep / 1000.0;
+	self.angle = self.angle + 360.0 * timestep / 3000.0;
 
 	-- Are we over the 360 degrees?
 	if ( self.angle > 360 ) then
@@ -59,8 +58,7 @@ function xpWindow_TitleBar:OnMouseUp ( )
 -------------------------------------------------------------------
 	self.dragging = false;
 end
-
-
+		
 -------------------------------------------------------------------
 function xpWindow_TitleBar:OnMouseUp ( )
 -------------------------------------------------------------------

@@ -21,7 +21,7 @@ namespace MiniUI
 		///////////////////////////////////////////////////////////
 		void EventArea::HandleMouse ( int x, int y, Mouse* pMouse )
 		///////////////////////////////////////////////////////////
-		{
+		{	
 			if ( area.PointInRectangle ( x, y ) )
 			{
 				if ( !IsMouseOver )

@@ -25,7 +25,6 @@
 #include <list>
 #include "../Types/Vector2D.h"
 #include "../Types/Rectangle.h"
-#include "../Types/Tree.h"
 #include "ImageResource.h"
 
 namespace MiniUI

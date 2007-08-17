@@ -54,3 +54,15 @@ function Button_hotspot:OnMouseOut ( )
 
 	self.widget:UpdateRenderable ( );
 end
+				
+-------------------------------------------------------------------
+function Button_hotspot:OnMouseDown ( x, y )
+-------------------------------------------------------------------
+	self.widget.angle = self.widget.angle + 180;
+end
+				
+-------------------------------------------------------------------
+function Button_hotspot:OnMouseUp ( )
+-------------------------------------------------------------------
+	self.widget.angle = 0;
+end

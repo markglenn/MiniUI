@@ -32,6 +32,7 @@ namespace MiniUI
 
 			bool IsMouseOver;
 			bool IsMouseDown;
+			bool IgnoreState;
 
 			Widget* widget;
 		};

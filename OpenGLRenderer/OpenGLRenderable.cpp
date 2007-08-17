@@ -78,14 +78,10 @@ namespace OpenGLRenderer
 		glGetIntegerv(GL_VIEWPORT, viewport);
 
 		// get 3D coordinates based on window coordinates
-
 		gluUnProject( x, y, 0.0, model_view, projection, viewport,
 					  &transPositionDouble.x, &transPositionDouble.y, &z);
 
-		int _x = (int)transPositionDouble.x - this->position.x;
-		int _y = (int)transPositionDouble.y - this->position.y;
-
 		// Are we inside?
-		return Vector2D<int> ( _x, _y );
+		return Vector2D<int> ( (int)transPositionDouble.x, (int)transPositionDouble.y );
 	}
 }
