@@ -401,3 +401,10 @@ MiniUI/Widgets/TextArea.h
 MiniUI/Widgets/EventArea.cpp
 MiniUI/Widgets/EventArea.h
 build/ui/scripts/Button.lua
+MiniUI/Animation/Animatable.h
+MiniUI/Animation/Animator.cpp
+MiniUI/Animation/Animator.h
+MiniUI/Animation/SConscript
+MiniUI/Animation/Animate.cpp
+MiniUI/Animation/Animate.h
+MiniUI/Animation/Animatable.cpp

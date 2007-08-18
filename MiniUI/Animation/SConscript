@@ -1,0 +1,7 @@
+Import('env')
+
+sources = [ 'Animatable.cpp', 'Animate.cpp', 'Animator.cpp' ]
+
+obj = env.Object ( sources )
+
+Return ('obj')

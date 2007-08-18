@@ -1,5 +1,5 @@
 sources = [ 'UIManager.cpp' ]
-subdirs = [ 'EventSystem', 'Host', 'TinyXPath', 'Types',
+subdirs = [ 'Animation', 'EventSystem', 'Host', 'TinyXPath', 'Types',
 			'LuaSystem', 'UISystem', 'Graphics', 'Widgets' ]
 
 Import('env')
