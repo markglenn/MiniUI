@@ -19,7 +19,11 @@
  ***************************************************************************/
  
 #include "Animatable.h"
+#include "Animate.h"
 
+#include <luabind/luabind.hpp>
+
+using namespace luabind;
 namespace MiniUI
 {
 	namespace Animation
@@ -37,14 +41,6 @@ namespace MiniUI
 		{
 			// Make sure we clean out the animation list
 			Stop ( );
-		}
-		
-		///////////////////////////////////////////////////////////////////////
-		void Animatable::Add ( Animatable* pAnimatable )
-		///////////////////////////////////////////////////////////////////////
-		{
-			// Animation is pushed to the back
-			_animations.push_back ( pAnimatable );
 		}
 		
 		///////////////////////////////////////////////////////////////////////
@@ -70,16 +66,19 @@ namespace MiniUI
 		///////////////////////////////////////////////////////////////////////
 		{
 			AnimatableList::iterator i;
-			for ( i = _animations.begin(); i != _animations.end(); i++ )
+			AnimatableList _deleteList;
+			
+			for ( i = _animations.begin(); i != _animations.end(); )
 			{
 				if ( !(*i)->Run ( duration ) )
-				{
-					// Need to remove this from the animation from the list
-					_animations.remove ( *i );
-						
+				{		
 					// TODO: Is this legal?
 					delete (*i);
+					
+					// Need to remove this from the animation from the list
+					i = _animations.erase ( i );
 				}
+				else i++;
 			}
 			
 			return !_animations.empty();

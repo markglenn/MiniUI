@@ -100,7 +100,7 @@
 			</layout>
 
 			<children>
-				<area select="./*" x="10" y="40" width="@width - 20" height="@height - 50" />
+				<area select="./*" x="3" y="29" width="@width - 6" height="@height - 32" />
 			</children>
 
 			<events>

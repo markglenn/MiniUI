@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef _MINIUI_ANIMATION_ANIMATOR_
-#define _MINIUI_ANIMATION_ANIMATOR_
+#ifndef _MINIUI_ANIMATION_ANIMATE_
+#define _MINIUI_ANIMATION_ANIMATE_
 
 #include "Animatable.h"
 #include <luabind/object.hpp>
+#include <MiniUI/LuaSystem/LuaVirtualMachine.h>
 
 namespace MiniUI
 {
@@ -32,26 +33,29 @@ namespace MiniUI
 		{
 		public:
 			
-			Animate ( luabind::object *object, std::string attribute, 
+			Animate ( luabind::object object, std::string attribute, 
 					  std::string animation, double end, double duration );
 			virtual ~Animate ( );
 			
 			virtual bool Run ( double duration );
+			static void RegisterWithLua ( LuaSystem::LuaVirtualMachine* );
 		
 		private:
 			typedef double AnimateFunc(double start, double end, double duration, double currentDuration);
 			
 			AnimateFunc* GetAnimation ( std::string animation );
 			
-			luabind::object*	_pObject;
+			luabind::object		_object;
 			std::string			_attribute;
 			double				_start;
 			double				_end;
 			double				_duration;
+			
+			double				_currentDuration;
 			
 			AnimateFunc* 		_pFunc;
 		};
 	}
 }
 
-#endif // _MINIUI_ANIMATION_ANIMATOR_
+#endif // _MINIUI_ANIMATION_ANIMATE_

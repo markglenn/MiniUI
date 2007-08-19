@@ -22,6 +22,8 @@
 #define _MINIUI_ANIMATION_ANIMATOR_
 
 #include "Animatable.h"
+#include "Animate.h"
+#include <MiniUI/LuaSystem/LuaVirtualMachine.h>
 
 namespace MiniUI
 {
@@ -34,6 +36,9 @@ namespace MiniUI
 			virtual ~Animator ( );
 			
 			bool Run ( double duration );
+			void Add ( Animate* pAnimate );
+			
+			static void RegisterWithLua ( LuaSystem::LuaVirtualMachine* );
 				
 		};
 	}

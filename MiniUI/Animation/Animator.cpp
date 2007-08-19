@@ -19,6 +19,11 @@
  ***************************************************************************/
 
 #include "Animator.h" 
+#include <luabind/luabind.hpp>
+#include <luabind/adopt_policy.hpp>
+
+using namespace luabind;
+using namespace MiniUI::LuaSystem;
 
 namespace MiniUI
 {
@@ -28,7 +33,6 @@ namespace MiniUI
 		Animator::Animator ( )
 		///////////////////////////////////////////////////////////////////////
 		{
-				
 		}
 		
 		///////////////////////////////////////////////////////////////////////
@@ -43,6 +47,29 @@ namespace MiniUI
 		///////////////////////////////////////////////////////////////////////
 		{
 			return RunChildren ( duration );
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void Animator::Add ( Animate *pAnimate )
+		///////////////////////////////////////////////////////////////////////
+		{
+			// Animation is pushed to the back
+			_animations.push_back ( pAnimate );
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void Animator::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
+		///////////////////////////////////////////////////////////////////////
+		{
+			module(*pVM)
+			[
+				class_<Animator>("Animator")
+				.def(constructor<>())
+				.def("Run", &Animator::Run)
+				.def("Stop", &Animatable::Stop)
+				.def("Add", &Animator::Add, adopt(_2))
+			];
+
 		}
 	}
 }

@@ -10,12 +10,16 @@
 #include <MiniUI/TinyXPath/tinyxml.h>
 #include <MiniUI/TinyXPath/xpath_static.h>
 
+#include <MiniUI/Animation/Animator.h>
+#include <MiniUI/Animation/Animate.h>
 
 using MiniUI::Host::IArchive;
 using MiniUI::Host::IResource;
 using namespace MiniUI::Widgets;
 using namespace MiniUI::Types;
 using namespace MiniUI::TinyXPath;
+using namespace MiniUI::Animation;
+
 using namespace luabind;
 using namespace std;
 
@@ -26,7 +30,6 @@ namespace MiniUI
 
 		int add_file_and_line(lua_State* L)
 		{
-			printf ("Here\n");
 			lua_Debug d;
 			lua_getstack(L, 1, &d);
 			lua_getinfo(L, "Sln", &d);
@@ -159,6 +162,9 @@ namespace MiniUI
 				class_<TinyXPath::TiXmlElement>("TiXmlElement")
 			];
 			Widget::RegisterWithLua (this);
+			
+			Animator::RegisterWithLua (this);
+			Animate::RegisterWithLua (this);
 
 			module(m_pState, "xpath")
 			[

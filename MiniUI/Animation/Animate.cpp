@@ -19,6 +19,12 @@
  ***************************************************************************/
 
 #include "Animate.h" 
+#include <luabind/luabind.hpp>
+
+#include <math.h>
+
+using namespace luabind;
+using namespace MiniUI::LuaSystem;
 
 namespace MiniUI
 {
@@ -30,19 +36,30 @@ namespace MiniUI
 								 double currentDuration )
 		///////////////////////////////////////////////////////////////////////
 		{
-			return start + ( end - start ) / currentDuration * duration;			
+			return start + ( end - start ) / duration * currentDuration;			
+		}
+		
+		double sineInOut ( double start, double end, double duration, 
+						   double currentDuration )
+		{ 
+			return -(end - start) / 2.0 * ( cos ( 3.1415926535898 * currentDuration / duration) - 1) + start; 
 		}
 		
 		///////////////////////////////////////////////////////////////////////
-		Animate::Animate ( luabind::object *object, std::string attribute, 
+		Animate::Animate ( luabind::object object, std::string attribute, 
 						   std::string animation, double end, double duration )
 		///////////////////////////////////////////////////////////////////////
 		{
-			_pObject = object;
+			_object = object;
 			_attribute = attribute;
 			_end = end;
+			_currentDuration = 0.0;
+			_duration = duration;
 			
-			// TODO: Starting point and animation function
+			// Set the start point from the object itself
+			_start = object_cast<double>(_object[_attribute]);
+			
+			_pFunc = this->GetAnimation( animation );
 		}
 		
 		///////////////////////////////////////////////////////////////////////
@@ -60,9 +77,18 @@ namespace MiniUI
 			if ( _pFunc == NULL )
 				return RunChildren ( duration );
 			
-			double value = _pFunc ( _start, _end, _duration, duration );
+			_currentDuration += duration;
+			// Past the duration	
+			if ( _currentDuration > _duration )
+			{
+				_object[_attribute] = _pFunc ( _start, _end, _duration, _duration );
+				_pFunc = NULL;
+				
+				return RunChildren ( _currentDuration - _duration );
+			}
 			
-			// TODO: Set the new value
+			// Set the value
+			_object[_attribute] = _pFunc ( _start, _end, _duration, _currentDuration );
 			
 			return true;
 		}
@@ -71,7 +97,24 @@ namespace MiniUI
 		Animate::AnimateFunc* Animate::GetAnimation ( std::string animation )
 		///////////////////////////////////////////////////////////////////////
 		{
+			if ( animation == "sineInOut" )
+				return sineInOut;
+			
 			return LinearAnimation;
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void Animate::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
+		///////////////////////////////////////////////////////////////////////
+		{
+			module(*pVM)
+			[
+				class_<Animate>("Animate")
+				.def(constructor<luabind::object, std::string, std::string, double, double>())
+				.def("Run", &Animate::Run)
+				.def("Stop", &Animatable::Stop)
+			];
+
 		}
 	}
 }
