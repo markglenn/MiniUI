@@ -72,7 +72,6 @@ namespace MiniUI
 			{
 				if ( !(*i)->Run ( duration ) )
 				{		
-					// TODO: Is this legal?
 					delete (*i);
 					
 					// Need to remove this from the animation from the list

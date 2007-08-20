@@ -34,7 +34,7 @@ namespace MiniUI
 			Animatable ( );
 			virtual ~Animatable ( );
 			
-			void Stop ( );
+			virtual void Stop ( );
 			
 			virtual bool Run ( double duration ) = 0;
 			bool RunChildren ( double duration );

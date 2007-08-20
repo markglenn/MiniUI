@@ -78,7 +78,8 @@ namespace MiniUI
 				return RunChildren ( duration );
 			
 			_currentDuration += duration;
-			// Past the duration	
+			
+			// Past the duration?
 			if ( _currentDuration > _duration )
 			{
 				_object[_attribute] = _pFunc ( _start, _end, _duration, _duration );
@@ -91,6 +92,14 @@ namespace MiniUI
 			_object[_attribute] = _pFunc ( _start, _end, _duration, _currentDuration );
 			
 			return true;
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void Animate::Stop ( )
+		///////////////////////////////////////////////////////////////////////
+		{
+			Animatable::Stop ( );
+			_pFunc = NULL;
 		}
 		
 		///////////////////////////////////////////////////////////////////////

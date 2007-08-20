@@ -38,6 +38,8 @@ namespace MiniUI
 			virtual ~Animate ( );
 			
 			virtual bool Run ( double duration );
+			void Stop ( );
+			
 			static void RegisterWithLua ( LuaSystem::LuaVirtualMachine* );
 		
 		private:
