@@ -31,13 +31,21 @@
 #include "UISystem/Screen.h"
 
 #include "Graphics/TextureManager.h"
-
+#include <MiniUI/EventSystem/Event.h>
 #include <map>
 #include <string>
+#include <MiniUI/Types/Singleton.h>
 
 namespace MiniUI
 {
-	class UIManager
+	struct UIEvent : public EventSystem::Event
+	{
+		Widgets::Widget*		pWidget;
+		std::string 			event;
+		luabind::object*		parameter;
+	};
+	
+	class UIManager : public Types::Singleton < UIManager >
 	{
 	public:
 		UIManager ( );
@@ -53,11 +61,16 @@ namespace MiniUI
 		void SetCurrentScreen ( std::string name ) { _pCurrentScreen = _screens[name]; }
 		UISystem::Screen* GetCurrentScreen ( ) { return _pCurrentScreen; }
 
-
+		UIEvent OnUIEvent;
+		
+		void FireEvent ( Widgets::Widget *pWidget, std::string event, luabind::object const& o );
 	private:
+		
 		typedef std::map<std::string, UISystem::Screen*> ScreenMap;
+		
 		bool InitializeScripts ( );
-
+		void Register ( );
+		
 		void UpdateWidget ( Widgets::WidgetList* pWidgetList, int timestep, Input::Mouse* pMouse );
 
 		LuaSystem::LuaVirtualMachine 	_luaVM;

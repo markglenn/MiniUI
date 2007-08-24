@@ -101,12 +101,18 @@ namespace MiniUI
 			void Destroy ( );
 
 			Types::Vector2D<int>* GetPosition ( ) const;
+			
+			void SetID ( std::string id ) { _id = id; }
+			std::string GetID ( ) const { return _id; }
+			
+			void Fire ( std::string event, luabind::object const& object );
 
 		private:
 			Graphics::Renderable 	*_pRenderable;
 			WidgetChildren			_widgetChildren;
 			EventAreaList			_eventAreas;
 			std::string				_name;
+			std::string				_id;
 		};
 
 		class Widget_wrapper : public Widget, public luabind::wrap_base

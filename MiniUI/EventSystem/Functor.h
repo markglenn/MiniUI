@@ -30,7 +30,7 @@ namespace MiniUI
 		class FunctorBase
 		{
 		public:
-			virtual int operator () ( Event * ) = 0;
+			virtual void operator () ( Event * ) = 0;
 		};
 
 		template <class T>
@@ -38,15 +38,15 @@ namespace MiniUI
 		{
 		protected:
 			T* m_pObject;
-			typedef int (T::*funcType) ( Event * );
+			typedef void (T::*funcType) ( Event * );
 			funcType m_oFunction;
 
 		public:
 			Functor ( T* pObj, funcType func )
 				{ m_pObject = pObj; m_oFunction = func; }
 
-			virtual int operator () ( Event * event )
-				{ return ( m_pObject->*m_oFunction) ( event ); }
+			virtual void operator () ( Event * event )
+				{ ( m_pObject->*m_oFunction) ( event ); }
 		};
 	}
 

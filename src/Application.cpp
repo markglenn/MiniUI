@@ -17,6 +17,8 @@
 #include <MiniUI/Input/Mouse.h>
 #include <SDL/SDL.h>
 
+#include "Applications/MainMenu.h"
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glext.h>
@@ -27,6 +29,8 @@ using namespace MiniUI;
 using namespace MiniUI::Graphics;
 using namespace MiniUI::Types;
 using namespace MiniUI::Input;
+
+using namespace Applications;
 
 ///////////////////////////////////////////////////////////////////////////////
 Application::Application ( )
@@ -76,7 +80,10 @@ bool Application::LoadUI ( std::string path )
 void Application::Run ( )
 ///////////////////////////////////////////////////////////////////////////////
 {
-	_pUIManager->SetCurrentScreen ( "mainScreen" );
+	MainMenu mainMenu ( _pUIManager );
+	
+	mainMenu.Show ( );
+
 	SDL_Event event;
 	int ticks = SDL_GetTicks ( );
 

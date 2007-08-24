@@ -110,7 +110,9 @@ namespace MiniUI
 			Widget *pWidget = widgetFactory.Create ( pChild->ValueStr() );
 			pWidget->SetName ( pChild->ValueStr() );
 
-			//printf ("Widget loaded %s\n", pWidget->Name().c_str() );
+			if ( pChild->Attribute ( "id" ) )
+				pWidget->SetID ( pChild->Attribute ( "id" ) );
+			
 			Renderable *pRenderable = HostIntegration::Renderer->CreateRenderable ( );
 			pWidget->SetRenderable ( pRenderable );
 

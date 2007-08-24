@@ -408,3 +408,12 @@ MiniUI/Animation/SConscript
 MiniUI/Animation/Animate.cpp
 MiniUI/Animation/Animate.h
 MiniUI/Animation/Animatable.cpp
+src/Applications/PhoneBook.h
+src/Applications/PhoneBook.cpp
+src/Applications/SConscript
+src/Applications/IApplication.h
+src/Applications/IApplication.cpp
+src/Applications/MainMenu.cpp
+src/Applications/MainMenu.h
+MiniUI/Widgets/Image.cpp
+MiniUI/Widgets/Image.h

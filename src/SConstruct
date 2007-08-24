@@ -2,7 +2,7 @@
 Import('env')
 
 sources = [ "miniui.cpp", "Application.cpp" ]
-subdirs = [ 'Integration' ]
+subdirs = [ 'Integration', 'Applications' ]
 
 env['LIBS'] = ['miniui', 'lua', 'SDL', 'OpenGLRenderer', 'SDL_image', 'dl', 'GL', 'GLU', 'luabind' ]
 env['LIBPATH'] = '../lib'

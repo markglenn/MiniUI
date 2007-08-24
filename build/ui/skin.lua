@@ -81,7 +81,7 @@ function SelectableList_hotspot:OnMouseHover ( x, y )
 		end
 		
 		self.split = split;
-	end		
+	end
 end
 
 -------------------------------------------------------------------
@@ -108,6 +108,8 @@ function SelectableList_hotspot:OnMouseDown ( x, y )
 
 	self.widget.animator:Add ( Animate ( self.widget.highlightBar, "y",
 				"sineInOut",  split * 30, 200 ) );
+		
+	self.widget:Fire ( "OnSelect", { item=split } );
 end
 				
 print "Loaded";

@@ -69,6 +69,7 @@ namespace MiniUI
 
 		_luaVM.LoadLibs ( );
 
+		Register ( );
 		return true;
 	}
 
@@ -170,9 +171,32 @@ namespace MiniUI
 	///////////////////////////////////////////////////////////////////////////
 	{
 		for ( ScreenMap::iterator i = _screens.begin(); i != _screens.end(); i++ )
-		{
 			WidgetList* pWidgetList = (*i).second->GetWidgetList();
-		}
 	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	void UIManager::Register ( )
+	///////////////////////////////////////////////////////////////////////////
+	{	
+		module(&(*_luaVM))
+		[
+			class_<UIManager>("UIManager")
+		];
+		
+		globals(&(*_luaVM))["uiManager"] = this;
+	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	void UIManager::FireEvent ( Widgets::Widget *pWidget, std::string event,
+							  luabind::object const& o )
+	///////////////////////////////////////////////////////////////////////////
+	{
+		OnUIEvent.event = event;
+		OnUIEvent.pWidget = pWidget;
+		OnUIEvent.parameter = (object *)&o;
+		
+		OnUIEvent ( );
+	}
+
 
 }

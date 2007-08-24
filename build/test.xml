@@ -76,6 +76,23 @@
 		</xpWindow>
 	</screen>
 
+	<screen id="MainMenu">
+		<Image src="Common/img/background.png" width="640" height="480" />
+		<SelectableList width="200" height="150" id="list">
+			
+			<Items spacing="30">
+				<TextArea font="MyFont" text="Selectable Item 1"/>
+				<TextArea font="MyFont" text="Selectable Item 2"/>
+				<TextArea font="MyFont" text="Selectable Item 3"/>
+				<TextArea font="MyFont" text="Selectable Item 4"/>
+				<TextArea font="MyFont" text="Selectable Item 5"/>				
+			</Items>
+			<HighlightBar>
+				<Highlight x="0" y="0" width="190" />
+			</HighlightBar>
+		</SelectableList>
+
+	</screen>
 	
 	<screen id="mainScreen">
 		

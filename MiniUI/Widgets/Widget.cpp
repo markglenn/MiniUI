@@ -33,7 +33,10 @@
 #include "../LuaSystem/LuaVirtualMachine.h"
 #include <luabind/adopt_policy.hpp>
 
+#include <MiniUI/UIManager.h>
+
 #include "TextArea.h"
+#include "Image.h"
 
 #include <Lua/lua.h>
 #include <luabind/luabind.hpp>
@@ -58,6 +61,13 @@ namespace MiniUI
 			return new TextArea ( );	
 		}
 		
+		///////////////////////////////////////////////////////////////////////
+		Widget* CreateImage ( )
+		///////////////////////////////////////////////////////////////////////
+		{
+			return new Image ( );	
+		}
+				
 		///////////////////////////////////////////////////////////////////////
 		Widget::Widget ( )
 		///////////////////////////////////////////////////////////////////////
@@ -169,10 +179,12 @@ namespace MiniUI
 				.property("width", &Widget::GetWidth)
 				.property("height", &Widget::GetHeight)
 				.property("opacity", &Widget::GetOpacity, &Widget::SetOpacity)
+				.property("id", &Widget::GetID, &Widget::SetID)
 				.def("GetChildWidgetCount", &Widget::GetChildWidgetCount)
 				.def("GetChildWidget", &Widget::GetChildWidget)
 				.def("GetGraphicalRect", &Widget::GetGraphicalRect)
 				.def("UpdateRenderable", &Widget::UpdateRenderable)
+				.def("Fire", &Widget::Fire)
 			];
 
 			module(*pVM)
@@ -183,6 +195,14 @@ namespace MiniUI
 			];
 			
 			factory.Register ( "TextArea", CreateTextArea );
+			factory.Register ( "Image", CreateImage );
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void Widget::Fire ( std::string event, luabind::object const& o )
+		///////////////////////////////////////////////////////////////////////
+		{
+			UIManager::Instance()->FireEvent( this, event, o );
 		}
 
 	}

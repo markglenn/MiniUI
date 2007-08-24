@@ -1,0 +1,7 @@
+Import('env')
+
+sources = [ 'PhoneBook.cpp', 'IApplication.cpp', 'MainMenu.cpp' ]
+
+objs = env.Object ( sources )
+
+Return ('objs')
