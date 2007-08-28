@@ -8,7 +8,7 @@ if int(debug):
 	env.Append(CXXFLAGS = '-g')
 
 env['CPPPATH'] = [ '#.', '#Lua', '#include', '/usr/include/SDL' ]
-env['CPPDEFINES'] = {'LUABIND_NO_EXCEPTIONS':1}
+# env['CPPDEFINES'] = {'LUABIND_NO_EXCEPTIONS':1}
 Export ( 'env' )
 
 SConscript( ['src/SConstruct',

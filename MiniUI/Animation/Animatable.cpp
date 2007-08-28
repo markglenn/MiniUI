@@ -22,6 +22,7 @@
 #include "Animate.h"
 
 #include <luabind/luabind.hpp>
+#include <luabind/adopt_policy.hpp>
 
 using namespace luabind;
 namespace MiniUI
@@ -81,6 +82,28 @@ namespace MiniUI
 			}
 			
 			return !_animations.empty();
+		}
+		
+						
+		///////////////////////////////////////////////////////////////////////
+		void Animatable::Add ( Animatable *pAnimate )
+		///////////////////////////////////////////////////////////////////////
+		{
+			// Animation is pushed to the back
+			_animations.push_back ( pAnimate );
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void Animatable::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
+		///////////////////////////////////////////////////////////////////////
+		{
+			module(*pVM)
+			[
+				class_<Animatable>("Animatable")
+				.def("Stop", &Animatable::Stop)
+				.def("Add", &Animatable::Add, adopt(_2))
+			];
+
 		}
 	}
 }

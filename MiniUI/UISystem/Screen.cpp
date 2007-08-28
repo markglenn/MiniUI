@@ -139,9 +139,14 @@ namespace MiniUI
 					o_xpath_double ( pChild, pWidgetElement->Attribute ("angle"), angle );
 			
 				pRenderable->angle = angle;
-				
 			}
 
+			double opacity = 1.0;
+			if ( pChild->Attribute ("opacity") )
+				o_xpath_double ( pChild, "@opacity", opacity );
+			
+			pWidget->SetOpacity ( opacity );
+			
 			pRenderable->position.x = 0;
 			pRenderable->position.y = 0;
 			
@@ -340,6 +345,45 @@ namespace MiniUI
 
 			return true;
 
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		Widget* Screen::FindWidget ( std::string id )
+		///////////////////////////////////////////////////////////////////////
+		{
+			for ( WidgetList::iterator i = _widgetList.begin(); i != _widgetList.end(); i++ )
+			{
+				Widget *pWidget = FindWidgetChild ( id, *i );
+				
+				if ( pWidget != NULL )
+					return pWidget;
+			}
+			
+			return NULL;
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		Widget* Screen::FindWidgetChild ( std::string id, Widget* pWidget )
+		///////////////////////////////////////////////////////////////////////
+		{
+			if ( pWidget->GetID () == id )
+				return pWidget;
+			
+			int areaCount = pWidget->GetAreaCount();
+			
+			for ( int i = 0; i < pWidget->GetAreaCount(); i++ )
+			{
+				for ( int j = 0; j < pWidget->GetChildWidgetCount ( i ); j++ )
+				{
+					Widget* pChild = 
+						FindWidgetChild ( id, pWidget->GetChildWidget ( i, j ) );
+					if ( pChild != NULL )
+						return pChild;
+				}
+			}		
+			
+			return NULL;
+			
 		}
 	}
 

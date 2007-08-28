@@ -1,6 +1,6 @@
 Import('env')
 
-sources = [ 'Animatable.cpp', 'Animate.cpp', 'Animator.cpp' ]
+sources = [ 'Animatable.cpp', 'Animate.cpp', 'Animator.cpp', 'Delay.cpp', 'EventNotify.cpp' ]
 
 obj = env.Object ( sources )
 

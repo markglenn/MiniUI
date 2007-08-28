@@ -35,8 +35,12 @@ namespace MiniUI
 
 			std::string id ( ) { return _id; }
 			Widgets::WidgetList* GetWidgetList ( ) { return &_widgetList; }
+			
+			Widgets::Widget* FindWidget ( std::string id );
 
 		protected:
+			Widgets::Widget* FindWidgetChild ( std::string id, Widgets::Widget* pWidget );
+			
 			Widgets::Widget*	LoadWidget ( TinyXPath::TiXmlElement* pChild, Skin* pSkin, int depth = 0 );
 
 			bool LoadLayout ( Graphics::Renderable* pRenderable,

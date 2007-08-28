@@ -50,6 +50,8 @@ namespace MiniUI
 					pos += width;
 				}
 			}
+			
+			pRenderable->OnChanged ();
 
 			return true;
 		}
@@ -58,14 +60,30 @@ namespace MiniUI
 		void TextArea::OnLoad ( TiXmlElement *pSkin, TiXmlElement *pLayout )
 		///////////////////////////////////////////////////////////////////////
 		{
-			Font *pFont = Font::GetFont( pLayout->Attribute ( "font" ) );
+			_pFont = Font::GetFont( pLayout->Attribute ( "font" ) );
 			std::string text = pLayout->Attribute ( "text" );
 			
 			o_xpath_int ( pLayout, "@x", this->GetRenderable()->position.x );
 			o_xpath_int ( pLayout, "@y", this->GetRenderable()->position.y );
 			
-			BuildText ( text, pFont );
+			BuildText ( text, _pFont );
 		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void TextArea::ChangeString ( std::string text )
+		///////////////////////////////////////////////////////////////////////
+		{
+			BuildText ( text, _pFont );
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void TextArea::Call ( std::string func, luabind::object object )
+		///////////////////////////////////////////////////////////////////////
+		{
+			if ( func == "ChangeText" )
+				BuildText ( luabind::object_cast<std::string>(object["text"]), _pFont );
+		}
+
 	}
 
 }

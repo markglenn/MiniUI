@@ -267,7 +267,7 @@
 		
 		<widget id="SelectableList" width="@width" height="@height">
 			<children>
-				<area id="Items" select="//HighlightBar/*" />
+				<area id="HighlightBar" select="//HighlightBar/*" />
 				<area id="Items" select="//Items/*" />
 			</children>
 			<events>
@@ -277,6 +277,23 @@
 			</events>
 		</widget>
 		
+		<widget id="Slideshow" width="@width" height="@height">
+			<children>
+				<area id="Images" select="//images/*" x="0" y="0" />
+				<area id="HoverMenu" select="//hovermenu/*" x="0" y="0" />
+			</children>
+			<events>
+				<areas>
+					<area id="hotspot" x="0" y="0" width="@width" height="@height" />
+				</areas>
+			</events>
+		</widget>
+		
+		<widget id="OverlayLayout" width="@width" height="@height">
+			<children>
+				<area id="area" select="*" x="0" y="0" />
+			</children>
+		</widget>
 	</widgets>
 	<fonts>
 		<font id="MyFont" src="fonts/FreeSans BoldOblique.bff" />

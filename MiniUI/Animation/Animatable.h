@@ -37,8 +37,11 @@ namespace MiniUI
 			virtual void Stop ( );
 			
 			virtual bool Run ( double duration ) = 0;
+			virtual void Add ( Animatable* pAnimate );
 			bool RunChildren ( double duration );
 			
+			static void RegisterWithLua ( LuaSystem::LuaVirtualMachine* );
+
 		protected:
 			typedef std::list<Animatable*> AnimatableList;
 			AnimatableList _animations;

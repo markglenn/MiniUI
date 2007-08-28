@@ -417,3 +417,8 @@ src/Applications/MainMenu.cpp
 src/Applications/MainMenu.h
 MiniUI/Widgets/Image.cpp
 MiniUI/Widgets/Image.h
+build/ui/scripts/SelectableList.lua
+MiniUI/Animation/Delay.cpp
+MiniUI/Animation/Delay.h
+MiniUI/Animation/EventNotify.cpp
+MiniUI/Animation/EventNotify.h

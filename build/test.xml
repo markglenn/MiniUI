@@ -78,6 +78,7 @@
 
 	<screen id="MainMenu">
 		<Image src="Common/img/background.png" width="640" height="480" />
+		<Image src="Common/img/gradient.png" width="240" height="320" />
 		<SelectableList width="200" height="150" id="list">
 			
 			<Items spacing="30">
@@ -92,6 +93,26 @@
 			</HighlightBar>
 		</SelectableList>
 
+	</screen>
+	<screen id="PictureViewer">
+		<Image src="Common/img/background.png" width="640" height="480" />
+		
+		<!-- Image List -->
+		<Slideshow time="1000" width="640" height="480">
+			<images>
+				<Image src="images/waterfire.png" width="640" height="480" 
+					   description="http://www.deviantart.com/deviation/5730470/"/>
+				<Image src="images/liquid.png" width="640" height="480" 
+					   description="http://www.gnome-look.org/content/show.php/liquid?content=61216"/>
+			</images>
+			<hovermenu>
+				<OverlayLayout>
+					<adjustable-black x="0" y="360" width="640" height="100" opacity="0.5" />
+					<TextArea id="shortDescription" x="20" y="380" font="MyFont" text="Description 1" />
+					<TextArea id="longDescription" x="20" y="410" font="MyFont" text="Long Description 1" />
+				</OverlayLayout>
+			</hovermenu>
+		</Slideshow>
 	</screen>
 	
 	<screen id="mainScreen">

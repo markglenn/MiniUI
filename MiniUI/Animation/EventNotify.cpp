@@ -18,50 +18,61 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Animator.h" 
+#include "EventNotify.h" 
 #include <luabind/luabind.hpp>
 #include <luabind/adopt_policy.hpp>
 
 using namespace luabind;
 using namespace MiniUI::LuaSystem;
+using namespace MiniUI::Widgets;
 
 namespace MiniUI
 {
 	namespace Animation
-	{
+	{		
 		///////////////////////////////////////////////////////////////////////
-		Animator::Animator ( )
+		EventNotify::EventNotify ( Widget *pWidget )
 		///////////////////////////////////////////////////////////////////////
 		{
+			_notified = false;
+			_pWidget = pWidget;
 		}
 		
 		///////////////////////////////////////////////////////////////////////
-		Animator::~Animator ( )
+		EventNotify::~EventNotify ( )
 		///////////////////////////////////////////////////////////////////////
 		{
 			
 		}
 		
 		///////////////////////////////////////////////////////////////////////
-		bool Animator::Run ( double duration )
+		bool EventNotify::Run ( double duration )
 		///////////////////////////////////////////////////////////////////////
 		{
+			// No more animation
+			if ( !_notified )
+			{
+				_notified = true;
+				_pWidget->Call ( "OnEventNotify", luabind::object() );	
+			}
+
 			return RunChildren ( duration );
 		}
 		
 		///////////////////////////////////////////////////////////////////////
-		void Animator::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
+		void EventNotify::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
 		///////////////////////////////////////////////////////////////////////
 		{
 			module(*pVM)
 			[
-				class_<Animator, Animatable>("Animator")
-				.def(constructor<>())
-				.def("Run", &Animator::Run)
+				class_<EventNotify,Animatable>("EventNotify")
+				.def(constructor<Widget *>())
+				.def("Run", &EventNotify::Run)
 				.def("Stop", &Animatable::Stop)
 				.def("Add", &Animatable::Add, adopt(_2))
 			];
 
 		}
+
 	}
 }

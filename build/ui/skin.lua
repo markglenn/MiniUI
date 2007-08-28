@@ -2,114 +2,118 @@ require ('ui/scripts/xpWindow');
 require ('ui/scripts/VerticalLayout');
 require ('ui/scripts/HorizontalLayout');
 require ('ui/scripts/Button');
+require ('ui/scripts/SelectableList');
 
-class "SelectableList" (Widget)
+class "Slideshow" (Widget)
 
 -------------------------------------------------------------------
-function SelectableList:__init()
+function Slideshow:__init()
 -------------------------------------------------------------------
 	super();
 end
 
 -------------------------------------------------------------------
-function SelectableList:OnLoad(skinElement, widgetElement)
+function Slideshow:OnLoad(skinElement, widgetElement)
 -------------------------------------------------------------------
-	self.spacing = xpath.ToNumber ( widgetElement, "//Items/@spacing");
+	self.animationTime = xpath.ToNumber ( widgetElement, "@time");
+	
+	local imageCount = xpath.ToNumber ( widgetElement, "count(//images/Image)" );
+	self.descriptions = {};
+	self.files = {};
+	for i = 1,imageCount + 1 do
+		self.descriptions[i] = xpath.ToString ( widgetElement, "//images/Image["..i.."]/@description" );
+		self.files[i] = "Filename: " .. xpath.ToString ( widgetElement, "//images/Image["..i.."]/@src" );
+	end
 end
 
-		
 -------------------------------------------------------------------
-function SelectableList:OnLayout( )
--------------------------------------------------------------------
-	self.childCount = self:GetChildWidgetCount (1);
-	self.highlightBar = self:GetChildWidget(0, 0);
-
-	self.selectedItem = -1;
+function Slideshow:OnLayout( )
+-------------------------------------------------------------------	
+	self.selectedItem = 0;
+	local childCount = self:GetChildWidgetCount (0);
 	
-	-- Position the highlight bar at the beginning
-	self.highlightBar.x = 0;
-	self.highlightBar.y = self.selectedItem * 30;
-	
+	-- Position the highlight bar at the beginning	
 	self.animator = Animator ( );
 
+	self.hightlightBarY = self:GetChildWidget(1,0).y;
+	
 	-- Go through all the children and position them
-	for i = 0,self.childCount - 1 do
-		local widget = self:GetChildWidget(1, i);
+	for i = 1,childCount - 1 do
+		self:GetChildWidget(0, i).opacity = 0;
+	end
+	
+	-- Find the description text fields
+	self.shortDescription = self:GetWidgetByID("shortDescription");
+	self.longDescription = self:GetWidgetByID("longDescription");
+	
+	self.shortDescription:Call ("ChangeText", {text = self.files[1] } );
+	self.longDescription:Call ("ChangeText", {text = self.descriptions[1] } );
+end
 
-		widget.x = 10;
-		widget.y = 5 + (self.spacing * i);
+-------------------------------------------------------------------
+function Slideshow:Call ( func, object )
+-------------------------------------------------------------------
+	
+	if ( func == "OnEventNotify" ) then
+		self:UpdateText ( );
 	end
 end
 				
 -------------------------------------------------------------------
-function SelectableList:Update( timestep )
+function Slideshow:UpdateText ( )
+-------------------------------------------------------------------
+	if ( self.shortDescription ) then
+		self.shortDescription:Call ("ChangeText", {text = self.files[self.selectedItem + 1] } );
+	end
+				
+	if ( self.longDescription ) then
+		self.longDescription:Call ("ChangeText", {text = self.descriptions[self.selectedItem + 1] } );
+	end
+				
+end
+											
+-------------------------------------------------------------------
+function Slideshow:Update( timestep )
 -------------------------------------------------------------------
 	self.animator:Run ( timestep );
 end
 
-class "SelectableList_hotspot" (EventArea);
+-------------------------------------------------------------------
+function Slideshow:SwitchImage ( nextImageNum )
+-------------------------------------------------------------------
+	local nextImage = self:GetChildWidget ( 0, nextImageNum );		
+	local currentImage = self:GetChildWidget ( 0, self.selectedItem );
+	
+	self.animator:Add ( Animate ( nextImage, "opacity", "sineInOut", 1, self.animationTime ) );
+	self.animator:Add ( Animate ( currentImage, "opacity", "sineInOut", 0, self.animationTime ) );
+
+	local hoverMenuOut = Animate ( self:GetChildWidget(1,0), "y", "sineInOut", 480, self.animationTime / 2 );
+	local hoverMenuIn = Animate ( self:GetChildWidget(1,0), "y", "bounceOut", self.hightlightBarY, self.animationTime );
+	local delay = Delay ( 500 );
+	local event = EventNotify ( self );
+	
+	hoverMenuOut:Add ( event );
+	event:Add ( delay );
+	delay:Add ( hoverMenuIn );
+
+	self.animator:Add ( hoverMenuOut );
+
+	self.selectedItem = nextImageNum;
+end
+
+class "Slideshow_hotspot" (EventArea);
 
 -------------------------------------------------------------------
-function SelectableList_hotspot:__init ( )
+function Slideshow_hotspot:__init ( )
 -------------------------------------------------------------------
 	super ();
-	self.slidetimer = 200;
 end
 
 -------------------------------------------------------------------
-function SelectableList_hotspot:OnMouseOver ( )
+function Slideshow_hotspot:OnMouseDown ( x, y )
 -------------------------------------------------------------------
-	self.split = -1;
-end
-				
--------------------------------------------------------------------
-function SelectableList_hotspot:OnMouseHover ( x, y )
--------------------------------------------------------------------
-	local split = math.floor(y / self.widget.spacing);
-		
-	if ( split >= self.widget:GetChildWidgetCount(1) ) then return end;
-		
-	if ( self.split ~= split ) then
-		local onwidget = self.widget:GetChildWidget(1, split);
-		local onanim = Animate(onwidget, "x", "sineInOut", 20, self.slidetimer );
-		self.widget.animator:Add ( onanim );
-		
-		if ( self.split ~= -1 ) then
-			local offwidget = self.widget:GetChildWidget(1, self.split);
-			local offanim = Animate(offwidget, "x", "sineInOut", 10, self.slidetimer );
-			self.widget.animator:Add ( offanim );
-		end
-		
-		self.split = split;
-	end
+	self.widget:SwitchImage ( ( self.widget.selectedItem + 1 ) % self.widget:GetChildWidgetCount (0) );
 end
 
--------------------------------------------------------------------
-function SelectableList_hotspot:OnMouseOut ( )
--------------------------------------------------------------------
-	if ( self.split ~= -1 ) then
-		local offwidget = self.widget:GetChildWidget(1, self.split);
-		local offanim = Animate(offwidget, "x", "sineInOut", 10, self.slidetimer );
-		self.widget.animator:Add ( offanim );
-	end
-	
-	self.split = -1;
-end
--------------------------------------------------------------------
-function SelectableList_hotspot:OnMouseDown ( x, y )
--------------------------------------------------------------------
-	local split = math.floor(y / self.widget.spacing);
-	
-	if ( split >= self.widget.childCount or split == self.widget.selectedItem ) then
-		return;
-	end
-	
-	self.widget.animator:Stop ( );
-
-	self.widget.animator:Add ( Animate ( self.widget.highlightBar, "y",
-				"sineInOut",  split * 30, 200 ) );
-		
-	self.widget:Fire ( "OnSelect", { item=split } );
-end
-				
 print "Loaded";
+

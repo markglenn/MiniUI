@@ -17,51 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef _MINIUI_ANIMATION_EVENTNOTIFY_H_
+#define _MINIUI_ANIMATION_EVENTNOTIFY_H_
 
-#include "Animator.h" 
-#include <luabind/luabind.hpp>
-#include <luabind/adopt_policy.hpp>
-
-using namespace luabind;
-using namespace MiniUI::LuaSystem;
+#include "Animatable.h"
+#include <MiniUI/Widgets/Widget.h>
+#include <MiniUI/LuaSystem/LuaVirtualMachine.h>
 
 namespace MiniUI
 {
 	namespace Animation
 	{
-		///////////////////////////////////////////////////////////////////////
-		Animator::Animator ( )
-		///////////////////////////////////////////////////////////////////////
+		class EventNotify : public Animatable
 		{
-		}
-		
-		///////////////////////////////////////////////////////////////////////
-		Animator::~Animator ( )
-		///////////////////////////////////////////////////////////////////////
-		{
+		public:
 			
-		}
+			EventNotify ( Widgets::Widget* pWidget );
+			virtual ~EventNotify ( );
+			
+			bool Run ( double duration );
+						
+			static void RegisterWithLua ( LuaSystem::LuaVirtualMachine* );
 		
-		///////////////////////////////////////////////////////////////////////
-		bool Animator::Run ( double duration )
-		///////////////////////////////////////////////////////////////////////
-		{
-			return RunChildren ( duration );
-		}
-		
-		///////////////////////////////////////////////////////////////////////
-		void Animator::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
-		///////////////////////////////////////////////////////////////////////
-		{
-			module(*pVM)
-			[
-				class_<Animator, Animatable>("Animator")
-				.def(constructor<>())
-				.def("Run", &Animator::Run)
-				.def("Stop", &Animatable::Stop)
-				.def("Add", &Animatable::Add, adopt(_2))
-			];
+		private:
+			Widgets::Widget* 	_pWidget;
+			bool 				_notified;
 
-		}
+		};
 	}
 }
+
+#endif // _MINIUI_ANIMATION_EVENTNOTIFY_H_

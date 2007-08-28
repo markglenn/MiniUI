@@ -12,6 +12,9 @@
 
 #include <MiniUI/Animation/Animator.h>
 #include <MiniUI/Animation/Animate.h>
+#include <MiniUI/Animation/Delay.h>
+#include <MiniUI/Animation/EventNotify.h>
+
 
 using MiniUI::Host::IArchive;
 using MiniUI::Host::IResource;
@@ -163,9 +166,12 @@ namespace MiniUI
 			];
 			Widget::RegisterWithLua (this);
 			
+			Animatable::RegisterWithLua (this);
 			Animator::RegisterWithLua (this);
 			Animate::RegisterWithLua (this);
-
+			Delay::RegisterWithLua (this);
+			EventNotify::RegisterWithLua (this);
+			
 			module(m_pState, "xpath")
 			[
 				def ("ToElement", &xpath_element, adopt(result)),

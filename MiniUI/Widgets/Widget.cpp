@@ -172,7 +172,7 @@ namespace MiniUI
 				.def("Update", &Widget::Update, &Widget_wrapper::default_Update)
 				.def("OnLoad", &Widget::OnLoad, &Widget_wrapper::default_OnLoad)
 				.def("OnLayout", &Widget::OnLayout, &Widget_wrapper::default_OnLayout)
-				.def("OnEvent", &Widget::OnEvent, &Widget_wrapper::default_OnEvent)
+				.def("Call", &Widget::Call, &Widget_wrapper::default_Call)
 				.property("angle", &Widget::GetAngle, &Widget::SetAngle)
 				.property("x", &Widget::GetPositionX, &Widget::SetPositionX)
 				.property("y", &Widget::GetPositionY, &Widget::SetPositionY)
@@ -184,6 +184,7 @@ namespace MiniUI
 				.def("GetChildWidget", &Widget::GetChildWidget)
 				.def("GetGraphicalRect", &Widget::GetGraphicalRect)
 				.def("UpdateRenderable", &Widget::UpdateRenderable)
+				.def("GetWidgetByID", &Widget::GetWidgetByID)
 				.def("Fire", &Widget::Fire)
 			];
 
@@ -205,5 +206,26 @@ namespace MiniUI
 			UIManager::Instance()->FireEvent( this, event, o );
 		}
 
+		///////////////////////////////////////////////////////////////////////
+		Widget* Widget::GetWidgetByID ( std::string id )
+		///////////////////////////////////////////////////////////////////////
+		{
+			if ( _id == id )
+				return this;
+			
+			WidgetChildren::iterator i;
+			for ( i = _widgetChildren.begin(); i != _widgetChildren.end(); i++ )
+			{
+				WidgetList::iterator j;
+				for ( j = (*i).children.begin(); j != (*i).children.end(); j++ )
+				{
+					Widget* pChild = (*j)->GetWidgetByID ( id );
+					if ( pChild != NULL )
+						return pChild;
+				}
+			}		
+			
+			return NULL;			
+		}
 	}
 }

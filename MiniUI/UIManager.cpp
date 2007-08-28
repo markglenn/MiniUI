@@ -181,6 +181,7 @@ namespace MiniUI
 		module(&(*_luaVM))
 		[
 			class_<UIManager>("UIManager")
+			.def("GetCurrentScreen", &UIManager::GetCurrentScreen)
 		];
 		
 		globals(&(*_luaVM))["uiManager"] = this;

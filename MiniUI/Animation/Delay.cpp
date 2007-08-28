@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Animator.h" 
+#include "Delay.h" 
 #include <luabind/luabind.hpp>
 #include <luabind/adopt_policy.hpp>
 
@@ -28,40 +28,53 @@ using namespace MiniUI::LuaSystem;
 namespace MiniUI
 {
 	namespace Animation
-	{
+	{		
 		///////////////////////////////////////////////////////////////////////
-		Animator::Animator ( )
+		Delay::Delay ( double duration )
 		///////////////////////////////////////////////////////////////////////
 		{
+			_currentDuration = 0.0;
+			_duration = duration;
 		}
 		
 		///////////////////////////////////////////////////////////////////////
-		Animator::~Animator ( )
+		Delay::~Delay ( )
 		///////////////////////////////////////////////////////////////////////
 		{
 			
 		}
 		
 		///////////////////////////////////////////////////////////////////////
-		bool Animator::Run ( double duration )
+		bool Delay::Run ( double duration )
 		///////////////////////////////////////////////////////////////////////
 		{
-			return RunChildren ( duration );
+			// No more animation
+			if ( _currentDuration >= _duration )
+				return RunChildren ( duration );
+
+			_currentDuration += duration;
+			
+			// Past the duration?
+			if ( _currentDuration > _duration )
+				return RunChildren ( _currentDuration - _duration );
+			
+			return true;
 		}
 		
 		///////////////////////////////////////////////////////////////////////
-		void Animator::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
+		void Delay::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
 		///////////////////////////////////////////////////////////////////////
 		{
 			module(*pVM)
 			[
-				class_<Animator, Animatable>("Animator")
-				.def(constructor<>())
-				.def("Run", &Animator::Run)
+				class_<Delay,Animatable>("Delay")
+				.def(constructor<double>())
+				.def("Run", &Delay::Run)
 				.def("Stop", &Animatable::Stop)
 				.def("Add", &Animatable::Add, adopt(_2))
 			];
 
 		}
+
 	}
 }

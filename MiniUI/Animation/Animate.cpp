@@ -20,12 +20,13 @@
 
 #include "Animate.h" 
 #include <luabind/luabind.hpp>
-
+#include <luabind/adopt_policy.hpp>
 #include <math.h>
 
 using namespace luabind;
 using namespace MiniUI::LuaSystem;
 
+#define PI ( 3.1415926535898 )
 namespace MiniUI
 {
 	namespace Animation
@@ -39,12 +40,38 @@ namespace MiniUI
 			return start + ( end - start ) / duration * currentDuration;			
 		}
 		
+		///////////////////////////////////////////////////////////////////////
 		double sineInOut ( double start, double end, double duration, 
 						   double currentDuration )
+		///////////////////////////////////////////////////////////////////////
 		{ 
-			return -(end - start) / 2.0 * ( cos ( 3.1415926535898 * currentDuration / duration) - 1) + start; 
+			return -(end - start) / 2.0 * ( cos ( PI * currentDuration / duration) - 1) + start; 
 		}
 		
+		double bounceOut ( double b, double end, double d, double t )
+		{
+			double c = end - b;
+			if ((t/=d) < (1/2.75)){
+				return c*(7.5625*t*t) + b;
+			} else if (t < (2/2.75)){
+				return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+			} else if (t < (2.5/2.75)){
+				return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+			} else {
+				return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+			}			
+		}
+
+		// T = Current Duration
+		// D = Duration
+		// B = start
+		// C = end - start
+		double bounceIn ( double start, double end, double duration, double currentDuration )
+		{
+			return (end - start) - bounceOut ( duration - currentDuration, 0, end - start, duration) + start;
+		}
+
+  
 		///////////////////////////////////////////////////////////////////////
 		Animate::Animate ( luabind::object object, std::string attribute, 
 						   std::string animation, double end, double duration )
@@ -55,10 +82,6 @@ namespace MiniUI
 			_end = end;
 			_currentDuration = 0.0;
 			_duration = duration;
-			
-			// Set the start point from the object itself
-			_start = object_cast<double>(_object[_attribute]);
-			
 			_pFunc = this->GetAnimation( animation );
 		}
 		
@@ -76,6 +99,10 @@ namespace MiniUI
 			// No more animation
 			if ( _pFunc == NULL )
 				return RunChildren ( duration );
+			
+			// Set the start point from the object itself
+			if ( _currentDuration == 0.0 )
+				_start = object_cast<double>(_object[_attribute]);
 			
 			_currentDuration += duration;
 			
@@ -108,6 +135,10 @@ namespace MiniUI
 		{
 			if ( animation == "sineInOut" )
 				return sineInOut;
+			else if ( animation == "bounceIn" )
+				return bounceIn;
+			else if ( animation == "bounceOut" )
+				return bounceOut;
 			
 			return LinearAnimation;
 		}
@@ -118,12 +149,14 @@ namespace MiniUI
 		{
 			module(*pVM)
 			[
-				class_<Animate>("Animate")
+				class_<Animate, Animatable>("Animate")
 				.def(constructor<luabind::object, std::string, std::string, double, double>())
 				.def("Run", &Animate::Run)
 				.def("Stop", &Animatable::Stop)
+				.def("Add", &Animate::Add, adopt(_2))
 			];
 
 		}
+		
 	}
 }

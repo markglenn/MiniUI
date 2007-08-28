@@ -17,51 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef _MINIUI_ANIMATION_DELAY_
+#define _MINIUI_ANIMATION_DELAY_
 
-#include "Animator.h" 
-#include <luabind/luabind.hpp>
-#include <luabind/adopt_policy.hpp>
-
-using namespace luabind;
-using namespace MiniUI::LuaSystem;
+#include "Animatable.h"
+#include <luabind/object.hpp>
+#include <MiniUI/LuaSystem/LuaVirtualMachine.h>
 
 namespace MiniUI
 {
 	namespace Animation
 	{
-		///////////////////////////////////////////////////////////////////////
-		Animator::Animator ( )
-		///////////////////////////////////////////////////////////////////////
+		class Delay : public Animatable
 		{
-		}
-		
-		///////////////////////////////////////////////////////////////////////
-		Animator::~Animator ( )
-		///////////////////////////////////////////////////////////////////////
-		{
+		public:
 			
-		}
+			Delay ( double duration );
+			virtual ~Delay ( );
+			
+			bool Run ( double duration );
+						
+			static void RegisterWithLua ( LuaSystem::LuaVirtualMachine* );
 		
-		///////////////////////////////////////////////////////////////////////
-		bool Animator::Run ( double duration )
-		///////////////////////////////////////////////////////////////////////
-		{
-			return RunChildren ( duration );
-		}
-		
-		///////////////////////////////////////////////////////////////////////
-		void Animator::RegisterWithLua ( LuaSystem::LuaVirtualMachine* pVM )
-		///////////////////////////////////////////////////////////////////////
-		{
-			module(*pVM)
-			[
-				class_<Animator, Animatable>("Animator")
-				.def(constructor<>())
-				.def("Run", &Animator::Run)
-				.def("Stop", &Animatable::Stop)
-				.def("Add", &Animatable::Add, adopt(_2))
-			];
-
-		}
+		private:
+			double				_duration;			
+			double				_currentDuration;
+		};
 	}
 }
+
+#endif // _MINIUI_ANIMATION_DELAY_

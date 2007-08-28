@@ -16,9 +16,10 @@ namespace MiniUI
 			virtual ~TextArea ( );
 
 			bool BuildText ( std::string text, UISystem::Font* pFont, bool wordWrap = false, int width = 10000 );
-
+			virtual void Call ( std::string func, luabind::object object );
 			virtual void OnLoad ( TinyXPath::TiXmlElement *pSkin, TinyXPath::TiXmlElement *pLayout );
-
+			void ChangeString ( std::string text );
+			
 		private:
 			std::string 	_text;
 			bool 			_wordWrap;

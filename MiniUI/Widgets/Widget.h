@@ -93,11 +93,14 @@ namespace MiniUI
 			virtual void OnLoad ( TinyXPath::TiXmlElement *pSkin, TinyXPath::TiXmlElement *pLayout ) {}
 			virtual void OnLayout ( ) { }
 
-			virtual void OnEvent ( std::string event ) {}
+			virtual void Call ( std::string func, luabind::object object ) {}
 			
+			int GetAreaCount ( ) { return _widgetChildren.size(); }
 			int GetChildWidgetCount ( int area );
 			Widget* GetChildWidget ( int area, int widget );
 
+			Widget* GetWidgetByID ( std::string id );
+			
 			void Destroy ( );
 
 			Types::Vector2D<int>* GetPosition ( ) const;
@@ -152,14 +155,14 @@ namespace MiniUI
 				return ptr->Widget::OnLayout ( );
 			}
 			
-			virtual void OnEvent ( std::string event )
+			virtual void Call ( std::string func, luabind::object object )
 			{
-				call<void>( "OnEvent", event );
+				call<void>( "Call", func, object );
 			}
 			
-			static void default_OnEvent ( Widget* ptr, std::string event )
+			static void default_Call ( Widget* ptr, std::string func, luabind::object object )
 			{
-				ptr->Widget::OnEvent ( event );
+				ptr->Widget::Call ( func, object );
 			}
 
 		};
