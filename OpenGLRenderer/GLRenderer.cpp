@@ -107,13 +107,13 @@ namespace OpenGLRenderer
 			// Move into the correct position
 			glTranslatef ( pRenderable->position.x, pRenderable->position.y, 0.f );
 			
-			glTranslatef ( pRenderable->centerPosition.x, pRenderable->centerPosition.y, 0 );
+			// Rotate the widget
+			glTranslatef ( pRenderable->size.x / 2, pRenderable->size.y / 2, 0 );
 			glRotatef ( pRenderable->angle, 0.f, 0.f, 1.f );
-			glTranslatef ( -pRenderable->centerPosition.x, -pRenderable->centerPosition.y, 0 );
+			glTranslatef ( -pRenderable->size.x / 2, -pRenderable->size.y / 2, 0 );
 
 			(*i)->HandleMouseInput ( pMouse );
 			
-
 			glColor4f( 1.0f, 1.0f, 1.0f, pRenderable->opacity );
 
 			glCallList ( pRenderable->GetDisplayList() );

@@ -49,9 +49,6 @@ namespace MiniUI
 			bool LoadChildren ( Widgets::Widget* pWidget, TinyXPath::TiXmlElement* pChild,
 								TinyXPath::TiXmlElement* pWidgetEl, Skin* pSkin, int depth );
 
-			bool LoadEventAreas ( Widgets::Widget* pWidget, TinyXPath::TiXmlElement* pChild,
-								  TinyXPath::TiXmlElement* pWidgetEl );
-
 			void OnLayout ( Widgets::WidgetList *pWidgetList );
 
 		private:

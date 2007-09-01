@@ -75,45 +75,61 @@
 			</VerticalLayout>
 		</xpWindow>
 	</screen>
+	
+	<!-- MAIN MENU -->
 
 	<screen id="MainMenu">
 		<Image src="Common/img/background.png" width="640" height="480" />
-		<Image src="Common/img/gradient.png" width="240" height="320" />
-		<SelectableList width="200" height="150" id="list">
-			
-			<Items spacing="30">
-				<TextArea font="MyFont" text="Selectable Item 1"/>
-				<TextArea font="MyFont" text="Selectable Item 2"/>
-				<TextArea font="MyFont" text="Selectable Item 3"/>
-				<TextArea font="MyFont" text="Selectable Item 4"/>
-				<TextArea font="MyFont" text="Selectable Item 5"/>				
-			</Items>
-			<HighlightBar>
-				<Highlight x="0" y="0" width="190" />
-			</HighlightBar>
-		</SelectableList>
-
+		<AnimatedMenu id="animatedMenu" width="640" height="480">
+			<HoverHighlight outOpacity="0.5" overOpacity="1.0" id="shutdownOverlay">
+				<Image id="shutdownButton" src="128x128/apps/exit.png" width="128" height="128" />
+			</HoverHighlight>
+			<HoverHighlight outOpacity="0.5" overOpacity="1.0" x="160" >
+				<Image src="128x128/devices/camera_unmount.png" width="128" height="128" />
+			</HoverHighlight>
+			<Image src="128x128/apps/shutdown.png" x="320" width="128" height="128" opacity="0.5" />
+			<Image src="128x128/apps/shutdown.png" x="480" width="128" height="128" opacity="0.5" />
+		</AnimatedMenu>
 	</screen>
+	
+	<!-- PICTURE VIEWER -->
+	
 	<screen id="PictureViewer">
-		<Image src="Common/img/background.png" width="640" height="480" />
-		
 		<!-- Image List -->
-		<Slideshow time="1000" width="640" height="480">
-			<images>
-				<Image src="images/waterfire.png" width="640" height="480" 
-					   description="http://www.deviantart.com/deviation/5730470/"/>
-				<Image src="images/liquid.png" width="640" height="480" 
-					   description="http://www.gnome-look.org/content/show.php/liquid?content=61216"/>
-			</images>
-			<hovermenu>
-				<OverlayLayout>
-					<adjustable-black x="0" y="360" width="640" height="100" opacity="0.5" />
-					<TextArea id="shortDescription" x="20" y="380" font="MyFont" text="Description 1" />
-					<TextArea id="longDescription" x="20" y="410" font="MyFont" text="Long Description 1" />
-				</OverlayLayout>
-			</hovermenu>
-		</Slideshow>
+		<PictureViewer id="pictureViewer">
+			<Slideshow id="slideShow" time="1000" width="640" height="480">
+				<images>
+					<Image src="images/waterfire.png" width="640" height="480" 
+						description="http://www.deviantart.com/deviation/5730470/"/>
+					<Image src="images/liquid.png" width="640" height="480" 
+						description="http://www.gnome-look.org/content/show.php/liquid?content=61216"/>
+					<Image src="applications/imageviewer/cosmogony.png" width="640" height="480" 
+						   description="http://www.digitalblasphemy.com"/>
+					<Image src="applications/imageviewer/natureflower.png" width="640" height="480" 
+						   description="http://www.freeimages.co.uk"/>
+					<Image src="applications/imageviewer/arctica.png" width="640" height="480" 
+						   description="http://www.digitalblasphemy.com"/>
+				</images>
+				<hovermenu>
+					<OverlayLayout>
+						<adjustable-black x="0" y="360" width="640" height="100" opacity="0.5" />
+						<TextArea id="shortDescription" x="20" y="380" font="MyFont" text="Description 1" />
+						<TextArea id="longDescription" x="20" y="410" font="MyFont" text="Long Description 1" />
+					</OverlayLayout>
+				</hovermenu>
+			</Slideshow>
+			
+			<HoverHighlight outOpacity="0.5" overOpacity="1.0" x="595" y="30">
+				<Image id="nextButton" src="applications/imageviewer/next.png" width="38" height="48" />
+			</HoverHighlight>
+			
+			<HoverHighlight outOpacity="0.5" overOpacity="1.0" x="-5" y="30">
+				<Image id="previousButton" src="applications/imageviewer/previous.png" width="38" height="48" />
+			</HoverHighlight>
+		</PictureViewer>
 	</screen>
+	
+	<!-- TEST SCREEN -->
 	
 	<screen id="mainScreen">
 		
@@ -155,4 +171,10 @@
 		</xpWindow>
 	</screen>
 	
+	<!-- PHONEBOOK -->
+	<screen id="phoneBook">
+		<scrollArea>
+			
+		</scrollArea>
+	</screen>
 </interface>

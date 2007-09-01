@@ -126,12 +126,10 @@ namespace MiniUI
 
 				// Set the center position
 				if ( pWidgetElement->Attribute ("width") )
-					pRenderable->centerPosition.x =
-							( i_xpath_int ( pChild, pWidgetElement->Attribute ("width") ) / 2 );
+					o_xpath_int ( pChild, pWidgetElement->Attribute ("width"), pRenderable->size.x );
 
 				if ( pWidgetElement->Attribute ("height") )
-					pRenderable->centerPosition.y =
-							( i_xpath_int ( pChild, pWidgetElement->Attribute ("height") ) / 2 );
+					o_xpath_int ( pChild, pWidgetElement->Attribute ("height"), pRenderable->size.y );
 				
 				// Load the angle
 				double angle = 0.f;
@@ -158,7 +156,6 @@ namespace MiniUI
 			{
 				LoadLayout ( pRenderable, pChild, pWidgetElement );
 				LoadChildren ( pWidget, pChild, pWidgetElement, pSkin, depth );
-				LoadEventAreas ( pWidget, pChild, pWidgetElement );
 			}		
 			
 			pWidget->OnLoad ( pWidgetElement, pChild );
@@ -272,6 +269,8 @@ namespace MiniUI
 				if ( pChildArea->Attribute("height") )
 					o_xpath_int ( pChild, pChildArea->Attribute("height"), widgetChildArea.area.height );
 
+				
+				
 				// Do the selection of the children
 				if ( pChildArea->Attribute ( "select" ) )
 				{
@@ -294,57 +293,6 @@ namespace MiniUI
 			}
 
 			return true;
-		}
-
-		///////////////////////////////////////////////////////////////////////
-		bool Screen::LoadEventAreas ( Widget* pWidget,
-					TiXmlElement* pChild, TiXmlElement* pWidgetEl )
-		///////////////////////////////////////////////////////////////////////
-		{
-			// Find the layout objects
-			xpath_processor xpath ( pWidgetEl, "/widget/events/areas/area" );
-			LuaVirtualMachine *pVM = LuaVirtualMachine::Instance( );
-
-			// Loop through all the event areas
-			int numAreas = xpath.u_compute_xpath_node_set ( );
-			for ( int i = 0; i < numAreas; i++ )
-			{
-				TiXmlElement* pEventArea = (TiXmlElement*)xpath.XNp_get_xpath_node ( i );
-
-				EventArea *pArea = NULL;
-				
-				std::string areaName = pWidget->Name() + "_" + pEventArea->Attribute ( "id" );
-				if ( type (globals(*pVM)[ areaName.c_str() ]) != LUA_TNIL )
-					pArea = call_function<EventArea*>(*pVM, areaName.c_str() )[ adopt(result) ];
-				else
-					continue;
-							
-				// Set the event area
-				if ( pEventArea->Attribute("x") )
-					o_xpath_int ( pChild, pEventArea->Attribute ("x"), pArea->area.x );
-				else
-					printf ("(%s) Event area has no X value\n", pWidget->Name().c_str() );
-				if ( pEventArea->Attribute("y") )
-					o_xpath_int ( pChild, pEventArea->Attribute ("y"), pArea->area.y );
-				else
-					printf ("(%s) Event area has no Y value\n", pWidget->Name().c_str() );
-				if ( pEventArea->Attribute("width") )
-					o_xpath_int ( pChild, pEventArea->Attribute ("width"), pArea->area.width );
-				else
-					printf ("(%s) Event area has no Width value\n", pWidget->Name().c_str() );
-				if ( pEventArea->Attribute("height") )
-					o_xpath_int ( pChild, pEventArea->Attribute ("height"), pArea->area.height );
-				else
-					printf ("(%s) Event area has no Height value\n", pWidget->Name().c_str() );
-
-				pArea->id = pEventArea->Attribute ( "id" );
-
-				pWidget->AddEventArea ( pArea );
-				pArea->widget = pWidget;
-			}
-
-			return true;
-
 		}
 		
 		///////////////////////////////////////////////////////////////////////

@@ -26,7 +26,6 @@
 #include <luabind/luabind.hpp>
 #include <MiniUI/TinyXPath/tinyxml.h>
 #include <MiniUI/LuaSystem/LuaVirtualMachine.h>
-#include "EventArea.h"
 #include "../Input/Mouse.h"
 
 namespace MiniUI
@@ -60,9 +59,6 @@ namespace MiniUI
 				{ _widgetChildren.push_back ( childArea ); }
 			WidgetChildren* GetWidgetChildren ( ) { return &_widgetChildren; }
 
-			void AddEventArea ( EventArea* eventArea )
-				{ _eventAreas.push_back ( eventArea ); }
-
 			Graphics::Renderable* GetRenderable ( ) { return _pRenderable; }
 
 			void SetName ( std::string name ) { _name = name; }
@@ -87,8 +83,8 @@ namespace MiniUI
 			float GetOpacity ( ) const { return _pRenderable->opacity; }
 			void SetOpacity ( float o ) { _pRenderable->opacity = o; }
 
-			int GetWidth ( ) const { return _pRenderable->centerPosition.x * 2; }
-			int GetHeight ( ) const { return _pRenderable->centerPosition.y * 2; }
+			int GetWidth ( ) const { return _pRenderable->size.x; }
+			int GetHeight ( ) const { return _pRenderable->size.y; }
 
 			virtual void OnLoad ( TinyXPath::TiXmlElement *pSkin, TinyXPath::TiXmlElement *pLayout ) {}
 			virtual void OnLayout ( ) { }
@@ -97,25 +93,37 @@ namespace MiniUI
 			
 			int GetAreaCount ( ) { return _widgetChildren.size(); }
 			int GetChildWidgetCount ( int area );
+			
 			Widget* GetChildWidget ( int area, int widget );
-
 			Widget* GetWidgetByID ( std::string id );
 			
 			void Destroy ( );
 
 			Types::Vector2D<int>* GetPosition ( ) const;
 			
+			// widget.id
 			void SetID ( std::string id ) { _id = id; }
 			std::string GetID ( ) const { return _id; }
 			
 			void Fire ( std::string event, luabind::object const& object );
 
+			virtual void OnMouseOver ( ) 					{ }
+			virtual void OnMouseOut ( ) 					{ }
+			virtual void OnMouseHover ( int x, int y )		{ }
+			virtual void OnMouseDown ( int x, int y )		{ }
+			virtual void OnMouseMove ( int x, int y )		{ }
+			virtual void OnMouseUp ( ) 						{ }
+			
 		private:
 			Graphics::Renderable 	*_pRenderable;
 			WidgetChildren			_widgetChildren;
-			EventAreaList			_eventAreas;
+			
 			std::string				_name;
 			std::string				_id;
+			
+			bool _isMouseOver;
+			bool _isMouseDown;
+			bool _ignoreState;
 		};
 
 		class Widget_wrapper : public Widget, public luabind::wrap_base
@@ -163,6 +171,55 @@ namespace MiniUI
 			static void default_Call ( Widget* ptr, std::string func, luabind::object object )
 			{
 				ptr->Widget::Call ( func, object );
+			}
+
+			virtual void OnMouseOver ( ) 	{ call<void> ("OnMouseOver" ); }
+			virtual void OnMouseOut ( )		{ call<void> ("OnMouseOut" ); }
+			virtual void OnMouseUp ( )		{ call<void> ("OnMouseUp" ); }
+			
+			virtual void OnMouseHover ( int x, int y )
+			{
+				call<void>( "OnMouseHover", x, y );
+			}
+			
+			virtual void OnMouseMove ( int x, int y )
+			{
+				call<void>( "OnMouseMove", x, y );
+			}
+			
+			virtual void OnMouseDown ( int x, int y )
+			{
+				call<void>( "OnMouseDown", x, y );
+			}
+			
+			static void default_OnMouseOver ( Widget* ptr )
+			{
+				ptr->Widget::OnMouseOver ( );
+			}
+			
+			static void default_OnMouseOut ( Widget* ptr )
+			{
+				ptr->Widget::OnMouseOut ( );	
+			}
+			
+			static void default_OnMouseUp ( Widget* ptr )
+			{
+				ptr->Widget::OnMouseUp ( );
+			}
+			
+			static void default_OnMouseHover ( Widget* ptr, int x, int y )
+			{
+				ptr->Widget::OnMouseHover ( x, y );
+			}
+			
+			static void default_OnMouseMove ( Widget* ptr, int x, int y )
+			{
+				ptr->Widget::OnMouseMove ( x, y );
+			}
+						
+			static void default_OnMouseDown ( Widget* ptr, int x, int y )
+			{
+				ptr->Widget::OnMouseDown ( x, y );
 			}
 
 		};

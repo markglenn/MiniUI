@@ -1,6 +1,9 @@
 #include "MainMenu.h"
 
 using namespace MiniUI;
+using namespace MiniUI::Widgets;
+using namespace MiniUI::LuaSystem;
+using namespace luabind;
 
 namespace Applications
 {
@@ -10,6 +13,9 @@ namespace Applications
 	///////////////////////////////////////////////////////////////////////////
 	{
 		pManager->SetCurrentScreen ( "PictureViewer" );
+		
+		Widget *pShutdown = pManager->GetCurrentScreen()->FindWidget ( "shutdownButton" );
+		_pMenu = pManager->GetCurrentScreen()->FindWidget ( "animatedMenu" );
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -23,7 +29,10 @@ namespace Applications
 	void MainMenu::OnEvent ( MiniUI::UIEvent* pEvent )
 	///////////////////////////////////////////////////////////////////////////
 	{
-		printf ( "%s -> %s (%d)\n", pEvent->pWidget->Name().c_str(), 
-			pEvent->event.c_str(), luabind::object_cast<int>((*pEvent->parameter)["item"]) );
+		luabind::object object = newtable ( *LuaVirtualMachine::Instance() );
+		object["id"] = "shutdownOverlay";
+		
+		if ( pEvent->pWidget->GetID() == "shutdownButton" )
+			_pMenu->Call ("select", object);
 	}
 }

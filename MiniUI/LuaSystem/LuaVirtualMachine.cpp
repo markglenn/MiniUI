@@ -147,7 +147,7 @@ namespace MiniUI
 			set_pcall_callback(add_file_and_line);
 			module(m_pState)
 			[
-				class_<EventArea, EventArea_wrapper>("EventArea")
+				/*class_<EventArea, EventArea_wrapper>("EventArea")
 				.def(constructor<>())
 				.def("OnMouseOver", &EventArea::OnMouseOver, &EventArea_wrapper::default_OnMouseOver)
 				.def("OnMouseOut", &EventArea::OnMouseOut, &EventArea_wrapper::default_OnMouseOut)
@@ -155,7 +155,7 @@ namespace MiniUI
 				.def("OnMouseUp", &EventArea::OnMouseUp, &EventArea_wrapper::default_OnMouseUp)
 				.def("OnMouseDown", &EventArea::OnMouseDown, &EventArea_wrapper::default_OnMouseDown)
 				.def("OnMouseMove", &EventArea::OnMouseMove, &EventArea_wrapper::default_OnMouseMove)
-				.def_readonly("widget", &EventArea::widget),
+				.def_readonly("widget", &EventArea::widget),*/
 
 				class_< Vector2D<int> >("Vector2D")
 				.def(constructor<int,int>())

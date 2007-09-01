@@ -1,119 +1,172 @@
-require ('ui/scripts/xpWindow');
-require ('ui/scripts/VerticalLayout');
-require ('ui/scripts/HorizontalLayout');
-require ('ui/scripts/Button');
-require ('ui/scripts/SelectableList');
-
-class "Slideshow" (Widget)
+--require ('ui/scripts/xpWindow');
+--require ('ui/scripts/VerticalLayout');
+--require ('ui/scripts/HorizontalLayout');
+--require ('ui/scripts/Button');
+--require ('ui/scripts/SelectableList');
+require ('ui/scripts/Slideshow');
+		
+class "HoverHighlight" (Widget)
 
 -------------------------------------------------------------------
-function Slideshow:__init()
+function HoverHighlight:__init()
 -------------------------------------------------------------------
 	super();
 end
 
 -------------------------------------------------------------------
-function Slideshow:OnLoad(skinElement, widgetElement)
+function HoverHighlight:OnLayout( )
 -------------------------------------------------------------------
-	self.animationTime = xpath.ToNumber ( widgetElement, "@time");
-	
-	local imageCount = xpath.ToNumber ( widgetElement, "count(//images/Image)" );
-	self.descriptions = {};
-	self.files = {};
-	for i = 1,imageCount + 1 do
-		self.descriptions[i] = xpath.ToString ( widgetElement, "//images/Image["..i.."]/@description" );
-		self.files[i] = "Filename: " .. xpath.ToString ( widgetElement, "//images/Image["..i.."]/@src" );
-	end
-end
-
--------------------------------------------------------------------
-function Slideshow:OnLayout( )
--------------------------------------------------------------------	
-	self.selectedItem = 0;
-	local childCount = self:GetChildWidgetCount (0);
-	
-	-- Position the highlight bar at the beginning	
+	self.highlightWidget = self:GetChildWidget(0,0);
+	self.highlightWidget.opacity = 0.5;
 	self.animator = Animator ( );
-
-	self.hightlightBarY = self:GetChildWidget(1,0).y;
-	
-	-- Go through all the children and position them
-	for i = 1,childCount - 1 do
-		self:GetChildWidget(0, i).opacity = 0;
-	end
-	
-	-- Find the description text fields
-	self.shortDescription = self:GetWidgetByID("shortDescription");
-	self.longDescription = self:GetWidgetByID("longDescription");
-	
-	self.shortDescription:Call ("ChangeText", {text = self.files[1] } );
-	self.longDescription:Call ("ChangeText", {text = self.descriptions[1] } );
 end
 
 -------------------------------------------------------------------
-function Slideshow:Call ( func, object )
+function HoverHighlight:Update( timestep )
 -------------------------------------------------------------------
-	
-	if ( func == "OnEventNotify" ) then
-		self:UpdateText ( );
-	end
-end
-				
--------------------------------------------------------------------
-function Slideshow:UpdateText ( )
--------------------------------------------------------------------
-	if ( self.shortDescription ) then
-		self.shortDescription:Call ("ChangeText", {text = self.files[self.selectedItem + 1] } );
-	end
-				
-	if ( self.longDescription ) then
-		self.longDescription:Call ("ChangeText", {text = self.descriptions[self.selectedItem + 1] } );
-	end
-				
+	self.animator:Run ( timestep );
 end
 											
 -------------------------------------------------------------------
-function Slideshow:Update( timestep )
+function HoverHighlight:OnMouseOver ( x, y )
+-------------------------------------------------------------------
+	self.animator:Add ( Animate ( self.highlightWidget, "opacity", "sineInOut", 1, 500 ) );
+end
+
+-------------------------------------------------------------------
+function HoverHighlight:OnMouseOut ( )
+-------------------------------------------------------------------
+	self.animator:Add ( Animate ( self.highlightWidget, "opacity", "sineInOut", 0.5, 500 ) );
+end	
+
+-------------------------------------------------------------------
+function HoverHighlight:OnMouseDown ( x, y )
+-------------------------------------------------------------------
+	self.highlightWidget:Fire ( "OnClick", { } );
+end
+		
+		
+		
+		
+		
+class "PictureViewer" (Widget)
+-------------------------------------------------------------------
+function PictureViewer:__init()
+-------------------------------------------------------------------
+	super();
+	self.animator = Animator ( );
+end
+
+-------------------------------------------------------------------
+function PictureViewer:Update( timestep )
 -------------------------------------------------------------------
 	self.animator:Run ( timestep );
 end
 
 -------------------------------------------------------------------
-function Slideshow:SwitchImage ( nextImageNum )
+function PictureViewer:OnLayout ( )
 -------------------------------------------------------------------
-	local nextImage = self:GetChildWidget ( 0, nextImageNum );		
-	local currentImage = self:GetChildWidget ( 0, self.selectedItem );
+	self.previousButton = self:GetWidgetByID("previousButton");
+	self.nextButton = self:GetWidgetByID("nextButton");
 	
-	self.animator:Add ( Animate ( nextImage, "opacity", "sineInOut", 1, self.animationTime ) );
-	self.animator:Add ( Animate ( currentImage, "opacity", "sineInOut", 0, self.animationTime ) );
-
-	local hoverMenuOut = Animate ( self:GetChildWidget(1,0), "y", "sineInOut", 480, self.animationTime / 2 );
-	local hoverMenuIn = Animate ( self:GetChildWidget(1,0), "y", "bounceOut", self.hightlightBarY, self.animationTime );
-	local delay = Delay ( 500 );
-	local event = EventNotify ( self );
+	self.previousPos = self.previousButton.x;
+	self.nextPos = self.nextButton.x;
+end
+				
+-------------------------------------------------------------------
+function PictureViewer:Call( func, object )
+-------------------------------------------------------------------
+	if ( func == "Animate" ) then
+		local prevOut = Animate ( self.previousButton, "x", "sineInOut", -50, 300 );
+		local nextOut = Animate ( self.nextButton, "x", "sineInOut", 640, 300 );
 	
-	hoverMenuOut:Add ( event );
-	event:Add ( delay );
-	delay:Add ( hoverMenuIn );
-
-	self.animator:Add ( hoverMenuOut );
-
-	self.selectedItem = nextImageNum;
+		local delay = Delay ( 700 );
+		
+		local prevIn = Animate ( self.previousButton, "x", "sineInOut", self.previousPos, 300 );
+		local nextIn = Animate ( self.nextButton, "x", "sineInOut", self.nextPos, 300 );
+		
+		nextOut:Add ( delay );
+		delay:Add ( prevIn );
+		delay:Add ( nextIn );
+		
+		self.animator:Add ( prevOut );
+		self.animator:Add ( nextOut );
+	end
 end
 
-class "Slideshow_hotspot" (EventArea);
+		
+		
+		
+		
+		
+class "AnimatedMenu" (Widget)
 
 -------------------------------------------------------------------
-function Slideshow_hotspot:__init ( )
+function AnimatedMenu:__init()
 -------------------------------------------------------------------
-	super ();
+	super();
+	self.animator = Animator ( );
 end
 
 -------------------------------------------------------------------
-function Slideshow_hotspot:OnMouseDown ( x, y )
+function AnimatedMenu:Update( timestep )
 -------------------------------------------------------------------
-	self.widget:SwitchImage ( ( self.widget.selectedItem + 1 ) % self.widget:GetChildWidgetCount (0) );
+	self.animator:Run ( timestep );
 end
 
+-------------------------------------------------------------------
+function AnimatedMenu:OnLayout( )
+-------------------------------------------------------------------
+	self.opacity = 0;
+end
+		
+-------------------------------------------------------------------
+function AnimatedMenu:Call( func, object )
+-------------------------------------------------------------------
+	self:Animate ( object["id"] );
+end
+
+-------------------------------------------------------------------
+function AnimatedMenu:Animate ( selectedItem )
+-------------------------------------------------------------------
+	math.randomseed( os.time() )
+	
+	local numWidgets = self:GetChildWidgetCount ( 0 );
+
+	for i = 0,numWidgets - 1 do
+		local widget = self:GetChildWidget(0, i);
+		
+		-- Set the delay
+		local delay;
+		if ( widget.id == selectedItem ) then
+			delay = Delay ( 800 );
+		else
+			delay = Delay ( math.random(300) );
+		end
+		
+		local anim = Animate ( widget, "y", "sineInOut", widget.y + 500, 500 );
+		
+		delay:Add ( anim );
+		self.animator:Add ( delay );
+	end
+				
+	local fadeDelay = Delay(800);
+	
+	fadeDelay:Add ( Animate ( self, "opacity", "sineInOut", 1, 500 ) );
+	self.animator:Add ( fadeDelay );
+				
+end
+				
+-------------------------------------------------------------------
+function AnimatedMenu:Reset ( )
+-------------------------------------------------------------------
+	for i = 0,numWidgets - 1 do
+		local widget = self:GetChildWidget(0, i);
+		
+		widget.y = widget.y - 500;
+		self.opacity = 0;
+	end
+
+end
 print "Loaded";
 

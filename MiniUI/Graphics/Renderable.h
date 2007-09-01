@@ -70,7 +70,7 @@ namespace MiniUI
 			float 					angle;
 			Types::Vector2D<double>	scale;
 			Types::Vector2D<int>	position;
-			Types::Vector2D<int> 	centerPosition;
+			Types::Vector2D<int> 	size;
 			ImageResource* 			image;
 			float					opacity;
 

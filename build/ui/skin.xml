@@ -294,6 +294,35 @@
 				<area id="area" select="*" x="0" y="0" />
 			</children>
 		</widget>
+		
+		<widget id="HoverHighlight" width="/HoverHighlight/*[1]/@width" height="/HoverHighlight/*[1]/@height">
+			<children>
+				<area id="area" select="*" />
+			</children>
+			<events>
+				<areas>
+					<area id="hotspot" x="0" y="0" width="/HoverHighlight/*[1]/@width" height="/HoverHighlight/*[1]/@height" />
+				</areas>				
+			</events>
+		</widget>
+		
+		<widget id="AnimatedMenu" src="images/black.png" width="1" height="1">
+			<layout>
+				<section id="main">
+					<source x="0" y="0" width="1" height="1" />
+					<destination x="0" y="0" width="@width" height="@height" />
+				</section>
+			</layout>
+			<children>
+				<area id="area" select="*" />
+			</children>
+		</widget>
+		
+		<widget id="PictureViewer">
+			<children>
+				<area id="area" select="*" />
+			</children>
+		</widget>
 	</widgets>
 	<fonts>
 		<font id="MyFont" src="fonts/FreeSans BoldOblique.bff" />

@@ -12,6 +12,9 @@ namespace Applications
 		virtual ~MainMenu ( );	
 				
 		void OnEvent ( MiniUI::UIEvent* pEvent );
+		
+	private:
+		MiniUI::Widgets::Widget* _pMenu;
 	};
 }
 

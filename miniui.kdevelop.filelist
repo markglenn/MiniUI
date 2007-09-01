@@ -398,8 +398,6 @@ MiniUI/Widgets/Widget.cpp
 MiniUI/Widgets/Widget.h
 MiniUI/Widgets/TextArea.cpp
 MiniUI/Widgets/TextArea.h
-MiniUI/Widgets/EventArea.cpp
-MiniUI/Widgets/EventArea.h
 build/ui/scripts/Button.lua
 MiniUI/Animation/Animatable.h
 MiniUI/Animation/Animator.cpp
@@ -422,3 +420,6 @@ MiniUI/Animation/Delay.cpp
 MiniUI/Animation/Delay.h
 MiniUI/Animation/EventNotify.cpp
 MiniUI/Animation/EventNotify.h
+build/ui/scripts/Slideshow.lua
+src/Applications/ImageViewer.cpp
+src/Applications/ImageViewer.h

@@ -79,10 +79,6 @@ namespace MiniUI
 		Widget::~Widget ( )
 		///////////////////////////////////////////////////////////////////////
 		{
-			EventAreaList::iterator i;
-			for ( i = _eventAreas.begin(); i != _eventAreas.end(); i++ )
-				delete *i;
-			
 			WidgetChildren::iterator j;
 			for ( j = _widgetChildren.begin(); j != _widgetChildren.end(); j++ )
 			{
@@ -107,9 +103,45 @@ namespace MiniUI
 			Vector2D<int> position;
 			position = _pRenderable->GetTranslatedPosition ( pMouse->x, pMouse->y );
 
-			EventAreaList::iterator i;
-			for ( i = _eventAreas.begin(); i != _eventAreas.end(); i++ )
-				(*i)->HandleMouse ( position.x, position.y, pMouse );
+			bool mouseOn = true;
+			if ( position.x < 0 || position.y < 0 )
+				mouseOn = false;
+			if ( position.x >= GetWidth() || position.y >= GetHeight() )
+				mouseOn = false;
+			
+			if ( mouseOn )
+			{
+				if ( !_isMouseOver )
+					this->OnMouseOver();
+				else
+					this->OnMouseHover ( position.x, position.y );
+
+				_isMouseOver = true;
+
+				if ( !_isMouseDown && pMouse->leftMouseDown )
+				{
+					this->OnMouseDown ( position.x, position.y );
+					_isMouseDown = true;
+				}
+			}
+			else
+			{
+				if ( _isMouseOver )
+					this->OnMouseOut ( );
+
+				_isMouseOver = false;
+			}
+
+			if ( _isMouseDown )
+			{
+				if ( !pMouse->leftMouseDown )
+				{
+					this->OnMouseUp ( );
+					_isMouseDown = false;
+				}
+				else
+					this->OnMouseMove ( position.x, position.y );
+			}
 		}
 
 		///////////////////////////////////////////////////////////////////////
@@ -137,6 +169,9 @@ namespace MiniUI
 		Widget* Widget::GetChildWidget ( int area, int widget )
 		///////////////////////////////////////////////////////////////////////
 		{
+			if ( _widgetChildren.size() <= area )
+				return NULL;
+			
 			return _widgetChildren[area].children[widget];
 		}
 
@@ -186,6 +221,12 @@ namespace MiniUI
 				.def("UpdateRenderable", &Widget::UpdateRenderable)
 				.def("GetWidgetByID", &Widget::GetWidgetByID)
 				.def("Fire", &Widget::Fire)
+				.def("OnMouseOver", &Widget::OnMouseOver, &Widget_wrapper::default_OnMouseOver)
+				.def("OnMouseOut", &Widget::OnMouseOut, &Widget_wrapper::default_OnMouseOut)
+				.def("OnMouseHover", &Widget::OnMouseHover, &Widget_wrapper::default_OnMouseHover)
+				.def("OnMouseUp", &Widget::OnMouseUp, &Widget_wrapper::default_OnMouseUp)
+				.def("OnMouseDown", &Widget::OnMouseDown, &Widget_wrapper::default_OnMouseDown)
+				.def("OnMouseMove", &Widget::OnMouseMove, &Widget_wrapper::default_OnMouseMove)
 			];
 
 			module(*pVM)

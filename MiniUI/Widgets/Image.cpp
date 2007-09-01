@@ -79,6 +79,8 @@ namespace MiniUI
 			rect.id = "mainRect";
 			
 			GetRenderable()->push_back ( rect );
+			GetRenderable()->size.x = width;
+			GetRenderable()->size.y = height;
 
 		}
 	}
