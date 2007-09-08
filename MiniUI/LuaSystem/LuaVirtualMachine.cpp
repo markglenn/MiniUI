@@ -15,6 +15,8 @@
 #include <MiniUI/Animation/Delay.h>
 #include <MiniUI/Animation/EventNotify.h>
 
+#include <MiniUI/LuaSystem/Helper.h>
+
 
 using MiniUI::Host::IArchive;
 using MiniUI::Host::IResource;
@@ -22,6 +24,7 @@ using namespace MiniUI::Widgets;
 using namespace MiniUI::Types;
 using namespace MiniUI::TinyXPath;
 using namespace MiniUI::Animation;
+using namespace MiniUI::LuaSystem;
 
 using namespace luabind;
 using namespace std;
@@ -147,16 +150,6 @@ namespace MiniUI
 			set_pcall_callback(add_file_and_line);
 			module(m_pState)
 			[
-				/*class_<EventArea, EventArea_wrapper>("EventArea")
-				.def(constructor<>())
-				.def("OnMouseOver", &EventArea::OnMouseOver, &EventArea_wrapper::default_OnMouseOver)
-				.def("OnMouseOut", &EventArea::OnMouseOut, &EventArea_wrapper::default_OnMouseOut)
-				.def("OnMouseHover", &EventArea::OnMouseHover, &EventArea_wrapper::default_OnMouseHover)
-				.def("OnMouseUp", &EventArea::OnMouseUp, &EventArea_wrapper::default_OnMouseUp)
-				.def("OnMouseDown", &EventArea::OnMouseDown, &EventArea_wrapper::default_OnMouseDown)
-				.def("OnMouseMove", &EventArea::OnMouseMove, &EventArea_wrapper::default_OnMouseMove)
-				.def_readonly("widget", &EventArea::widget),*/
-
 				class_< Vector2D<int> >("Vector2D")
 				.def(constructor<int,int>())
 				.def_readwrite("x", &Vector2D<int>::x)
@@ -171,6 +164,7 @@ namespace MiniUI
 			Animate::RegisterWithLua (this);
 			Delay::RegisterWithLua (this);
 			EventNotify::RegisterWithLua (this);
+			Helper::RegisterWithLua (this);
 			
 			module(m_pState, "xpath")
 			[

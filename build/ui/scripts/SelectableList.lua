@@ -1,3 +1,4 @@
+
 class "SelectableList" (Widget)
 
 -------------------------------------------------------------------
@@ -23,7 +24,7 @@ function SelectableList:OnLayout( )
 	
 	-- Position the highlight bar at the beginning
 	self.highlightBar.x = 0;
-	self.highlightBar.y = self.selectedItem * 30;
+	self.highlightBar.y = -35;
 	
 	self.animator = Animator ( );
 
@@ -34,6 +35,8 @@ function SelectableList:OnLayout( )
 		widget.x = 10;
 		widget.y = 5 + (self.spacing * i);
 	end
+
+	self.height = 5 + (self.childCount * self.spacing );
 end
 				
 -------------------------------------------------------------------
@@ -42,67 +45,37 @@ function SelectableList:Update( timestep )
 	self.animator:Run ( timestep );
 end
 
-class "SelectableList_hotspot" (EventArea);
-
 -------------------------------------------------------------------
-function SelectableList_hotspot:__init ( )
+function SelectableList:OnMouseDown ( x, y )
 -------------------------------------------------------------------
-	super ();
-	self.slidetimer = 200;
-end
-
--------------------------------------------------------------------
-function SelectableList_hotspot:OnMouseOver ( )
--------------------------------------------------------------------
-	self.split = -1;
-end
-				
--------------------------------------------------------------------
-function SelectableList_hotspot:OnMouseHover ( x, y )
--------------------------------------------------------------------
-	local split = math.floor(y / self.widget.spacing);
-		
-	if ( split >= self.widget:GetChildWidgetCount(1) ) then return end;
-		
-	if ( self.split ~= split ) then
-		local onwidget = self.widget:GetChildWidget(1, split);
-		local onanim = Animate(onwidget, "x", "sineInOut", 20, self.slidetimer );
-		self.widget.animator:Add ( onanim );
-		
-		if ( self.split ~= -1 ) then
-			local offwidget = self.widget:GetChildWidget(1, self.split);
-			local offanim = Animate(offwidget, "x", "sineInOut", 10, self.slidetimer );
-			self.widget.animator:Add ( offanim );
-		end
-		
-		self.split = split;
-	end
-end
-
--------------------------------------------------------------------
-function SelectableList_hotspot:OnMouseOut ( )
--------------------------------------------------------------------
-	if ( self.split ~= -1 ) then
-		local offwidget = self.widget:GetChildWidget(1, self.split);
-		local offanim = Animate(offwidget, "x", "sineInOut", 10, self.slidetimer );
-		self.widget.animator:Add ( offanim );
-	end
+	local split = math.floor(y / self.spacing);
 	
-	self.split = -1;
-end
--------------------------------------------------------------------
-function SelectableList_hotspot:OnMouseDown ( x, y )
--------------------------------------------------------------------
-	local split = math.floor(y / self.widget.spacing);
-	
-	if ( split >= self.widget.childCount or split == self.widget.selectedItem ) then
+	if ( split >= self.childCount or split == self.selectedItem ) then
 		return;
 	end
 	
-	self.widget.animator:Stop ( );
+	self.animator:Stop ( );
 
-	self.widget.animator:Add ( Animate ( self.widget.highlightBar, "y",
-				"sineInOut",  split * 30, 200 ) );
+	self.animator:Add ( Animate ( self.highlightBar, "y",
+				"bounceOut",  split * 30, 600 ) );
 		
-	self.widget:Fire ( "OnSelect", { item=split } );
+	self:Fire ( "OnSelect", { item=split } );
+end
+
+-------------------------------------------------------------------
+function SelectableList:Call ( func, object )
+-------------------------------------------------------------------
+	if ( func == "AddText" ) then
+		local widget = MiniUI.CreateWidget ( "TextArea" );	
+		widget:Call ( "SetText", object );
+	
+		self:AddChild ( 1, widget );
+		
+		self.childCount = self.childCount + 1;
+				
+		widget.x = 10;
+		widget.y = 5 + (self.spacing * (self.childCount - 1));
+
+		self.height = 5 + (self.childCount * self.spacing );
+	end
 end

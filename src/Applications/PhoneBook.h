@@ -9,7 +9,31 @@ namespace Applications
 	{
 	public:	
 		PhoneBook ( MiniUI::UIManager *pManager );
-		virtual ~PhoneBook ( );			
+		virtual ~PhoneBook ( );		
+			
+		void OnEvent ( MiniUI::UIEvent* pEvent );
+		
+	private:
+		
+		struct PhoneBookEntry
+		{
+			std::string name;
+			std::string phone;	
+		};
+		
+		void AddEntry ( std::string name, std::string phoneNumber );
+		void SlideInfoOut ( );
+		void SlideInfoIn ( );
+		
+		MiniUI::Widgets::Widget* _pListing;
+		MiniUI::Widgets::Widget* _pSlider;
+		MiniUI::Widgets::Widget* _pName;
+		MiniUI::Widgets::Widget* _pPhone;
+		
+		int _selectedIndex;
+		bool _firstSelection;
+		
+		std::vector<PhoneBookEntry> _phoneBook;
 	};
 }
 

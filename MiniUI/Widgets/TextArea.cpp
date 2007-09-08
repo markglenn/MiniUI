@@ -49,8 +49,11 @@ namespace MiniUI
 					this->GetRenderable()->push_back ( rect );
 					pos += width;
 				}
+				
+				pRenderable->size.x = pos;
 			}
-			
+			pRenderable->size.y = _pFont->GetHeight();
+
 			pRenderable->OnChanged ();
 
 			return true;
@@ -82,6 +85,12 @@ namespace MiniUI
 		{
 			if ( func == "ChangeText" )
 				BuildText ( luabind::object_cast<std::string>(object["text"]), _pFont );
+			
+			if ( func == "SetText" )
+			{
+				_pFont = Font::GetFont( luabind::object_cast<std::string>(object["font"]) );
+				BuildText ( luabind::object_cast<std::string>(object["text"]), _pFont );
+			}
 		}
 
 	}

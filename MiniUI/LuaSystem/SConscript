@@ -1,6 +1,6 @@
 Import('env')
 
-sources = [ 'LuaVirtualMachine.cpp' ]
+sources = [ 'LuaVirtualMachine.cpp', 'Helper.cpp' ]
 
 objs = env.Object ( sources )
 

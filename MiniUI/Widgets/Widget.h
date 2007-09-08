@@ -83,7 +83,9 @@ namespace MiniUI
 			float GetOpacity ( ) const { return _pRenderable->opacity; }
 			void SetOpacity ( float o ) { _pRenderable->opacity = o; }
 
+			void SetWidth ( int width ) { _pRenderable->size.x = width; }
 			int GetWidth ( ) const { return _pRenderable->size.x; }
+			void SetHeight ( int height ) { _pRenderable->size.y = height; }
 			int GetHeight ( ) const { return _pRenderable->size.y; }
 
 			virtual void OnLoad ( TinyXPath::TiXmlElement *pSkin, TinyXPath::TiXmlElement *pLayout ) {}
@@ -96,6 +98,8 @@ namespace MiniUI
 			
 			Widget* GetChildWidget ( int area, int widget );
 			Widget* GetWidgetByID ( std::string id );
+			
+			void AddChild ( int area, Widget *pWidget );
 			
 			void Destroy ( );
 

@@ -323,6 +323,18 @@
 				<area id="area" select="*" />
 			</children>
 		</widget>
+		
+		<widget id="scrollArea" x="@x" y="@y">
+			<children>
+				<area id="area" select="*" width="@width" height="@height" />
+			</children>
+		</widget>
+		
+		<widget id="slideArea" x="@x" y="@y">
+			<children>
+				<area id="area" select="*" width="@width" height="@height" />
+			</children>
+		</widget>
 	</widgets>
 	<fonts>
 		<font id="MyFont" src="fonts/FreeSans BoldOblique.bff" />

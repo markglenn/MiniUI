@@ -23,6 +23,7 @@
 #include <MiniUI/Types/Integer.h>
 #include <MiniUI/LuaSystem/LuaVirtualMachine.h>
 #include <MiniUI/Widgets/WidgetFactory.h>
+#include <MiniUI/LuaSystem/Helper.h>
 
 #include <luabind/luabind.hpp>
 #include <luabind/adopt_policy.hpp>
@@ -105,17 +106,14 @@ namespace MiniUI
 		{
 			// Find the widget
 			TiXmlElement *pWidgetElement = pSkin->GetWidgetElement( pChild->ValueStr() );
-			WidgetFactory widgetFactory;
 			
-			Widget *pWidget = widgetFactory.Create ( pChild->ValueStr() );
-			pWidget->SetName ( pChild->ValueStr() );
+			Widget *pWidget = Helper::CreateWidget ( pChild->ValueStr() );
 
 			if ( pChild->Attribute ( "id" ) )
 				pWidget->SetID ( pChild->Attribute ( "id" ) );
 			
-			Renderable *pRenderable = HostIntegration::Renderer->CreateRenderable ( );
-			pWidget->SetRenderable ( pRenderable );
-
+			Renderable *pRenderable = pWidget->GetRenderable ( );
+			
 			// Skinned widget
 			if ( pWidgetElement )
 			{

@@ -19,6 +19,7 @@
 
 #include "Applications/MainMenu.h"
 #include "Applications/ImageViewer.h"
+#include "Applications/PhoneBook.h"
 
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -81,9 +82,10 @@ bool Application::LoadUI ( std::string path )
 void Application::Run ( )
 ///////////////////////////////////////////////////////////////////////////////
 {
-	ImageViewer imageViewer ( _pUIManager );
+	//PhoneBook application ( _pUIManager );
+	ImageViewer application ( _pUIManager );
 	
-	imageViewer.Show ( );
+	application.Show ( );
 
 	SDL_Event event;
 	int ticks = SDL_GetTicks ( );

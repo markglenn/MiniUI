@@ -1,10 +1,105 @@
 --require ('ui/scripts/xpWindow');
---require ('ui/scripts/VerticalLayout');
+require ('ui/scripts/VerticalLayout');
 --require ('ui/scripts/HorizontalLayout');
 --require ('ui/scripts/Button');
---require ('ui/scripts/SelectableList');
+require ('ui/scripts/SelectableList');
 require ('ui/scripts/Slideshow');
 		
+class "slideArea" (Widget);
+
+function slideArea:__init()
+	super();
+end;
+
+-------------------------------------------------------------------
+function slideArea:OnLoad(skinElement, widgetElement)
+-------------------------------------------------------------------
+	local direction = xpath.ToString ( widgetElement, "@slideDirection" );
+	local position = xpath.ToString ( widgetElement, "@position" );
+	
+	-- Setup the positioning
+	self.outPosition = { x = self.x, y = self.y };
+	self.inPosition = { x = self.x, y = self.y };
+	
+	if ( direction == "right" ) then
+		self.outPosition.x = 640;
+	end;
+	
+	if ( direction == "left" ) then
+		self.outPosition.x = -self.width;
+	end;
+	
+	if ( direction == "up" ) then
+		self.outPosition.y = -self.height;
+	end;
+	
+	if ( direction == "down" ) then
+		self.outPosition.y = 480;
+	end;
+	
+	if ( position == "out" ) then
+		self.x = self.outPosition.x;
+		self.y = self.outPosition.y;
+	end;
+	
+	self.animator = Animator ( );
+
+end;
+	
+-------------------------------------------------------------------
+function slideArea:Call( func, object )
+-------------------------------------------------------------------
+	if ( func == "SlideIn" ) then
+		local xanim = Animate ( self, "x", "sineInOut", self.inPosition.x, 500 )
+		self.animator:Add ( xanim );
+		self.animator:Add ( Animate ( self, "y", "sineInOut", self.inPosition.y, 500 ) );
+		local delay = Delay ( 200 );
+		
+		delay:Add ( EventNotify ( self ) );
+		xanim:Add ( delay );
+	end;
+	
+	if ( func == "SlideOut" ) then
+		local xanim = Animate ( self, "x", "sineInOut", self.outPosition.x, 500 )
+		self.animator:Add ( xanim );
+		self.animator:Add ( Animate ( self, "y", "sineInOut", self.outPosition.y, 500 ) );
+	
+		local delay = Delay ( 200 );
+		
+		delay:Add ( EventNotify ( self ) );
+		xanim:Add ( delay );
+	end;
+	
+	if ( func == "OnEventNotify" ) then
+		if ( self.x == self.inPosition.x and self.y == self.inPosition.y ) then
+			self:Fire ( "SlideInDone", { item=self } );
+		else
+			self:Fire ( "SlideOutDone", { item=self } );
+		end;
+	end;
+		
+end
+
+-------------------------------------------------------------------
+function slideArea:Update( timestep )
+-------------------------------------------------------------------
+	self.animator:Run ( timestep );
+end
+
+class "scrollArea" (Widget)
+		
+-------------------------------------------------------------------------------
+function scrollArea:__init()
+-------------------------------------------------------------------------------
+	super();
+end
+		
+-------------------------------------------------------------------------------
+function scrollArea:OnLayout()
+-------------------------------------------------------------------------------
+
+end
+
 class "HoverHighlight" (Widget)
 
 -------------------------------------------------------------------
@@ -80,7 +175,7 @@ function PictureViewer:Call( func, object )
 		local prevOut = Animate ( self.previousButton, "x", "sineInOut", -50, 300 );
 		local nextOut = Animate ( self.nextButton, "x", "sineInOut", 640, 300 );
 	
-		local delay = Delay ( 700 );
+		local delay = Delay ( 1500 );
 		
 		local prevIn = Animate ( self.previousButton, "x", "sineInOut", self.previousPos, 300 );
 		local nextIn = Animate ( self.nextButton, "x", "sineInOut", self.nextPos, 300 );

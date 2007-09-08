@@ -211,8 +211,8 @@ namespace MiniUI
 				.property("angle", &Widget::GetAngle, &Widget::SetAngle)
 				.property("x", &Widget::GetPositionX, &Widget::SetPositionX)
 				.property("y", &Widget::GetPositionY, &Widget::SetPositionY)
-				.property("width", &Widget::GetWidth)
-				.property("height", &Widget::GetHeight)
+				.property("width", &Widget::GetWidth, &Widget::SetWidth )
+				.property("height", &Widget::GetHeight, &Widget::SetHeight )
 				.property("opacity", &Widget::GetOpacity, &Widget::SetOpacity)
 				.property("id", &Widget::GetID, &Widget::SetID)
 				.def("GetChildWidgetCount", &Widget::GetChildWidgetCount)
@@ -227,6 +227,7 @@ namespace MiniUI
 				.def("OnMouseUp", &Widget::OnMouseUp, &Widget_wrapper::default_OnMouseUp)
 				.def("OnMouseDown", &Widget::OnMouseDown, &Widget_wrapper::default_OnMouseDown)
 				.def("OnMouseMove", &Widget::OnMouseMove, &Widget_wrapper::default_OnMouseMove)
+				.def("AddChild", &Widget::AddChild)
 			];
 
 			module(*pVM)
@@ -267,6 +268,13 @@ namespace MiniUI
 			}		
 			
 			return NULL;			
+		}
+		
+		///////////////////////////////////////////////////////////////////////
+		void Widget::AddChild ( int area, Widget *pWidget )
+		///////////////////////////////////////////////////////////////////////
+		{
+			_widgetChildren[area].children.push_back ( pWidget );
 		}
 	}
 }

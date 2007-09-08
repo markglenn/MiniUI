@@ -423,3 +423,5 @@ MiniUI/Animation/EventNotify.h
 build/ui/scripts/Slideshow.lua
 src/Applications/ImageViewer.cpp
 src/Applications/ImageViewer.h
+MiniUI/LuaSystem/Helper.cpp
+MiniUI/LuaSystem/Helper.h

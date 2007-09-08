@@ -1,102 +1,9 @@
-<interface>
-	<screen id="mainScreen1">
-		<xpWindow x="10" y="10" width="600" height="400">
-			<VerticalLayout padding="5">
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-				<HorizontalLayout padding="5" height="30">
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-					<Button width="100" />
-				</HorizontalLayout>
-			</VerticalLayout>
-		</xpWindow>
-	</screen>
-	
-	<!-- MAIN MENU -->
-
-	<screen id="MainMenu">
-		<Image src="Common/img/background.png" width="640" height="480" />
-		<AnimatedMenu id="animatedMenu" width="640" height="480">
-			<HoverHighlight outOpacity="0.5" overOpacity="1.0" id="shutdownOverlay">
-				<Image id="shutdownButton" src="128x128/apps/exit.png" width="128" height="128" />
-			</HoverHighlight>
-			<HoverHighlight outOpacity="0.5" overOpacity="1.0" x="160" >
-				<Image src="128x128/devices/camera_unmount.png" width="128" height="128" />
-			</HoverHighlight>
-			<Image src="128x128/apps/shutdown.png" x="320" width="128" height="128" opacity="0.5" />
-			<Image src="128x128/apps/shutdown.png" x="480" width="128" height="128" opacity="0.5" />
-		</AnimatedMenu>
-	</screen>
-	
+<interface>	
 	<!-- PICTURE VIEWER -->
 	
 	<screen id="PictureViewer">
 		<!-- Image List -->
-		<PictureViewer id="pictureViewer">
+		<PictureViewer id="pictureViewer" time="1000">
 			<Slideshow id="slideShow" time="1000" width="640" height="480">
 				<images>
 					<Image src="images/waterfire.png" width="640" height="480" 
@@ -129,52 +36,26 @@
 		</PictureViewer>
 	</screen>
 	
-	<!-- TEST SCREEN -->
-	
-	<screen id="mainScreen">
-		
-		<Background width="640" height="480" />
-		<xpWindow x="10" y="10" width="300" height="200">
-			<adjustable-black width="300" height="200" opacity="0.25" />
-			<SelectableList width="200" height="150">
-		
-				<Items spacing="30">
-					<TextArea font="MyFont" text="Selectable Item 1"/>
-					<TextArea font="MyFont" text="Selectable Item 2"/>
-					<TextArea font="MyFont" text="Selectable Item 3"/>
-					<TextArea font="MyFont" text="Selectable Item 4"/>
-					<TextArea font="MyFont" text="Selectable Item 5"/>				
-				</Items>
-				<HighlightBar>
-					<Highlight x="0" y="0" width="190" />
-				</HighlightBar>
-			</SelectableList>
-			
-		</xpWindow>
-		
-		<xpWindow x="400" y="10" width="300" height="200">
-			<adjustable-black width="300" height="200" opacity="0.25" />
-			<SelectableList width="200" height="150">
-				
-				<Items spacing="30">
-					<TextArea font="MyFont" text="Selectable Item 1"/>
-					<TextArea font="MyFont" text="Selectable Item 2"/>
-					<TextArea font="MyFont" text="Selectable Item 3"/>
-					<TextArea font="MyFont" text="Selectable Item 4"/>
-					<TextArea font="MyFont" text="Selectable Item 5"/>				
-				</Items>
-				<HighlightBar>
-					<Highlight x="0" y="0" width="190" />
-				</HighlightBar>
-			</SelectableList>
-			
-		</xpWindow>
-	</screen>
-	
 	<!-- PHONEBOOK -->
-	<screen id="phoneBook">
-		<scrollArea>
-			
+	<screen id="PhoneBook">
+		<Image src="applications/phonebook/background.png" width="640" height="480" />
+		<scrollArea y="30" width="230" height="425">
+			<SelectableList width="200" height="100" id="PhoneListing">
+				<Items spacing="30" />
+				<HighlightBar>
+					<Highlight x="0" y="0" width="220" />
+				</HighlightBar>
+			</SelectableList>
 		</scrollArea>
+		
+		<adjustable-logo width="200" x="440" y="420" />
+		
+		<!-- Sliding info -->
+		<slideArea id="Slider" x="306" y="24" width="334" height="432" slideDirection="right" position="out">
+			<Image src="applications/phonebook/slider.png" x="0" y="0" width="334" height="432" />
+			<TextArea id="name" font="MyFont" text="Name: Mark Glenn" x="40" y="110" />
+			<TextArea id="phone" font="MyFont" text="Phone: 847-555-1212" x="40" y="150" />
+		</slideArea>
+		
 	</screen>
 </interface>
