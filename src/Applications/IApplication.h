@@ -19,9 +19,10 @@ namespace Applications
 		virtual void OnHide ( ) { }
 		
 		virtual void OnEvent ( MiniUI::UIEvent* pEvent ) = 0;
+		virtual std::string ScreenName ( ) = 0;
 		
 		MiniUI::UIManager* UIManager() const { return _pManager; }
-
+		
 	protected:
 	
 	private:

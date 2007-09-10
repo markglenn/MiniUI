@@ -1,6 +1,7 @@
 Import('env')
 
-sources = [ 'WidgetFactory.cpp', 'Widget.cpp', 'TextArea.cpp', 'Image.cpp' ]
+sources = [ 'WidgetFactory.cpp', 'Widget.cpp', 'TextArea.cpp', 
+				'Image.cpp' ]
 
 obj = env.Object ( sources )
 

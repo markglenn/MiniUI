@@ -1,7 +1,7 @@
 <interface>	
 	<!-- PICTURE VIEWER -->
 	
-	<screen id="PictureViewer">
+	<screen id="ImageViewer">
 		<!-- Image List -->
 		<PictureViewer id="pictureViewer" time="1000">
 			<Slideshow id="slideShow" time="1000" width="640" height="480">
@@ -19,7 +19,7 @@
 				</images>
 				<hovermenu>
 					<OverlayLayout>
-						<adjustable-black x="0" y="360" width="640" height="100" opacity="0.5" />
+						<adjustableBlack x="0" y="360" width="640" height="100" opacity="0.5" />
 						<TextArea id="shortDescription" x="20" y="380" font="MyFont" text="Description 1" />
 						<TextArea id="longDescription" x="20" y="410" font="MyFont" text="Long Description 1" />
 					</OverlayLayout>
@@ -33,7 +33,23 @@
 			<HoverHighlight outOpacity="0.5" overOpacity="1.0" x="-5" y="30">
 				<Image id="previousButton" src="applications/imageviewer/previous.png" width="38" height="48" />
 			</HoverHighlight>
+			
 		</PictureViewer>
+		
+		<HoverHighlight outOpacity="0.5" overOpacity="1.0" x="620" y="0">
+			<Image id="homeButton" src="Common/img/icon_address.png" width="16" height="15" />
+		</HoverHighlight>
+		
+		<adjustableBlack id="Fader" x="0" y="0" width="640" height="480" opacity="1.0" />
+		
+		<!-- Animations -->
+		<Animation id="OnShow">
+			<Run id="Fader" parameter="opacity" value="0" duration="300"/>
+		</Animation>
+		
+		<Animation id="OnHide">
+			<Run id="Fader" parameter="opacity" value="1" duration="300"/>
+		</Animation>
 	</screen>
 	
 	<!-- PHONEBOOK -->
@@ -50,6 +66,10 @@
 		
 		<adjustable-logo width="200" x="440" y="420" />
 		
+		<HoverHighlight outOpacity="0.5" overOpacity="1.0" x="620" y="0">
+			<Image id="homeButton" src="Common/img/icon_address.png" width="16" height="15" />
+		</HoverHighlight>
+		
 		<!-- Sliding info -->
 		<slideArea id="Slider" x="306" y="24" width="334" height="432" slideDirection="right" position="out">
 			<Image src="applications/phonebook/slider.png" x="0" y="0" width="334" height="432" />
@@ -57,5 +77,45 @@
 			<TextArea id="phone" font="MyFont" text="Phone: 847-555-1212" x="40" y="150" />
 		</slideArea>
 		
+		<adjustableBlack id="Fader" x="0" y="0" width="640" height="480" opacity="1.0" />
+		
+		<Animation id="OnShow">
+			<Run id="Fader" parameter="opacity" value="0" duration="300"/>
+		</Animation>
+		
+		<Animation id="OnHide">
+			<Run id="Fader" parameter="opacity" value="1" duration="300"/>
+		</Animation>
+		
+	</screen>
+	
+	<!-- Main Menu -->
+	<screen id="MainMenu">
+		<Image src="applications/mainmenu/background.png" width="640" height="480" />
+		<slideArea id="phoneBookSlider" x="49" y="100" width="542" height="40" slideDirection="left" position="out">
+			<HoverHighlight outOpacity="0.5" overOpacity="1.0" x="0" y="0">
+				<Image id="phoneBookSelect" src="applications/mainmenu/phonebook.png" width="542" height="40" />
+			</HoverHighlight>
+		</slideArea>
+		
+		<slideArea id="imageViewerSlider" x="40" y="200" width="560" height="39" slideDirection="right" position="out">
+			<HoverHighlight outOpacity="0.5" overOpacity="1.0" x="0" y="0">
+				<Image id="imageViewerSelect" src="applications/mainmenu/imageviewer.png" width="560" height="39" />
+			</HoverHighlight>
+		</slideArea>
+		
+		<adjustableBlack id="Fader" x="0" y="0" width="640" height="480" opacity="1.0" />
+		
+		<Animation id="OnShow">
+			<Run id="imageViewerSlider" parameter="x" value="40" duration="300" />
+			<Run id="phoneBookSlider" parameter="x" value="49" duration="300" />
+			<Run id="Fader" parameter="opacity" value="0" duration="300"/>
+		</Animation>
+		
+		<Animation id="OnHide">
+			<Run id="imageViewerSlider" parameter="x" value="640" duration="300" />
+			<Run id="phoneBookSlider" parameter="x" value="-542" duration="300" />			
+			<Run id="Fader" parameter="opacity" value="1" duration="300"/>
+		</Animation>
 	</screen>
 </interface>

@@ -98,7 +98,7 @@ function Slideshow:SwitchImage ( nextImageNum )
 	local hoverMenuOut = Animate ( self:GetChildWidget(1,0), "y", "sineInOut", 480, self.animationTime / 2 );
 	local hoverMenuIn = Animate ( self:GetChildWidget(1,0), "y", "sineInOut", self.hightlightBarY, self.animationTime / 2 );
 	local delay = Delay ( 500 );
-	local event = EventNotify ( self );
+	local event = EventNotify ( self, {} );
 	
 	hoverMenuOut:Add ( event );
 	event:Add ( delay );

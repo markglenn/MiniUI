@@ -33,7 +33,7 @@ namespace MiniUI
 		{
 		public:
 			
-			EventNotify ( Widgets::Widget* pWidget );
+			EventNotify ( Widgets::Widget* pWidget, luabind::object object );
 			virtual ~EventNotify ( );
 			
 			bool Run ( double duration );
@@ -43,6 +43,7 @@ namespace MiniUI
 		private:
 			Widgets::Widget* 	_pWidget;
 			bool 				_notified;
+			luabind::object		_object;
 
 		};
 	}

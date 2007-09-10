@@ -168,7 +168,7 @@ namespace MiniUI
 			
 			module(m_pState, "xpath")
 			[
-				def ("ToElement", &xpath_element, adopt(result)),
+				def ("ToElement", &xpath_element/*, adopt(result)*/),
 				def ("ToString", &xpath_string),
 				def ("ToNumber", &xpath_number)
 			];

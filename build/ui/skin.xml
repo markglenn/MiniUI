@@ -179,7 +179,7 @@
 		</widget>
 
 		<!-- Adjustable black area  -->
-		<widget id="adjustable-black" src="images/black.png" width="1" height="1">
+		<widget id="adjustableBlack" src="images/black.png" width="1" height="1">
 			<layout>
 				<section id="main">
 					<source x="0" y="0" width="1" height="1" />
@@ -306,18 +306,6 @@
 			</events>
 		</widget>
 		
-		<widget id="AnimatedMenu" src="images/black.png" width="1" height="1">
-			<layout>
-				<section id="main">
-					<source x="0" y="0" width="1" height="1" />
-					<destination x="0" y="0" width="@width" height="@height" />
-				</section>
-			</layout>
-			<children>
-				<area id="area" select="*" />
-			</children>
-		</widget>
-		
 		<widget id="PictureViewer">
 			<children>
 				<area id="area" select="*" />
@@ -330,7 +318,7 @@
 			</children>
 		</widget>
 		
-		<widget id="slideArea" x="@x" y="@y">
+		<widget id="slideArea" x="@x" y="@y" width="@width" height="@height" >
 			<children>
 				<area id="area" select="*" width="@width" height="@height" />
 			</children>

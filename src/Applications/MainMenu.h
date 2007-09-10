@@ -12,9 +12,18 @@ namespace Applications
 		virtual ~MainMenu ( );	
 				
 		void OnEvent ( MiniUI::UIEvent* pEvent );
+		std::string ScreenName ( ) { return "MainMenu"; }
 		
+		void OnShow ( );
 	private:
-		MiniUI::Widgets::Widget* _pMenu;
+
+		void SlideMenus ( bool in );
+
+		MiniUI::Widgets::Widget* _pOnShowAnim;
+		MiniUI::Widgets::Widget* _pOnHideAnim;
+		
+		std::string _selectedItem;
+		
 	};
 }
 

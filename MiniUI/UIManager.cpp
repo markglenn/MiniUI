@@ -129,6 +129,7 @@ namespace MiniUI
 			if ( pScreen->LoadScreen ( (TiXmlElement *)xpath.XNp_get_xpath_node ( i ) ) )
 			{
 				_screens[ pScreen->id() ] = pScreen;
+				_pCurrentScreen = pScreen;
 				pScreen->BuildScreen ( &_skin );
 			}
 			else
@@ -175,16 +176,21 @@ namespace MiniUI
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
+	Widget* FindWidget ( std::string id )
+	///////////////////////////////////////////////////////////////////////////
+	{
+		return UIManager::Instance()->GetCurrentScreen()->FindWidget( id );
+	}
+	
+	///////////////////////////////////////////////////////////////////////////
 	void UIManager::Register ( )
 	///////////////////////////////////////////////////////////////////////////
 	{	
-		module(&(*_luaVM))
+		module(&(*_luaVM), "MiniUI")
 		[
-			class_<UIManager>("UIManager")
-			.def("GetCurrentScreen", &UIManager::GetCurrentScreen)
+			def("FindWidget", &FindWidget)
 		];
-		
-		globals(&(*_luaVM))["uiManager"] = this;
+
 	}
 	
 	///////////////////////////////////////////////////////////////////////////

@@ -9,10 +9,12 @@ namespace Applications
 	{
 	public:	
 		PhoneBook ( MiniUI::UIManager *pManager );
-		virtual ~PhoneBook ( );		
-			
+		virtual ~PhoneBook ( );
+				
 		void OnEvent ( MiniUI::UIEvent* pEvent );
-		
+		std::string ScreenName ( ) { return "PhoneBook"; }
+		void OnShow ( );
+
 	private:
 		
 		struct PhoneBookEntry
@@ -29,6 +31,9 @@ namespace Applications
 		MiniUI::Widgets::Widget* _pSlider;
 		MiniUI::Widgets::Widget* _pName;
 		MiniUI::Widgets::Widget* _pPhone;
+		
+		MiniUI::Widgets::Widget* _pOnShowAnimation;
+		MiniUI::Widgets::Widget* _pOnHideAnimation;
 		
 		int _selectedIndex;
 		bool _firstSelection;

@@ -60,7 +60,7 @@ namespace MiniUI
 		{
 			return new TextArea ( );	
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////
 		Widget* CreateImage ( )
 		///////////////////////////////////////////////////////////////////////
@@ -239,6 +239,7 @@ namespace MiniUI
 			
 			factory.Register ( "TextArea", CreateTextArea );
 			factory.Register ( "Image", CreateImage );
+			//factory.Register ( "Animation", CreateAnimation );
 		}
 		
 		///////////////////////////////////////////////////////////////////////

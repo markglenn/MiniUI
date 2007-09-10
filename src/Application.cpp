@@ -11,8 +11,6 @@
 //
 #include "Application.h"
 #include "Integration/FileSystem/FolderArchive.h"
-#include <MiniUI/Graphics/Renderable.h>
-#include <MiniUI/UISystem/Screen.h>
 #include <MiniUI/Types/Rectangle.h>
 #include <MiniUI/Input/Mouse.h>
 #include <SDL/SDL.h>
@@ -20,10 +18,6 @@
 #include "Applications/MainMenu.h"
 #include "Applications/ImageViewer.h"
 #include "Applications/PhoneBook.h"
-
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
 
 using namespace Integration;
 using namespace Integration::FileSystem;
@@ -66,6 +60,9 @@ bool Application::Initialize ( unsigned int width, unsigned int height )
 	FolderArchive archive ( "./" );
 	_pUIManager->LoadScreens ( "test.xml", &archive );
 
+	// Initialize the application manager
+	_appManager.Initialize();
+	
 	return true;
 }
 
@@ -82,14 +79,10 @@ bool Application::LoadUI ( std::string path )
 void Application::Run ( )
 ///////////////////////////////////////////////////////////////////////////////
 {
-	//PhoneBook application ( _pUIManager );
-	ImageViewer application ( _pUIManager );
-	
-	application.Show ( );
-
 	SDL_Event event;
 	int ticks = SDL_GetTicks ( );
 
+	_appManager.ShowScreen ( "MainMenu" );
 	Mouse mouse;
 
 	while ( true )

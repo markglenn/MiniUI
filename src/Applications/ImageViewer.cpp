@@ -1,6 +1,8 @@
 #include "ImageViewer.h"
+#include "../ApplicationManager.h"
 
 using namespace MiniUI;
+using namespace MiniUI::UISystem;
 using namespace MiniUI::Widgets;
 using namespace MiniUI::LuaSystem;
 using namespace luabind;
@@ -12,16 +14,32 @@ namespace Applications
 		: IApplication ( pManager )
 	///////////////////////////////////////////////////////////////////////////
 	{
-		pManager->SetCurrentScreen ( "PictureViewer" );
-		
-		_pMainWidget = pManager->GetCurrentScreen()->FindWidget ( "pictureViewer" );
-		_pSlideshow = pManager->GetCurrentScreen()->FindWidget ( "slideShow" );
+		_pMainWidget = NULL;
+		_pSlideshow = NULL;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
 	ImageViewer::~ImageViewer ( )
 	///////////////////////////////////////////////////////////////////////////
 	{
+		
+	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	void ImageViewer::OnShow ( )
+	///////////////////////////////////////////////////////////////////////////
+	{
+		if ( _pMainWidget == NULL )
+		{
+			Screen *pScreen = UIManager::Instance()->GetCurrentScreen();
+			
+			_pMainWidget = pScreen->FindWidget ( "pictureViewer" );
+			_pSlideshow = pScreen->FindWidget ( "slideShow" );
+			_pOnShowAnimation = pScreen->FindWidget ( "OnShow" );
+			_pOnHideAnimation = pScreen->FindWidget ( "OnHide" );
+		}
+		
+		_pOnShowAnimation->CallVoid ( "Run" );
 		
 	}
 	
@@ -40,6 +58,14 @@ namespace Applications
 		{
 			_pMainWidget->Call ( "Animate", luabind::object() );
 			_pSlideshow->Call ( "PreviousImage", luabind::object() );
-		}		
+		}	
+			
+		if ( id == "homeButton" && pEvent->event == "OnClick" )
+		{
+			_pOnHideAnimation->CallVoid( "Run" );
+		}
+		
+		if ( id == "OnHide" && pEvent->event == "AnimationDone" )
+			ApplicationManager::Instance()->ShowScreen("MainMenu");
 	}
 }

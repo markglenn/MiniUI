@@ -55,7 +55,7 @@ function slideArea:Call( func, object )
 		self.animator:Add ( Animate ( self, "y", "sineInOut", self.inPosition.y, 500 ) );
 		local delay = Delay ( 200 );
 		
-		delay:Add ( EventNotify ( self ) );
+		delay:Add ( EventNotify ( self, {} ) );
 		xanim:Add ( delay );
 	end;
 	
@@ -66,7 +66,7 @@ function slideArea:Call( func, object )
 	
 		local delay = Delay ( 200 );
 		
-		delay:Add ( EventNotify ( self ) );
+		delay:Add ( EventNotify ( self, {} ) );
 		xanim:Add ( delay );
 	end;
 	
@@ -186,82 +186,147 @@ function PictureViewer:Call( func, object )
 		
 		self.animator:Add ( prevOut );
 		self.animator:Add ( nextOut );
-	end
-end
-
-		
-		
-		
-		
-		
-class "AnimatedMenu" (Widget)
-
+	end;
+end;
+	
+class "adjustableBlack" (Widget);
+	
 -------------------------------------------------------------------
-function AnimatedMenu:__init()
+function adjustableBlack:__init()
 -------------------------------------------------------------------
 	super();
 	self.animator = Animator ( );
-end
+end;
 
 -------------------------------------------------------------------
-function AnimatedMenu:Update( timestep )
+function adjustableBlack:Update( timestep )
 -------------------------------------------------------------------
 	self.animator:Run ( timestep );
-end
-
+end				
+				
 -------------------------------------------------------------------
-function AnimatedMenu:OnLayout( )
+function adjustableBlack:Call( func, object )
 -------------------------------------------------------------------
-	self.opacity = 0;
-end
-		
--------------------------------------------------------------------
-function AnimatedMenu:Call( func, object )
--------------------------------------------------------------------
-	self:Animate ( object["id"] );
-end
-
--------------------------------------------------------------------
-function AnimatedMenu:Animate ( selectedItem )
--------------------------------------------------------------------
-	math.randomseed( os.time() )
+	if ( func == "FadeOut" ) then		
+		self.animator:Add ( Animate ( self, "opacity", "sineInOut", 1, 300 ) );
+	end;
 	
-	local numWidgets = self:GetChildWidgetCount ( 0 );
+	if ( func == "FadeIn" ) then
+		self.animator:Add ( Animate ( self, "opacity", "sineInOut", 0, 300 ) );
+	end;
+end;
 
-	for i = 0,numWidgets - 1 do
-		local widget = self:GetChildWidget(0, i);
-		
-		-- Set the delay
-		local delay;
-		if ( widget.id == selectedItem ) then
-			delay = Delay ( 800 );
-		else
-			delay = Delay ( math.random(300) );
-		end
-		
-		local anim = Animate ( widget, "y", "sineInOut", widget.y + 500, 500 );
-		
-		delay:Add ( anim );
-		self.animator:Add ( delay );
-	end
-				
-	local fadeDelay = Delay(800);
+class "Animation" (Widget);
 	
-	fadeDelay:Add ( Animate ( self, "opacity", "sineInOut", 1, 500 ) );
-	self.animator:Add ( fadeDelay );
-				
-end
-				
 -------------------------------------------------------------------
-function AnimatedMenu:Reset ( )
+function Animation:__init()
 -------------------------------------------------------------------
-	for i = 0,numWidgets - 1 do
-		local widget = self:GetChildWidget(0, i);
-		
-		widget.y = widget.y - 500;
-		self.opacity = 0;
-	end
+	super();
+	self.animator = Animator ( );
+	self.isRunning = false;
+end;
 
-end
+-------------------------------------------------------------------
+function Animation:GetAnimation ( element )
+-------------------------------------------------------------------
+	local typeEl = xpath.ToString ( element, "self::*" );
+	
+	if ( typeEl ~= "Call" and typeEl ~= "Run" ) then
+		return nil;
+	end;
+	
+	local anim = {};
+	
+	anim.type = typeEl;
+	anim.children = {};
+	
+	if ( typeEl == "Run" ) then
+		local widgetID = xpath.ToString ( element, "@id" );
+		local widget = MiniUI.FindWidget(widgetID);
+
+		anim["widget"] = widget;
+		anim["parameter"] = xpath.ToString ( element, "@parameter" );
+		anim["value"] = xpath.ToNumber ( element, "@value" );
+		anim["duration"] = xpath.ToNumber ( element, "@duration" );
+	end;
+	
+	local count = xpath.ToNumber ( element, "count(child::*)" );
+	
+	for i = 1,count+1 do
+		local search="*[" .. i .. "]";
+		local val = self:GetAnimation ( xpath.ToElement( element, search ) );
+		
+		if ( val ~= nil ) then
+			anim.children[#anim.children + 1] = val;
+		end;
+	end
+	
+	return anim;
+end;	
+
+-------------------------------------------------------------------
+function Animation:OnLoad(skinElement, widgetElement)
+-------------------------------------------------------------------
+	local count = xpath.ToNumber ( widgetElement, "count(child::*)" );
+	self.animations = {};
+		
+	for i = 1,count+1 do
+		local search="*[" .. i .. "]";
+		local val = self:GetAnimation ( xpath.ToElement( widgetElement, search ) );
+		if ( val ~= nil ) then
+			self.animations[#self.animations + 1] = val;
+		end;
+	end;
+end;
+
+-------------------------------------------------------------------
+function Animation:Update( timestep )
+-------------------------------------------------------------------
+	local running = self.animator:Run ( timestep );
+		
+	if ( self.running and not running ) then
+		self.running = false;
+		self:Fire ( "AnimationDone", {} );
+	end;
+end;
+
+-------------------------------------------------------------------
+function Animation:Call ( func, object )
+-------------------------------------------------------------------
+	self.running = true;
+		
+	-- Here we need to build the animation from the list
+	if ( func == "Run" ) then
+		for i = 1, #self.animations do
+			self.animator:Add ( self:CreateAnimation(self.animations[i]) );
+ 		end;
+	end;
+		
+	if ( func == "OnEventNotify" )then
+		
+	end;
+end;
+
+-------------------------------------------------------------------
+function Animation:CreateAnimation ( anim )
+-------------------------------------------------------------------
+	local animate = nil;
+	if (anim.type == "Call" ) then
+		animate = EventNotify ( self, { animation=anim } );
+	elseif (anim.type == "Run" ) then
+		animate = Animate ( anim.widget, anim.parameter, 
+			"sineInOut", anim.value, anim.duration );
+	else
+		animate = Delay ( 0 );
+	end;
+	
+	
+	for i = 1, #anim.children do
+  		animate:Add ( self:CreateAnimation(anim.children[i]) );
+	end;
+	
+	return animate;
+end;
+
 print "Loaded";
 

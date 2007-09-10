@@ -1,6 +1,8 @@
 #include "PhoneBook.h"
+#include "../ApplicationManager.h"
 
 using namespace MiniUI;
+using namespace MiniUI::UISystem;
 using namespace MiniUI::Widgets;
 using namespace MiniUI::LuaSystem;
 using namespace luabind;
@@ -12,26 +14,7 @@ namespace Applications
 		: IApplication ( pManager ), _firstSelection ( 1 )
 	///////////////////////////////////////////////////////////////////////////
 	{
-		pManager->SetCurrentScreen ( "PhoneBook" );
-		_pListing = pManager->GetCurrentScreen()->FindWidget ( "PhoneListing" );
-		_pSlider = pManager->GetCurrentScreen()->FindWidget ( "Slider" );
-		_pName = pManager->GetCurrentScreen()->FindWidget ( "name" );
-		_pPhone = pManager->GetCurrentScreen()->FindWidget ( "phone" );
-		
-		AddEntry ( "Jack Harten", "847-555-1212" );
-		AddEntry ( "Andy Gabriel", "847-555-1212" );
-		AddEntry ( "Angel Echevarria", "847-555-1212" );
-		AddEntry ( "Keith Osik", "847-555-1212" );
-		AddEntry ( "Doug Mast", "847-555-1212" );
-		AddEntry ( "Alex Ramirez", "847-555-1212" );
-		AddEntry ( "Mike Butcher", "847-555-1212" );
-		AddEntry ( "Kevin Millar", "847-555-1212" );
-		AddEntry ( "Brian Hiller", "847-555-1212" );
-		AddEntry ( "Benny Agbayani", "847-555-1212" );
-		AddEntry ( "Brian Daubach", "847-555-1212" );
-		AddEntry ( "Lou Merloni", "847-555-1212" );
-		AddEntry ( "Fred Rivers", "847-555-1212" );
-		AddEntry ( "Charles Gipson", "847-555-1212" );
+		_pListing = NULL;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -39,6 +22,41 @@ namespace Applications
 	///////////////////////////////////////////////////////////////////////////
 	{
 		
+	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	void PhoneBook::OnShow ( )
+	///////////////////////////////////////////////////////////////////////////
+	{
+		if ( _pListing == NULL )
+		{
+		
+			Screen *pScreen = UIManager::Instance()->GetCurrentScreen();
+			
+			_pListing	= pScreen->FindWidget ( "PhoneListing" );
+			_pSlider	= pScreen->FindWidget ( "Slider" );
+			_pName		= pScreen->FindWidget ( "name" );
+			_pPhone 	= pScreen->FindWidget ( "phone" );
+			_pOnShowAnimation = pScreen->FindWidget ( "OnShow" );
+			_pOnHideAnimation = pScreen->FindWidget ( "OnHide" );
+			
+			AddEntry ( "Jack Harten", "847-555-1212" );
+			AddEntry ( "Andy Gabriel", "847-555-1212" );
+			AddEntry ( "Angel Echevarria", "847-555-1212" );
+			AddEntry ( "Keith Osik", "847-555-1212" );
+			AddEntry ( "Doug Mast", "847-555-1212" );
+			AddEntry ( "Alex Ramirez", "847-555-1212" );
+			AddEntry ( "Mike Butcher", "847-555-1212" );
+			AddEntry ( "Kevin Millar", "847-555-1212" );
+			AddEntry ( "Brian Hiller", "847-555-1212" );
+			AddEntry ( "Benny Agbayani", "847-555-1212" );
+			AddEntry ( "Brian Daubach", "847-555-1212" );
+			AddEntry ( "Lou Merloni", "847-555-1212" );
+			AddEntry ( "Fred Rivers", "847-555-1212" );
+			AddEntry ( "Charles Gipson", "847-555-1212" );
+		}
+				
+		_pOnShowAnimation->CallVoid ( "Run" );
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -60,7 +78,15 @@ namespace Applications
 		if ( id == "Slider" && pEvent->event == "SlideOutDone" )
 		{
 			SlideInfoIn();
-		}		
+		}
+			
+		if ( id == "homeButton" && pEvent->event == "OnClick" )
+		{
+			_pOnHideAnimation->CallVoid( "Run" );
+		}
+		
+		if ( id == "OnHide" && pEvent->event == "AnimationDone" )
+			ApplicationManager::Instance()->ShowScreen("MainMenu");
 	}
 	
 	///////////////////////////////////////////////////////////////////////////

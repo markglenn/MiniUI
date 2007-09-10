@@ -12,9 +12,16 @@ namespace Applications
 		virtual ~ImageViewer ( );	
 				
 		void OnEvent ( MiniUI::UIEvent* pEvent );
+		
+		std::string ScreenName ( ) { return "ImageViewer"; }
+
+		void OnShow ( );
 	private:
 		MiniUI::Widgets::Widget* _pMainWidget;		
-		MiniUI::Widgets::Widget* _pSlideshow;		
+		MiniUI::Widgets::Widget* _pSlideshow;
+		
+		MiniUI::Widgets::Widget* _pOnShowAnimation;
+		MiniUI::Widgets::Widget* _pOnHideAnimation;
 	};
 }
 

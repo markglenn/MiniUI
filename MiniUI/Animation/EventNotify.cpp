@@ -21,6 +21,7 @@
 #include "EventNotify.h" 
 #include <luabind/luabind.hpp>
 #include <luabind/adopt_policy.hpp>
+#include <luabind/operator.hpp>
 
 using namespace luabind;
 using namespace MiniUI::LuaSystem;
@@ -31,11 +32,12 @@ namespace MiniUI
 	namespace Animation
 	{		
 		///////////////////////////////////////////////////////////////////////
-		EventNotify::EventNotify ( Widget *pWidget )
+		EventNotify::EventNotify ( Widget *pWidget, luabind::object object )
 		///////////////////////////////////////////////////////////////////////
 		{
 			_notified = false;
 			_pWidget = pWidget;
+			_object = object;
 		}
 		
 		///////////////////////////////////////////////////////////////////////
@@ -53,7 +55,7 @@ namespace MiniUI
 			if ( !_notified )
 			{
 				_notified = true;
-				_pWidget->Call ( "OnEventNotify", luabind::object() );	
+				_pWidget->Call ( "OnEventNotify", _object );	
 			}
 
 			return RunChildren ( duration );
@@ -66,7 +68,7 @@ namespace MiniUI
 			module(*pVM)
 			[
 				class_<EventNotify,Animatable>("EventNotify")
-				.def(constructor<Widget *>())
+				.def(constructor<Widget *, luabind::object>())
 				.def("Run", &EventNotify::Run)
 				.def("Stop", &Animatable::Stop)
 				.def("Add", &Animatable::Add, adopt(_2))

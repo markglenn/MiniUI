@@ -92,6 +92,7 @@ namespace MiniUI
 			virtual void OnLayout ( ) { }
 
 			virtual void Call ( std::string func, luabind::object object ) {}
+			void CallVoid ( std::string func ) { Call ( func, luabind::object () ); }
 			
 			int GetAreaCount ( ) { return _widgetChildren.size(); }
 			int GetChildWidgetCount ( int area );
@@ -171,12 +172,13 @@ namespace MiniUI
 			{
 				call<void>( "Call", func, object );
 			}
-			
+
 			static void default_Call ( Widget* ptr, std::string func, luabind::object object )
 			{
 				ptr->Widget::Call ( func, object );
 			}
 
+			
 			virtual void OnMouseOver ( ) 	{ call<void> ("OnMouseOver" ); }
 			virtual void OnMouseOut ( )		{ call<void> ("OnMouseOut" ); }
 			virtual void OnMouseUp ( )		{ call<void> ("OnMouseUp" ); }

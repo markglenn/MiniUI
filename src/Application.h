@@ -15,6 +15,7 @@
 #include <MiniUI/UIManager.h>
 #include <OpenGLRenderer/GLRenderer.h>
 #include "Integration/MemoryManager.h"
+#include "ApplicationManager.h"
 
 /**
 	@author Mark Glenn <markglenn@gmail.com>
@@ -34,6 +35,7 @@ private:
 
 	bool LoadUI ( std::string path );
 
+	ApplicationManager			_appManager;
 	Integration::MemoryManager 	*_pMmanager;
 	MiniUI::UIManager			*_pUIManager;
 	OpenGLRenderer::GLRenderer	_glRenderer;
