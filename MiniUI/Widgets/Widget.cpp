@@ -239,7 +239,6 @@ namespace MiniUI
 			
 			factory.Register ( "TextArea", CreateTextArea );
 			factory.Register ( "Image", CreateImage );
-			//factory.Register ( "Animation", CreateAnimation );
 		}
 		
 		///////////////////////////////////////////////////////////////////////

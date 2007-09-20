@@ -53,6 +53,8 @@
 -->
 <?xml version="1.0" encoding="UTF-8"?>
 <skin>
+	<include file="test.xml" />
+	
 	<widgets>
 		<widget id="xpWindow" src="images/minimal.bmp" width="@width" height="@height">
 			<layout>
