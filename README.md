@@ -55,6 +55,9 @@ The goals were:
   an OpenGL renderer, an SDL input layer, and the MiniUI core) link into
   one binary with no desktop-UI dependencies.
 
+The full graduate design report is archived alongside the code:
+[`docs/MiniUI-thesis.pdf`](docs/MiniUI-thesis.pdf).
+
 ## Repository layout
 
 ```
