@@ -55,6 +55,15 @@ The goals were:
   an OpenGL renderer, an SDL input layer, and the MiniUI core) link into
   one binary with no desktop-UI dependencies.
 
+The original write-ups are archived alongside the code:
+
+- [`docs/MiniUI-thesis.pdf`](docs/MiniUI-thesis.pdf) — the full graduate
+  design report (72 pages).
+- [`docs/MiniUI-paper-ctirs08.pdf`](docs/MiniUI-paper-ctirs08.pdf) —
+  "The MiniUI Framework – Moving Towards a Highly Portable, Animated
+  User Interface," a 10-page conference paper submission based on the
+  same work.
+
 ## Repository layout
 
 ```
