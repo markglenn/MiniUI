@@ -1,9 +1,13 @@
+
+
+
+
 # MiniUI
 
 A small XML/Lua-driven UI framework aimed at embedded devices, rendered with
 OpenGL and SDL.
 
-<video src="https://raw.githubusercontent.com/markglenn/MiniUI/master/docs/demo.mp4" controls muted width="640">
+<video src="https://github.com/user-attachments/assets/244c27db-537f-4901-a13e-e17a26352bcb" controls muted width="640">
   Your browser does not support the video tag —
   <a href="docs/demo.mp4">download the demo</a> instead.
 </video>
