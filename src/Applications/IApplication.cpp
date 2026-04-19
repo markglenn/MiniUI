@@ -43,7 +43,11 @@ namespace Applications
 	void IApplication::Hide ( )
 	///////////////////////////////////////////////////////////////////////////
 	{
-		_pManager->OnUIEvent.RemoveListener ( _pEventFunctor );
+		// UIManager may have already been torn down at process exit; the
+		// singleton clears its `instance` pointer on destruction, so use that
+		// as the liveness check instead of the stored `_pManager`.
+		if ( UIManager::Instance() == _pManager && _pManager != 0 )
+			_pManager->OnUIEvent.RemoveListener ( _pEventFunctor );
 		this->OnHide();
 	}
 }

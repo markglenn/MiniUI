@@ -1,7 +1,0 @@
-Import('env')
-
-sources = [ 'Animatable.cpp', 'Animate.cpp', 'Animator.cpp', 'Delay.cpp', 'EventNotify.cpp' ]
-
-obj = env.Object ( sources )
-
-Return ('obj')

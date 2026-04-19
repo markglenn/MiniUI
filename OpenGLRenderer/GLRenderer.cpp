@@ -2,10 +2,17 @@
 #include "SDLImageResource.h"
 #include <MiniUI/Host/HostIntegration.h>
 
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
+#ifdef __APPLE__
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glu.h>
+#  include <OpenGL/glext.h>
+#else
+#  include <GL/gl.h>
+#  include <GL/glu.h>
+#  include <GL/glext.h>
+#endif
 #include <SDL/SDL.h>
+#include <cstdio>
 
 using namespace MiniUI;
 using namespace MiniUI::Graphics;
@@ -135,48 +142,57 @@ namespace OpenGLRenderer
 
 		glTranslatef ( pChildArea->area.x, pChildArea->area.y, 0 );
 
-		// Setup the stencil
-		glColorMask(0,0,0,0);
-		glStencilFunc(GL_EQUAL, pChildArea->depth, 0xFFFF);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+		// Zero-sized area = no stencil clipping (skin didn't set width/height).
+		const bool clip = pChildArea->area.width > 0 && pChildArea->area.height > 0;
 
-		glBegin(GL_QUADS);
+		if ( clip )
 		{
-			glVertex2i ( pChildArea->area.width, 0 );
-			glVertex2i ( pChildArea->area.width,pChildArea->area.height );
-			glVertex2i ( 0, pChildArea->area.height );
-			glVertex2i ( 0, 0 );
+			// Setup the stencil
+			glColorMask(0,0,0,0);
+			glStencilFunc(GL_EQUAL, pChildArea->depth, 0xFFFF);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+
+			glBegin(GL_QUADS);
+			{
+				glVertex2i ( pChildArea->area.width, 0 );
+				glVertex2i ( pChildArea->area.width,pChildArea->area.height );
+				glVertex2i ( 0, pChildArea->area.height );
+				glVertex2i ( 0, 0 );
+			}
+			glEnd ( );
+
+			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+			glColorMask(1,1,1,1);
+
+			// Only draw within parents window
+			glStencilFunc(GL_EQUAL, pChildArea->depth + 1, 0xFFFF);
 		}
-		glEnd ( );
-
-		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
-		glColorMask(1,1,1,1);
-
-		// Only draw within parents window
-		glStencilFunc(GL_EQUAL, pChildArea->depth + 1, 0xFFFF);
 
 		// Draw the children
 		UpdateWidgetList ( &pChildArea->children, pMouse );
 
-		// Setup the stencil
-		glColorMask(0,0,0,0);
-		glStencilFunc(GL_EQUAL, pChildArea->depth + 1, 0xFFFF);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_DECR);
-
-		// Clear out the stencil
-		glBegin(GL_QUADS);
+		if ( clip )
 		{
-			glVertex2i ( pChildArea->area.width, 0 );
-			glVertex2i ( pChildArea->area.width, pChildArea->area.height );
-			glVertex2i ( 0, pChildArea->area.height );
-			glVertex2i ( 0, 0 );
-		}
-		glEnd ( );
+			// Setup the stencil
+			glColorMask(0,0,0,0);
+			glStencilFunc(GL_EQUAL, pChildArea->depth + 1, 0xFFFF);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_DECR);
 
-		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-		glStencilFunc(GL_EQUAL, pChildArea->depth, 0xFFFF);
-		glColorMask(1,1,1,1);
+			// Clear out the stencil
+			glBegin(GL_QUADS);
+			{
+				glVertex2i ( pChildArea->area.width, 0 );
+				glVertex2i ( pChildArea->area.width, pChildArea->area.height );
+				glVertex2i ( 0, pChildArea->area.height );
+				glVertex2i ( 0, 0 );
+			}
+			glEnd ( );
+
+			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+			glStencilFunc(GL_EQUAL, pChildArea->depth, 0xFFFF);
+			glColorMask(1,1,1,1);
+		}
 
 		glPopMatrix ( );
 	}

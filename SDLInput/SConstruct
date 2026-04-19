@@ -1,7 +1,0 @@
-sources = [ 'SDLInputManager.cpp' ]
-
-Import('env')
-
-objs = env.Object ( sources )
-
-env.Library ( '../lib/libSDLInput', objs )

@@ -1,7 +1,0 @@
-Import('env')
-
-sources = [ 'Skin.cpp', 'Screen.cpp', 'Font.cpp' ]
-
-obj = env.Object ( sources )
-
-Return ('obj')

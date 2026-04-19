@@ -1,0 +1,16 @@
+# CMake out-of-tree build directory
+cmake-build/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CMakeUserPresets.json
+
+# Executable dropped into build/ by CMakeLists (runtime assets live here too)
+/build/miniui
+/build/*.dSYM/
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp

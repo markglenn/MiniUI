@@ -38,7 +38,9 @@
 #include "TextArea.h"
 #include "Image.h"
 
+extern "C" {
 #include <Lua/lua.h>
+}
 #include <luabind/luabind.hpp>
 
 using namespace std;

@@ -71,7 +71,7 @@ namespace MiniUI
 			{
 				// Move the digits one place to the left
 				intvalue = intvalue * radix;
-				char* digit = strchr (conversion, value[i]);
+				const char* digit = strchr (conversion, value[i]);
 
 				if ( digit == NULL || ( digit - conversion ) >= radix )
 					throw NumberFormatException ( );
