@@ -3,6 +3,11 @@
 A small XML/Lua-driven UI framework aimed at embedded devices, rendered with
 OpenGL and SDL.
 
+<video src="https://raw.githubusercontent.com/markglenn/MiniUI/master/docs/demo.mp4" controls muted width="640">
+  Your browser does not support the video tag —
+  <a href="docs/demo.mp4">download the demo</a> instead.
+</video>
+
 > **2026 update:** the 2007-era code in this repository was modernized in
 > April 2026 with the help of an AI coding assistant so it builds and runs
 > on current macOS. The change set is limited to what was needed to get the
