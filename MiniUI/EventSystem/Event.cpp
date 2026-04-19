@@ -56,9 +56,11 @@
 		void Event::operator () ( )
 		///////////////////////////////////////////////////////////////////////
 		{
-			std::list < FunctorBase* >::iterator i;
-
-			for ( i = m_lFunctors.begin(); i != m_lFunctors.end(); i++ )
+			// Snapshot the listener list: a listener may add or remove
+			// listeners (including itself) while being invoked.
+			std::list<FunctorBase*> snapshot ( m_lFunctors );
+			for ( std::list<FunctorBase*>::iterator i = snapshot.begin();
+			      i != snapshot.end(); ++i )
 				(**i)( this );
 		}
 

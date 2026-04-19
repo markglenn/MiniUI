@@ -1,7 +1,0 @@
-Import('env')
-
-sources = [ 'LuaVirtualMachine.cpp', 'Helper.cpp' ]
-
-objs = env.Object ( sources )
-
-Return ('objs')

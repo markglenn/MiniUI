@@ -201,7 +201,7 @@ namespace MiniUI
 		OnUIEvent.event = event;
 		OnUIEvent.pWidget = pWidget;
 		OnUIEvent.parameter = (object *)&o;
-		
+
 		OnUIEvent ( );
 	}
 

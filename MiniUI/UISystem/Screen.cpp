@@ -257,6 +257,15 @@ namespace MiniUI
 				WidgetChildArea widgetChildArea;
 				widgetChildArea.depth = depth;
 
+				// Zero-sized area means "no stencil clipping" (renderer skips
+				// the quad). Leaving these at 0 is the natural default when
+				// the skin omits width/height — unlike the uninitialized
+				// garbage Rectangle<int> produced otherwise.
+				widgetChildArea.area.x = 0;
+				widgetChildArea.area.y = 0;
+				widgetChildArea.area.width  = 0;
+				widgetChildArea.area.height = 0;
+
 				// Set the child area
 				if ( pChildArea->Attribute("x") )
 					o_xpath_int ( pChild, pChildArea->Attribute("x"), widgetChildArea.area.x );

@@ -3,7 +3,11 @@
 
 #include <MiniUI/Graphics/Renderable.h>
 #include <MiniUI/Types/Vector2D.h>
-#include <GL/gl.h>
+#ifdef __APPLE__
+#  include <OpenGL/gl.h>
+#else
+#  include <GL/gl.h>
+#endif
 
 namespace OpenGLRenderer
 {

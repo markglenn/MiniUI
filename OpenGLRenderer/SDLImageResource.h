@@ -23,7 +23,11 @@
 
 #include <MiniUI/Graphics/ImageResource.h>
 #include <SDL/SDL.h>
-#include <GL/gl.h>
+#ifdef __APPLE__
+#  include <OpenGL/gl.h>
+#else
+#  include <GL/gl.h>
+#endif
 
 namespace OpenGLRenderer
 {

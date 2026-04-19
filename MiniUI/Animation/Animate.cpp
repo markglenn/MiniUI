@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Animate.h" 
+#include "Animate.h"
 #include <luabind/luabind.hpp>
 #include <luabind/adopt_policy.hpp>
 #include <math.h>
@@ -99,25 +99,25 @@ namespace MiniUI
 			// No more animation
 			if ( _pFunc == NULL )
 				return RunChildren ( duration );
-			
+
 			// Set the start point from the object itself
 			if ( _currentDuration == 0.0 )
 				_start = object_cast<double>(_object[_attribute]);
-			
+
 			_currentDuration += duration;
-			
+
 			// Past the duration?
 			if ( _currentDuration > _duration )
 			{
 				_object[_attribute] = _pFunc ( _start, _end, _duration, _duration );
 				_pFunc = NULL;
-				
+
 				return RunChildren ( _currentDuration - _duration );
 			}
-			
+
 			// Set the value
 			_object[_attribute] = _pFunc ( _start, _end, _duration, _currentDuration );
-			
+
 			return true;
 		}
 		

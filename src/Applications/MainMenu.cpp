@@ -30,13 +30,13 @@ namespace Applications
 	{
 		if ( _pOnShowAnim == NULL )
 		{
-		
+
 			Screen *pScreen = UIManager::Instance()->GetCurrentScreen();
-			
+
 			_pOnShowAnim = pScreen->FindWidget ( "OnShow" );
 			_pOnHideAnim = pScreen->FindWidget ( "OnHide" );
 		}
-				
+
 		SlideMenus ( true );
 	}
 	

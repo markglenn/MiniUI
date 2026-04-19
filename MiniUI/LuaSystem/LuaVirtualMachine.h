@@ -21,9 +21,11 @@
 #ifndef _LUAVIRTUALMACHINE_H_
 #define _LUAVIRTUALMACHINE_H_
 
+extern "C" {
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
+}
 
 #include "../Types/Singleton.h"
 #include <string>

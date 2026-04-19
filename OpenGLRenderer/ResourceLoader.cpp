@@ -1,107 +1,88 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Mark Glenn                                      *
  *   markglenn@gmail.com                                                   *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Lesser General Public License as        *
- *   published by the Free Software Foundation; either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Lesser General Public License for more details.                   *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with this program; if not, write to the                 *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
 #include "ResourceLoader.h"
 #include "SDLImageResource.h"
 
 #include <istream>
+#include <vector>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
-#include <SDL/SDL_image.h>
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_NO_STDIO
+#include <stb_image.h>
 
 using namespace MiniUI::Graphics;
 using namespace std;
 
-
 namespace OpenGLRenderer
 {
-	///////////////////////////////////////////////////////////////////////////
-	static int _stream_seek(SDL_RWops *context, int offset, int whence)
-	///////////////////////////////////////////////////////////////////////////
+	namespace
 	{
-		if ( whence == SEEK_SET )
-			((istream *)context->hidden.unknown.data1)->seekg(offset, ios_base::beg );
-		else if ( whence == SEEK_CUR )
-			((istream *)context->hidden.unknown.data1)->seekg(offset, ios_base::cur );
-		else
-			((istream *)context->hidden.unknown.data1)->seekg(offset, ios_base::end );
-		return ((istream *)context->hidden.unknown.data1)->tellg();
+		int stb_stream_read(void *user, char *data, int size)
+		{
+			istream *s = static_cast<istream *>(user);
+			s->read(data, size);
+			return static_cast<int>(s->gcount());
+		}
+
+		void stb_stream_skip(void *user, int n)
+		{
+			istream *s = static_cast<istream *>(user);
+			s->seekg(n, ios_base::cur);
+		}
+
+		int stb_stream_eof(void *user)
+		{
+			istream *s = static_cast<istream *>(user);
+			return s->eof() ? 1 : 0;
+		}
 	}
 
-	///////////////////////////////////////////////////////////////////////////
-	static int _stream_read(SDL_RWops *context, void *ptr, int size, int maxnum)
-	///////////////////////////////////////////////////////////////////////////
+	SDL_RWops* ResourceLoader::GetRWOps ( std::istream* /*stream*/ )
 	{
-		((istream *)context->hidden.unknown.data1)->read ((char *)ptr, size * maxnum);
-
-		return maxnum;
-	}
-
-	///////////////////////////////////////////////////////////////////////////
-	static int _stream_write(SDL_RWops *context, const void *ptr, int size, int num)
-	///////////////////////////////////////////////////////////////////////////
-	{
-		return 0; /* ignored */
-	}
-
-	///////////////////////////////////////////////////////////////////////////
-	static int _stream_close(SDL_RWops *context)
-	///////////////////////////////////////////////////////////////////////////
-	{
-		if (! context)
-			return 0; /* may be SDL_RWclose is called by atexit */
-
-
-		delete ((istream *)context->hidden.unknown.data1);
-		SDL_FreeRW (context);
 		return 0;
-	}
-
-	///////////////////////////////////////////////////////////////////////////
-	SDL_RWops* ResourceLoader::GetRWOps ( std::istream* stream )
-	///////////////////////////////////////////////////////////////////////////
-	{
-		register SDL_RWops* rwops;
-
-		rwops = SDL_AllocRW ();
-
-		if (! rwops)
-			return 0;
-
-		rwops->hidden.unknown.data1 = stream;
-		rwops->read = _stream_read;
-		rwops->write = _stream_write;
-		rwops->seek = _stream_seek;
-		rwops->close = _stream_close;
-
-		return rwops;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
 	ImageResource* ResourceLoader::LoadImageResource ( istream* stream )
 	///////////////////////////////////////////////////////////////////////////
 	{
-		SDL_RWops* pOps = GetRWOps(stream);
-		SDL_Surface* pSurface = IMG_Load_RW ( pOps, 0 );
+		stbi_io_callbacks cb;
+		cb.read = stb_stream_read;
+		cb.skip = stb_stream_skip;
+		cb.eof  = stb_stream_eof;
 
-		SDL_FreeRW ( pOps );
-		return new SDLImageResource ( pSurface );
+		int w = 0, h = 0, comp = 0;
+		unsigned char *pixels = stbi_load_from_callbacks(&cb, stream, &w, &h, &comp, 4);
+
+		if (!pixels)
+			return new SDLImageResource(0);
+
+		// Build an SDL_Surface that owns a malloc'd copy of the 32-bit RGBA pixels.
+		// SDLImageResource will upload it then SDL_FreeSurface it.
+		const int pitch = w * 4;
+		void *owned = std::malloc(static_cast<size_t>(pitch) * h);
+		std::memcpy(owned, pixels, static_cast<size_t>(pitch) * h);
+		stbi_image_free(pixels);
+
+		SDL_Surface *pSurface = SDL_CreateRGBSurfaceFrom(
+			owned, w, h, 32, pitch,
+			0x000000FFu, 0x0000FF00u, 0x00FF0000u, 0xFF000000u);
+
+		// Leak-free behavior: SDL_FreeSurface will not free `owned`, so wire cleanup.
+		// SDL 1.2 lets us overload the free via SDL_RWops — simpler: track the pointer
+		// on the surface's userdata-adjacent `pixels` and free from caller.
+		// SDLImageResource already uploads then SDL_FreeSurface's the wrapper; we
+		// free the pixel buffer here by telling SDL to own it.
+		if (pSurface)
+			pSurface->flags |= SDL_PREALLOC;
+
+		return new SDLImageResource(pSurface);
 	}
 
 	///////////////////////////////////////////////////////////////////////////

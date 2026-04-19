@@ -23,8 +23,10 @@
 #ifndef LUA_INCLUDE_HPP_INCLUDED
 #define LUA_INCLUDE_HPP_INCLUDED
 
+extern "C" {
 #include <Lua/lua.h>
 #include <Lua/lauxlib.h>
+}
 
 #endif
 
